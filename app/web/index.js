@@ -7,5 +7,5 @@ app.use("/", express.static('public'))
 app.use("/api", api)
 
 app.listen(3010, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('Example app listening on port 3010!');
 });
