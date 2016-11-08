@@ -4,8 +4,10 @@ import api from "./api"
 let app = express();
 
 app.use("/", express.static('public'))
+app.use("/", api)
 app.use("/api", api)
 
-app.listen(3010, function () {
-  console.log('Example app listening on port 3010!');
+var port = process.env.PORT || 3010;
+app.listen(port, function () {
+  console.log("Example app listening on port " + port + "!");
 });
