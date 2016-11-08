@@ -15,10 +15,17 @@ router.get("/", (req, res) => {
   })
 })
 
-/*
 router.post("/", (req, res) => {
   let {userId, journal} = req.query
-  res.json(createJournal(userId, journal))
-})*/
+  createJournal(userId, JSON.parse(journal))
+  .then((result) => {
+    res.status(200)
+    .send("Ok");
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
+})
 
 export default router

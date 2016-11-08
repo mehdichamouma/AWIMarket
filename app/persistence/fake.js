@@ -6,8 +6,6 @@ journals.set("user01", [
   {title: "My journal 4", nbEntries: 10}
 ])
 
-
-
 export const getJournalsByUser = (userId = null) => new Promise((resolve, reject) => {
   console.log(userId);
   if(journals.has(userId)) {
@@ -22,15 +20,15 @@ export const addJournal = (userId, journal) => new Promise((resolve, reject) => 
   if(journals.has(userId)) {
     let newJournal = formatJournal(journal)
     if(newJournal != null) {
-      journals.get(userId).push(journal);
-      resolve(usedId, journal)
+      journals.get(userId).push(newJournal)
+      resolve({userId, journal:newJournal})
     }
     else {
-      reject()
+      reject({code:400, description:"Bad Request"}) // or {code:422, description:"Unprocessable entity"}
     }
   }
   else {
-    reject()
+    reject({code:404, description:"Not found"})
   }
 })
 

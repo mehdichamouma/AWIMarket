@@ -8,8 +8,5 @@ export const getJournalsByUser = (userId) => {
 }
 
 export const createJournal = (userId, journal) => {
-  _addJournal(userId, journal)
-  .then((usedId, journal) => {
-    return 200
-  })
+  return _addJournal(userId, journal)
 }

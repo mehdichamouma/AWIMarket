@@ -4,7 +4,7 @@
   "description": "",
   "main": "app/web/index.js",
   "scripts": {
-    "test": "mocha --recursive mocha src/**/*.specs.js",
+    "test": "mocha --recursive mocha app/**/*.specs.js",
     "start": "nodemon app/web/index.js --exec babel-node"
   },
   "repository": {
