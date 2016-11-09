@@ -9,8 +9,3 @@ describe("Products Service", () => {
     })
   })
 })
-
-
-export const getJournalsByUser = (userId) => {
-  return _getJournalsByUser(userId)
-}
