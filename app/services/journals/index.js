@@ -1,12 +1,9 @@
-import {
-  getJournalsByUser as _getJournalsByUser,
-  addJournal as _addJournal
-} from "../../persistence/fake"
+import getDB from "../../persistence"
 
 export const getJournalsByUser = (userId) => {
-  return _getJournalsByUser(userId)
+  return getDB().getJournalsByUser(userId)
 }
 
 export const createJournal = (userId, journal) => {
-  return _addJournal(userId, journal)
+  return getDB().addJournal(userId, journal)
 }

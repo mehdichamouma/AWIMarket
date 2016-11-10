@@ -20,8 +20,8 @@ export const getUserByCredentials = (email, password) => new Promise((resolve, r
   }
 })
 
-
 export const getJournalsByUser = (userId = null) => new Promise((resolve, reject) => {
+  console.log("Fake")
   console.log(userId);
   if(journals.has(userId)) {
     resolve(journals.get(userId))

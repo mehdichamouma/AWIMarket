@@ -35,5 +35,6 @@ export const configureDbService = (services) => {
 let methods = [
   'getUsers',
   'getUserByCredentials',
-  'getCommands'
+  'getCommands',
+  'getJournalsByUser'
 ]

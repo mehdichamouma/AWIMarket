@@ -1,7 +1,10 @@
 import neo4j from 'neo4j'
 
+let db
+
 export const initDb = (uri) => {
   db = new neo4j.GraphDatabase(uri);
+  console.log(db)
 }
 
 // export const getUsers = () => {
@@ -14,12 +17,19 @@ export const initDb = (uri) => {
 // }
 
 
-export const getJournalsByUser = (userId = null) => {
-  return [
-    {title: "My journal", nbEntries: 10, user: userId},
-    {title: "My journal 2", nbEntries: 9},
-    {title: "My journal 3", nbEntries: 10},
-    {title: "My journal 4", nbEntries: 10}
-  ]
 
-}
+export const getJournalsByUser = (userId = null) => new Promise((resolve, reject) => {
+  console.log("DataBase")
+  var node = db.createNode({hello: "world"});     // instantaneous, but...
+  console.log(node)
+  console.log("after node");
+  node.save(function (err, node) {    // ...this is what actually persists.
+    if (err) {
+        console.error('Error saving new node to database:', err);
+        reject(404)
+    } else {
+        console.log('Node saved to database with id:', node.id);
+        resolve([])
+    }
+  })
+})

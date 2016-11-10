@@ -13,6 +13,8 @@ import * as graphDb from "../persistence/db"
 import * as fake from "../persistence/fake"
 import getDbInstance, {configureDbService} from "../persistence"
 
+graphDb.initDb(process.env.AWIMarket_DB_URL)
+
 configureDbService([graphDb, fake])
 
 let app = express();
