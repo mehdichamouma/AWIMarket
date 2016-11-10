@@ -1,9 +1,13 @@
-import {createDbService} from ".."
+import getDb, {configureDbService} from ".."
 import {expect} from "chai"
 
 describe("persitence service", () => {
-  let db
-  describe("createDbService", () => {
+  describe("getDb not configured", () => {
+    it("should throw an error", () => {
+      expect(() => getDb()).to.throws(Error)
+    })
+  })
+  describe("configureDbService", () => {
     it("should return a persistence service", () => {
       let db1 = {
         getUsers: () => ['a', 'b', 'c'],
@@ -16,7 +20,9 @@ describe("persitence service", () => {
         //getCommands: () => 'db2'
       }
 
-      db = createDbService([db1, db2])
+      configureDbService([db1, db2])
+      let db = getDb()
+      
       expect(db).to.contains.all.keys(
         ['getUsers', 'getUserByCredentials', 'getCommands']
       )
@@ -27,17 +33,17 @@ describe("persitence service", () => {
 
   })
 
-  describe("returned service", () => {
+  describe("db configured", () => {
     it("should call the db1.getUsers", () => {
-      expect(db.getUsers()).to.eql(['a', 'b', 'c'])
+      expect(getDb().getUsers()).to.eql(['a', 'b', 'c'])
     })
 
     it("should call the db2.getUserByCredentials", () => {
-      expect(db.getUserByCredentials()).to.eql('ok')
+      expect(getDb().getUserByCredentials()).to.eql('ok')
     })
 
     it("should throw an Error", () => {
-      expect(() => db.getCommands()).to.throws(Error)
+      expect(() => getDb().getCommands()).to.throws(Error)
     })
   })
 })
