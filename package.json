@@ -18,7 +18,12 @@
   },
   "homepage": "https://github.com/Azar06/AWIMarket#readme",
   "dependencies": {
+    "basic-auth": "^1.0.4",
+    "es6-promisify": "^5.0.0",
     "express": "^4.14.0",
+    "jsonwebtoken": "^7.1.9",
+    "neo4j": "^2.0.0-RC2",
+    "url-join": "^1.1.0",
     "vue": "^2.0.5"
   },
   "devDependencies": {

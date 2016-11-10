@@ -1,8 +1,21 @@
+import urlJoin from "url-join"
+/**
+ * AWIMARKET API CLIENT
+ * helpers to fetch data from the AWIMARKET API
+ */
+
+
 //promises
 //
 
+const BASE_URI = "http://localhost:3010/api"
+
+const request = (endpoint, ...params) => {
+  return fetch(urlJoin(BASE_URI, endpoint), ...params)
+}
+
 export const fetchUserJournals = (userId) => {
-  return fetch("http://localhost:3010/api/journals")
+  return request("journals")
   .then((res) => {
     return res.json()
   })
@@ -11,6 +24,23 @@ export const fetchUserJournals = (userId) => {
   })
 }
 
+
+export const authenticate = (email, password) => {
+  let credentials = new Buffer(`${email}:${password}`, 'utf8').toString('base64')
+  return request("auth/token", {
+    headers: {
+      'Authorization': `Basic ${credentials}`
+    }
+  })
+  .then((res) => {
+    if(res.ok) {
+      return res.json()
+    }
+    else {
+      throw new Error("Authentication failed")
+    }
+  })
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {

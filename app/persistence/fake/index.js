@@ -6,6 +6,21 @@ journals.set("user01", [
   {title: "My journal 4", nbEntries: 10}
 ])
 
+export const getUserByCredentials = (email, password) => new Promise((resolve, reject) => {
+  console.log(email, password);
+  if(email == "john@doe.fr" && password == "azerty") {
+    resolve({
+      email: "john@doe.fr",
+      userId: "abc123",
+      is_admin: true
+    })
+  }
+  else {
+    reject(new Error("Credentials don't matchs"))
+  }
+})
+
+
 export const getJournalsByUser = (userId = null) => new Promise((resolve, reject) => {
   console.log(userId);
   if(journals.has(userId)) {

@@ -1,5 +1,19 @@
+/**
+ * REST API Service
+ *
+ * Serve:
+ *  - the REST JSON API at /api
+ *  - the static files at /
+ */
+
 import express from "express"
 import api from "./api"
+
+import * as graphDb from "../persistence/db"
+import * as fake from "../persistence/fake"
+import getDbInstance, {configureDbService} from "../persistence"
+
+configureDbService([graphDb, fake])
 
 let app = express();
 

@@ -8,9 +8,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
   </head>
   <body>
-    <div id="app">
-      {{ message }}
-      <a class="waves-effect waves-light btn" v-on:click="changeText">button</a>
+    <div id="app" class="container">
+
+      <div class="card-panel teal lighten-2">
+        <div class="card-panel grey lighten-4 truncate">
+          {{ message }}
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="email" type="email" class="validate" v-model="email">
+            <label for="email">Email</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <input id="password" type="password" class="validate" v-model="password">
+            <label for="password">Password</label>
+          </div>
+        </div>
+        <a class="waves-effect waves-light btn" v-on:click="changeText">Connexion</a>
+      </div>
+
     </div>
 
     <div class="fixed-action-btn horizontal">

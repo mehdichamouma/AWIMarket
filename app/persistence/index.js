@@ -1,9 +1,39 @@
-export const getJournalsByUser = (userId = null) => {
-  return [
-    {title: "My journal", nbEntries: 10, user: userId},
-    {title: "My journal 2", nbEntries: 9},
-    {title: "My journal 3", nbEntries: 10},
-    {title: "My journal 4", nbEntries: 10}
-  ]
+let db
 
+export default () => {
+  if(!db) {
+    throw new Error("DB instance not configured")
+  }
+  return db
 }
+
+export const configureDbService = (services) => {
+  let call = (method, params) => {
+    let i = 0
+    let m = null
+
+    while (i<services.length && !m) {
+      if(services[i][method]) {
+        m = services[i][method]
+      }
+      i = i+1
+    }
+
+    if(!m) {
+      throw new Error("Can't call " + method + " because no services implement it")
+    }
+
+    return m(...params)
+  }
+
+  db = methods.reduce((o, m) => {
+    o[m] = (...params) => call(m, params)
+    return o
+  }, {})
+}
+
+let methods = [
+  'getUsers',
+  'getUserByCredentials',
+  'getCommands'
+]
