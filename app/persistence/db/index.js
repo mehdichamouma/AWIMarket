@@ -16,10 +16,19 @@ export const initDb = (uri) => {
 //   //fetch user from its email and password
 // }
 
-
-
 export const getJournalsByUser = (userId = null) => new Promise((resolve, reject) => {
   console.log("DataBase")
+  db.insertNode({
+  name: 'Ghuffran',
+  company: 'Modulus',
+  age: 22
+  }, function (err, node) {
+    if (err) {
+      return console.log(err);
+    }
+    console.log(node);
+  })
+  /*
   var node = db.createNode({hello: "world"});     // instantaneous, but...
   console.log(node)
   console.log("after node");
@@ -31,5 +40,5 @@ export const getJournalsByUser = (userId = null) => new Promise((resolve, reject
         console.log('Node saved to database with id:', node.id);
         resolve([])
     }
-  })
+  })*/
 })
