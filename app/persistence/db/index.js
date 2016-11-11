@@ -1,11 +1,18 @@
 import neo4j from 'neo4j'
+import promisify from "es6-promisify"
 
 let db
-
-export const initDb = (uri) => {
+let labels = [
+  'JOURNAL',
+]
+let cypher
+export const initDb = (uri, node_prefix) => {
   db = new neo4j.GraphDatabase(uri);
-  console.log(db)
+  cypher = promisify(db.cypher, db)
 }
+
+export const getLabels = () => labels
+export const getDb = () => db
 
 // export const getUsers = () => {
 //     console.log("abc");
@@ -16,6 +23,13 @@ export const initDb = (uri) => {
 //   //fetch user from its email and password
 // }
 
+export const createJournal = () => cypher({
+    query: `CREATE (t:${labels.JOURNAL} {
+                title:"The Matrix",
+                released:1997
+            })
+            RETURN t`,
+})
 
 
 export const getJournalsByUser = (userId = null) => new Promise((resolve, reject) => {

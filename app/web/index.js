@@ -12,8 +12,9 @@ import api from "./api"
 import * as graphDb from "../persistence/db"
 import * as fake from "../persistence/fake"
 import getDbInstance, {configureDbService} from "../persistence"
+import config from "../../config"
 
-graphDb.initDb(process.env.AWIMarket_DB_URL)
+graphDb.initDb(config.DB_URL)
 
 configureDbService([graphDb, fake])
 
@@ -23,7 +24,7 @@ app.use("/", express.static('public'))
 app.use("/", api)
 app.use("/api", api)
 
-var port = process.env.PORT || 3010;
+var port = config.PORT || 3010;
 app.listen(port, function () {
   console.log("Example app listening on port " + port + "!");
 });
