@@ -33,8 +33,24 @@ export const configureDbService = (services) => {
 }
 
 let methods = [
+  // Users
   'getUsers',
   'getUserByCredentials',
+  'getSimpleUsers',
+  'getSimpleUser',
+  'getSellingCompanies',
+  'getSellingCompany',
+  'createSimpleUser',
+  'createSellingCompany',
+  'updateSimpleUser',
+  
+
   'getCommands',
-  'getJournalsByUser'
+  'getJournalsByUser',
+  'getProducts',
+  'getProductsAtPage',
+  'getProductsFromSeller',
+  'getProductsFromSellerAtPage',
+  'createProduct',
+  'updateProduct'
 ]
