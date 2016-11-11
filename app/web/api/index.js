@@ -6,4 +6,5 @@ let api = express.Router()
 
 api.use("/journals", journals)
 api.use("/auth", auth)
+
 export default api

@@ -16,6 +16,13 @@ module.exports = {
           presets: ['es2015']
         }
       },
+      {
+        test: /\.vue$/,
+        loader: 'vue',
+        options: {
+          // vue-loader options go here
+        }
+      },
       { test: /\.woff(\d*)\??(\d*)$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
       { test: /\.ttf\??(\d*)$/,    loader: "file-loader" },
       { test: /\.eot\??(\d*)$/,    loader: "file-loader" },
