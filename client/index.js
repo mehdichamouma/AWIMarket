@@ -1,24 +1,46 @@
 import Vue from 'vue/dist/vue.js'
-import {fetchUserJournals, authenticate} from "./api"
+import VueRouter from "vue-router"
 
-let vm = new Vue({
-  el: '#app',
-  data: {
-    message: 'Hello Vue!',
-    email: "john@doe.fr",
-    password: "azerty"
-  },
-  methods: {
-    changeText: function () {
-      authenticate(this.email, this.password)
-      .then((data) => {
-        vm.message = data.token
-      })
-      .catch(e => {
-        vm.message = "wrong email and password"
-      })
+Vue.use(VueRouter)
+
+import Login from "./Views/Login.vue"
+import Subscribe from "./Views/Subscribe.vue"
+import LoginLayout from "./Views/LoginLayout.vue"
+
+
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/login',
+      component: LoginLayout,
+      children: [
+        {path: '', component: Login},
+        {path: 'new', component: Subscribe},
+      ]
+    },
+    {
+      path: '/',
+      meta: { secure: true }
     }
+  ]
+})
+
+router.beforeEach((to, from, next) => {
+  let connected = false
+  console.log(to.meta.secure);
+  if(to.meta.secure) {
+    if(connected) {
+      next()
+    }
+    else {
+      next('/login')
+    }
+  }
+  else {
+    next()
   }
 })
 
-setTimeout(() => vm.message = "test", 5000)
+const app = new Vue({
+  router
+}).$mount('#app')

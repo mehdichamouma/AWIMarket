@@ -3,6 +3,18 @@ let router = express.Router()
 import {authenticate} from "../../services/authentification"
 import auth from "basic-auth"
 
+/**
+ * GET /api/auth/token
+ *
+ * Check the AUTHORIZATION header and extract the credentials from it
+ * using BASIC Authentication
+ * Then, call the authentication Service to authenticate the credentials
+ * and return a generated JSON Web Token in case of success
+ *
+ * - Send 200 with the token if credentials match
+ * - Send 403 if credentials doesn't match
+ * - Send 400 if missing Authorization header
+ */
 router.get("/token", (req, res) => {
   let o = auth(req)
   if(o) {
@@ -21,7 +33,7 @@ router.get("/token", (req, res) => {
   }
   else {
     res.status(400).json({
-      error: "missing basic authentication header"
+      error: "missing or invalid basic authentication header"
     })
   }
 
