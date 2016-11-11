@@ -1,5 +1,6 @@
 import neo4j from 'neo4j'
 import promisify from "es6-promisify"
+import passwordHash from 'password-hash'
 
 let db
 let labels = [
@@ -22,7 +23,101 @@ export const getDb = () => db
 // export const getUserByCredentials = (email, password) => {
 //   //fetch user from its email and password
 // }
+export const clearDb = () => cypher({
+  query:` MATCH (n)
+          DETACH DELETE n`
+})
+export const createUser = (id,firstName, lastName, email, password, adresse) => cypher({
+  query : `CREATE (t:User {
+                       id:{id},
+                       firstName:{firstName},
+                       lastName:{lastName},
+                       email:{email},
+                       password:{password},
+                       adresse:{adresse}
+                     })
+                     return t`,
+  params: {
+      id: id,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: passwordHash.generate(password),
+      adresse: adresse,
+   },
+})
+export const getUserByCredentials = (email, password) => {
 
+    console.log(email, password);
+    return cypher ( {
+      query : `MATCH (u:User)
+                WHERE u.email = {email}
+              return u`,
+      params: {
+          email: email,
+       },
+     }
+  ).then(res=>{
+    if (res.length <1) {
+      throw new Error('user not found')
+    }
+    else {
+      if (passwordHash.verify(password, res[0].u.properties.password)){
+        return {
+          email: email,
+          userId: res[0].id,
+          is_admin: false
+        }
+      }
+      else {
+          throw new Error('wrong password')
+      }
+    }
+
+  })
+}
+
+export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
+  query : `MATCH (u:User)
+            WHERE u.id = {userId}
+            CREATE(sc:SellingCompany {
+              id:{id},
+              nameSc:{nameSc},
+              siret:{siret}
+            }
+          )
+
+          CREATE (u)-[has:HAS]->(sc)
+          RETURN has`,
+
+  params: {
+      userId: userId,
+      id: id,
+      nameSc: nameSc,
+      siret: siret,
+   },
+})
+export const createProduct = (idSc, id,Name, desc, price, quantity) => cypher({
+  query : `MATCH (sc:SellingCompany)
+          WHERE sc.id = {idSc}
+          CREATE (p:Product {
+                       id:{id},
+                       Name:{Name},
+                       desc:{desc},
+                       price:{price},
+                       quantity:{quantity}
+                     })
+        CREATE (sc)-[sell:SELL]->(p)
+        RETURN sell`,
+  params: {
+      idSc: idSc,
+      id: id,
+      Name: Name,
+      desc: desc,
+      price: price,
+      quantity: quantity,
+   },
+})
 export const createJournal = () => cypher({
     query: `CREATE (t:${labels.JOURNAL} {
                 title:"The Matrix",

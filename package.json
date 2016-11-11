@@ -23,6 +23,7 @@
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
     "neo4j": "^2.0.0-RC2",
+    "password-hash": "^1.2.2",
     "url-join": "^1.1.0",
     "vue": "^2.0.5"
   },

@@ -13,6 +13,7 @@ router.get("/token", (req, res) => {
       })
     })
     .catch((e) => {
+      console.error(e);
       res.status(403).json({
         error: "authentication failed"
       })

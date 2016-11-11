@@ -15,6 +15,14 @@ export const getUserByCredentials = (email, password) => new Promise((resolve, r
       is_admin: true
     })
   }
+  else if
+  (email == "nass@doe.fr" && password == "azerty") {
+    resolve({
+      email: "nass@doe.fr",
+      userId: "abc124",
+      is_admin: true
+    })
+  }
   else {
     reject(new Error("Credentials don't matchs"))
   }
