@@ -118,6 +118,28 @@ export const createProduct = (idSc, id,Name, desc, price, quantity) => cypher({
       quantity: quantity,
    },
 })
+
+export const createCommand = (userId, id, products) => {
+  return cypher({
+    query: `MATCH(u:User)
+            WHERE u.id = {userId}
+            CREATE(c:Command {id: {id}, name: {commandName}})
+            CREATE((u)-[r:DO]->(c))
+            WITH u, c, {products} AS products
+            UNWIND products AS product
+            MATCH(p:Product)
+            WHERE p.id = product.id
+            CREATE((c)-[r2:HAS {quantity: product.quantity, price: product.price}]->(p))
+            RETURN p, u, c`,
+    params: {
+      userId,
+      id,
+      products,
+      commandName: `Order ${id}`
+    }
+  })
+}
+
 export const createJournal = () => cypher({
     query: `CREATE (t:${labels.JOURNAL} {
                 title:"The Matrix",

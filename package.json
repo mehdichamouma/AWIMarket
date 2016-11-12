@@ -5,6 +5,7 @@
   "main": "app/web/index.js",
   "scripts": {
     "test": "mocha --recursive mocha app/**/*.specs.js",
+    "initDb": "babel-node app/utils/populateDb.js",
     "start": "nodemon app/web/index.js --exec babel-node"
   },
   "repository": {
