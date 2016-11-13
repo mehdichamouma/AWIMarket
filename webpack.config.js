@@ -1,3 +1,5 @@
+var webpack = require("webpack")
+
 module.exports = {
   entry: [
     "./client/index.js",
@@ -30,5 +32,12 @@ module.exports = {
       { test: /\.scss$/, loader: "style!css!sass?sourceMap"},
 
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'AWIMARKET_API_BASE_URL': JSON.stringify(process.env.AWIMARKET_API_BASE_URL),
+      }
+    })
+  ]
 }

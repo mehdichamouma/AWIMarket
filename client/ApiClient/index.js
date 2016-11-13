@@ -1,4 +1,6 @@
 import urlJoin from "url-join"
+import config from "../../config"
+
 /**
  * AWIMARKET API CLIENT
  * helpers to fetch data from the AWIMARKET API
@@ -8,7 +10,7 @@ import urlJoin from "url-join"
 //promises
 //
 
-const BASE_URI = "http://localhost:3010/api"
+const BASE_URI = config.API_BASE_URL
 
 const request = (endpoint, ...params) => {
   return fetch(urlJoin(BASE_URI, endpoint), ...params)
