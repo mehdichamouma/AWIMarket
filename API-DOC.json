@@ -20,7 +20,13 @@
                 "summary": "Get all users",
                 "responses": {
                     "200": {
-                        "description": "The list of all users"
+                        "description": "The list of all users",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/UserPreview"
+                            }
+                        }
                     }
                 }
             },
@@ -29,9 +35,22 @@
                     "user"
                 ],
                 "summary": "Create a new user",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserBase"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
-                        "description": "User created"
+                        "description": "the user created",
+                        "schema": {
+                            "$ref": "#/definitions/UserPreview"
+                        }
                     }
                 }
             }
@@ -265,6 +284,54 @@
                 }
             }
         },
+        "/journals/{journal_id}/comments": {
+            "post": {
+                "description": "Create a journal entry",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "journal_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "journal id to add the comment"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Comment created"
+                    }
+                }
+            }
+        },
+        "/journals/{journal_id}/comments/{comment_id}": {
+            "delete": {
+                "description": "Delete a journal comment",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "journal_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "id of the concerned journal"
+                    },
+                    {
+                        "in": "path",
+                        "name": "comment_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "Id of the comment to delete"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Comment deleted"
+                    }
+                }
+            }
+        },
         "/products": {
             "get": {
                 "parameters": [
@@ -278,6 +345,54 @@
                 "responses": {
                     "200": {
                         "description": "list of products"
+                    }
+                }
+            },
+            "post": {
+                "description": "create a new product",
+                "responses": {
+                    "200": {
+                        "description": "Product created"
+                    }
+                }
+            }
+        },
+        "/products/{product_id}": {
+            "put": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "product_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "id of the product to update"
+                    }
+                ],
+                "summary": "update a product",
+                "description": "update a product",
+                "responses": {
+                    "200": {
+                        "description": "Product updated"
+                    }
+                }
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "product_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "id of the product to delete"
+                    }
+                ],
+                "summary": "Delete a product",
+                "description": "Delete a product",
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -337,6 +452,170 @@
                 "responses": {
                     "200": {
                         "description": "Company informations"
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/products": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "company_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "the company identifier"
+                    }
+                ],
+                "summary": "Get a company products",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}/orders": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "company_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "The company identifier of the orders"
+                    }
+                ],
+                "summary": "Get a company orders",
+                "responses": {
+                    "200": {
+                        "description": "ok"
+                    }
+                }
+            }
+        },
+        "/orders": {
+            "get": {
+                "summary": "Get orders",
+                "description": "Get all orders\nblabla\n",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "type",
+                        "type": "string",
+                        "format": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/orders/{order_id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true
+                    }
+                ],
+                "summary": "Get an order summary",
+                "description": "Get an order summary",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "put": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true
+                    }
+                ],
+                "summary": "Update an order",
+                "description": "Update an order",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/orders/{order_id}/products/{product_id}": {
+            "put": {
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "path",
+                        "name": "product_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "description": "abc",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "description": "the new status",
+                                    "type": "string",
+                                    "format": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "summary": "Update an order product",
+                "description": "Used to change the product selling status",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/orders/{order_id}/payment": {
+            "post": {
+                "summary": "Pay the order",
+                "description": "Pay the order",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "order_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "403": {
+                        "description": "User is not the owner of the ressource or the order is already paied"
                     }
                 }
             }
@@ -857,7 +1136,7 @@
         }
     },
     "definitions": {
-        "User": {
+        "UserBase": {
             "type": "object",
             "properties": {
                 "id": {
@@ -888,6 +1167,59 @@
                     "description": "User Status"
                 }
             }
+        },
+        "UserPreview": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/UserBase"
+                }
+            ]
+        },
+        "User": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/UserPreview"
+                },
+                {
+                    "properties": {
+                        "journals": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/JournalPreview"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "JournalBase": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "name": {
+                    "type": "string",
+                    "format": "string"
+                }
+            }
+        },
+        "JournalPreview": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/JournalBase"
+                },
+                {
+                    "properties": {
+                        "a": {
+                            "type": "string"
+                        }
+                    }
+                }
+            ]
         },
         "Category": {
             "type": "object",
