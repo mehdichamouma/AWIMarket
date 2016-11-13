@@ -35,11 +35,10 @@ app.use("/", express.static('public'))
 
 
 //Let `api` handle all endpoints beginning by /api
-app.use("/", api) // TODO: <- remove it
 app.use("/api", api)
 
 //Start listening for HTTP Request
-var port = config.PORT || 3010;
+var port = config.PORT;
 app.listen(port, function () {
   console.log("Example app listening on port " + port + "!");
 });
