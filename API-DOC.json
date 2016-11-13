@@ -1,110 +1,344 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server Petstore server.\n\n[Learn about Swagger](http://swagger.io) or join the IRC channel `#swagger` on irc.freenode.net.\n\nFor this sample, you can use the api key `special-key` to test the authorization filters\n",
+        "description": "Describe how to use AWIMarket REST API\n",
         "version": "1.0.0",
-        "title": "Swagger Petstore",
-        "termsOfService": "http://helloreverb.com/terms/",
+        "title": "AWIMARKET REST API",
         "contact": {
-            "name": "apiteam@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "mehdi.chamouma@gmail.com, nassim.vachor@gmail.com, arnaud.zaragoza@gmail.com"
         }
     },
-    "host": "petstore.swagger.io",
-    "basePath": "/v2",
     "schemes": [
         "http"
     ],
     "paths": {
-        "/pets": {
+        "/users/": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Get all users",
+                "responses": {
+                    "200": {
+                        "description": "The list of all users"
+                    }
+                }
+            },
             "post": {
                 "tags": [
-                    "pet"
+                    "user"
                 ],
-                "summary": "Add a new pet to the store",
-                "description": "",
-                "operationId": "addPet",
-                "consumes": [
-                    "application/json",
-                    "application/xml"
+                "summary": "Create a new user",
+                "responses": {
+                    "201": {
+                        "description": "User created"
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "user"
                 ],
+                "summary": "Get user by user name",
                 "produces": [
-                    "application/json",
-                    "application/xml"
+                    "application/json"
                 ],
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Pet object that needs to be added to the store",
-                        "required": false,
-                        "schema": {
-                            "$ref": "#/definitions/Pet"
-                        }
+                        "in": "path",
+                        "name": "user_id",
+                        "description": "The user id that needs to be fetched.",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {
-                    "405": {
-                        "description": "Invalid input"
+                    "200": {
+                        "description": "successful operation",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid username supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
                     }
-                },
-                "security": [
-                    {
-                        "petstore_auth": [
-                            "write_pets",
-                            "read_pets"
-                        ]
-                    }
-                ]
+                }
             },
             "put": {
                 "tags": [
-                    "pet"
+                    "user"
                 ],
-                "summary": "Update an existing pet",
-                "description": "",
-                "operationId": "updatePet",
-                "consumes": [
-                    "application/json",
-                    "application/xml"
-                ],
+                "summary": "Updated user",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "updateUser",
                 "produces": [
                     "application/json",
                     "application/xml"
                 ],
                 "parameters": [
                     {
+                        "in": "path",
+                        "name": "user_id",
+                        "description": "user_id that need to be updated",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
                         "in": "body",
                         "name": "body",
-                        "description": "Pet object that needs to be added to the store",
+                        "description": "Updated user object",
                         "required": false,
                         "schema": {
-                            "$ref": "#/definitions/Pet"
+                            "$ref": "#/definitions/User"
                         }
                     }
                 ],
                 "responses": {
+                    "203": {
+                        "description": "User updated"
+                    },
                     "400": {
-                        "description": "Invalid ID supplied"
+                        "description": "Invalid user supplied"
                     },
                     "404": {
-                        "description": "Pet not found"
-                    },
-                    "405": {
-                        "description": "Validation exception"
+                        "description": "User not found"
                     }
-                },
-                "security": [
+                }
+            },
+            "delete": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Delete user",
+                "description": "This can only be done by the logged in user.",
+                "operationId": "deleteUser",
+                "produces": [
+                    "application/json",
+                    "application/xml"
+                ],
+                "parameters": [
                     {
-                        "petstore_auth": [
-                            "write_pets",
-                            "read_pets"
-                        ]
+                        "in": "path",
+                        "name": "user_id",
+                        "description": "The user id that needs to be deleted",
+                        "required": true,
+                        "type": "string"
                     }
-                ]
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User deleted"
+                    },
+                    "400": {
+                        "description": "Invalid username supplied"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                }
+            }
+        },
+        "/journals/{journal_id}": {
+            "get": {
+                "description": "Get the journal",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "journal_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "journal id to fetch"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The journal fetched"
+                    }
+                }
+            },
+            "put": {
+                "description": "Update journal informations",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "journal_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "journal id to update"
+                    }
+                ],
+                "responses": {
+                    "203": {
+                        "description": "Journal has been updated"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a journal",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "journal_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "journal id to be deleted"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Journal has been deleted"
+                    }
+                }
+            }
+        },
+        "/journals": {
+            "get": {
+                "description": "Get the user journals",
+                "responses": {
+                    "200": {
+                        "description": "The journal list"
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a journal",
+                "responses": {
+                    "201": {
+                        "description": "Journal created"
+                    }
+                }
+            }
+        },
+        "/journals/{journal_id}/entries": {
+            "post": {
+                "description": "Create a journal entry",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "journal_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "journal id to add the entry"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Journal created"
+                    }
+                }
+            }
+        },
+        "/journals/{journal_id}/entries/{entry_id}": {
+            "delete": {
+                "description": "Create a journal entry",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "journal_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "id of the concerned journal"
+                    },
+                    {
+                        "in": "path",
+                        "name": "entry_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "Id of the entry to delete"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Journal created"
+                    }
+                }
+            }
+        },
+        "/products": {
+            "get": {
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "keyword",
+                        "type": "string",
+                        "required": false
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "list of products"
+                    }
+                }
+            }
+        },
+        "/companies": {
+            "get": {
+                "description": "Fetch the companies",
+                "responses": {
+                    "200": {
+                        "description": "list of the companies"
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a company",
+                "responses": {
+                    "200": {
+                        "description": "Company has been created"
+                    },
+                    "403": {
+                        "description": "Can't create a new company. Maximum number of companies per user is one"
+                    }
+                }
+            }
+        },
+        "/companies/{company_id}": {
+            "get": {
+                "description": "Fetch the company",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "company_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "id of the concerned journal"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Company informations"
+                    }
+                }
+            },
+            "put": {
+                "description": "Update the company",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "company_id",
+                        "type": "string",
+                        "format": "string",
+                        "required": true,
+                        "description": "id of the concerned journal"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Company informations"
+                    }
+                }
             }
         },
         "/pets/findByStatus": {
@@ -601,110 +835,6 @@
                 "responses": {
                     "default": {
                         "description": "successful operation"
-                    }
-                }
-            }
-        },
-        "/users/{username}": {
-            "get": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Get user by user name",
-                "description": "",
-                "operationId": "getUserByName",
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "username",
-                        "description": "The name that needs to be fetched. Use user1 for testing.",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid username supplied"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Updated user",
-                "description": "This can only be done by the logged in user.",
-                "operationId": "updateUser",
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "username",
-                        "description": "name that need to be deleted",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Updated user object",
-                        "required": false,
-                        "schema": {
-                            "$ref": "#/definitions/User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "Invalid user supplied"
-                    },
-                    "404": {
-                        "description": "User not found"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Delete user",
-                "description": "This can only be done by the logged in user.",
-                "operationId": "deleteUser",
-                "produces": [
-                    "application/json",
-                    "application/xml"
-                ],
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "username",
-                        "description": "The name that needs to be deleted",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "Invalid username supplied"
-                    },
-                    "404": {
-                        "description": "User not found"
                     }
                 }
             }
