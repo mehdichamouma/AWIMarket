@@ -48,6 +48,27 @@ export const createUser = (id,firstName, lastName, email, password, adresse) => 
    },
 })
 
+// return a Promise which approve with the good user
+// or reject with the error code
+export const getUser = (userId) => {
+    return cypher ( {
+      query : `MATCH (u:User)
+                WHERE u.id = {userId}
+              return u`,
+      params: {
+          userId: userId,
+       },
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      reject({ error:404, message:'User not found.'})
+    }
+    else {
+      appove(res)
+    }
+  })
+}
+
 export const getUserByCredentials = (email, password) => {
     console.log(email, password);
     return cypher ( {
@@ -76,6 +97,8 @@ export const getUserByCredentials = (email, password) => {
     }
   })
 }
+
+
 
 export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
   query : `MATCH (u:User)
@@ -120,6 +143,9 @@ export const getSellingCompany = (companyId) => {
   })
 }
 
+
+
+
 export const createProduct = (idSc, id,Name, desc, price, quantity) => cypher({
   query : `MATCH (sc:SellingCompany)
           WHERE sc.id = {idSc}
@@ -163,6 +189,10 @@ export const getProduct = (productId) => {
   })
 }
 
+
+
+
+// The stock quantity is not updated
 export const createCommand = (userId, id, products) => {
   return cypher({
     query: `MATCH(u:User)
@@ -205,6 +235,9 @@ export const getCommand = (commandId) => {
   })
 }
 
+
+
+
 // create a new journal
 // if the create works then it approve with the created journal
 // else it will reject with an error in parameter
@@ -235,6 +268,28 @@ export const createJournal = (userId, id, title, creationDate) => cypher(
       appove(res)
     }
   })
+
+// return a Promise which approve with the good Journal
+// or reject with the error code
+export const getJournal = (journalId) => {
+    return cypher ( {
+      query : `MATCH (j:Journal)
+                WHERE j.id = {journalId}
+              return j`,
+      params: {
+          journalId: journalId,
+       },
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      reject({ error:404, message:'Journal not found.'})
+    }
+    else {
+      appove(res)
+    }
+  })
+}
+
 
 export const getJournalsByUser = (userId) => new Promise((resolve, reject) => {
   return cypher ( {
