@@ -8,8 +8,8 @@ export const getUsers = () => {
 // Simple User
 
 // createSimpleUser
-export const createSimpleUser = (user) => {
-  return getDB().createSimpleUser(user)
+export const createUser = (id,firstName, lastName, email, password, adresse) => {
+  return getDB().createUser(id,firstName, lastName, email, password, adresse)
 }
 
 // getSimpleUsers()

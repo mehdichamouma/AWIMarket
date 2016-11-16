@@ -6,7 +6,8 @@ import {
   createJournal,
   createUser,
   createSellingCompany,
-  createProduct
+  createProduct,
+
 } from ".."
 import config from "../../../../config"
 
@@ -26,14 +27,7 @@ describe("Graph db", () => {
   //   })
   // })
 
-  describe("createJournal", () => {
-    it("should create a journal", () => {
-      return createJournal().then(data => {
-        console.log(data[0].t.labels);
-        console.log(data[0].t.properties);
-      })
-    })
-  })
+
   describe("createUser", () => {
     it("should create a user", () => {
       return createUser(1,'nassim','vachor','nass@hotmail.fr','azerty','colombiere').then(data => {
@@ -59,4 +53,15 @@ describe("Graph db", () => {
       })
     })
   })
+
+  describe("createJournal", () => {
+    it("should create a Journal", () => {
+      return createJournal(1, 1, 'facebook', new Date()).then(data => {
+        console.log(data[0]);
+
+      })
+    })
+  })
+
+
 })

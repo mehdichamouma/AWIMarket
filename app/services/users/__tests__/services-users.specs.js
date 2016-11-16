@@ -1,4 +1,4 @@
-import {getUsers} from ".."
+import {getUsers, createUser } from ".."
 import {expect} from "chai"
 
 describe("Users Service", () => {
@@ -8,4 +8,5 @@ describe("Users Service", () => {
       expect(users).to.have.lengthOf(3)
     })
   })
+
 })

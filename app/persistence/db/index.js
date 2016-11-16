@@ -61,7 +61,7 @@ export const getUser = (userId) => {
      }
   ).then(res => {
     if (res.length < 1) {
-      reject({ error:404, message:'User not found.'})
+      throw new Error('user not found')
     }
     else {
       appove(res)
@@ -135,10 +135,10 @@ export const getSellingCompany = (companyId) => {
      }
   ).then(res => {
     if (res.length < 1) {
-      reject({ error:404, message:'Selling company not found.'})
+      throw new Error('Selling company not found')
     }
     else {
-      appove(res)
+      return res
     }
   })
 }
@@ -181,10 +181,10 @@ export const getProduct = (productId) => {
      }
   ).then(res => {
     if (res.length < 1) {
-      reject({ error:404, message:'Product not found.'})
+      throw new Error('Product not found')
     }
     else {
-      appove(res)
+      return res
     }
   })
 }
@@ -227,10 +227,10 @@ export const getCommand = (commandId) => {
      }
   ).then(res => {
     if (res.length < 1) {
-      reject({ error:404, message:'Command not found.'})
+      throw new Error('Command not found')
     }
     else {
-      appove(res)
+    return res
     }
   })
 }
@@ -262,10 +262,10 @@ export const createJournal = (userId, id, title, creationDate) => cypher(
     }
   ).then(res => {
     if (res.length < 1) {
-      reject({ error:400, message:'Bad request.'})
+            throw new Error('Bad request')
     }
     else {
-      appove(res)
+      return res;
     }
   })
 
@@ -282,10 +282,10 @@ export const getJournal = (journalId) => {
      }
   ).then(res => {
     if (res.length < 1) {
-      reject({ error:404, message:'Journal not found.'})
+      throw new Error('Journal not found')
     }
     else {
-      appove(res)
+     return res
     }
   })
 }
@@ -303,10 +303,38 @@ export const getJournalsByUser = (userId) => new Promise((resolve, reject) => {
    }
   ).then(res => {
     if (res.length < 1) {
-      reject({ error:404, message:'Product not found.'})
+      throw new Error('Product not found')
     }
     else {
-      appove(res)
+    return res
     }
   })
 })
+
+export const createEntry = (journalId, id, description, ressourceType, ressourceUrl ) => cypher(
+  {
+  query: `MATCH(j:Journal)
+          WHERE u.id = {journalId}
+
+          CREATE (e:Entry {
+            id: {id},
+            title: {title},
+            creationDate: {creationDate}
+          })
+          CREATE((u)-[r:OWN]->(j))
+          RETURN j`,
+      params: {
+        userId: userId,
+        id: id,
+        title: title,
+        creationDate: creationDate,
+      }
+    }
+  ).then(res => {
+    if (res.length < 1) {
+            throw new Error('Bad request')
+    }
+    else {
+      return res;
+    }
+  })

@@ -40,10 +40,11 @@ let methods = [
   'getSimpleUser',
   'getSellingCompanies',
   'getSellingCompany',
-  'createSimpleUser',
+  'createUser',
   'createSellingCompany',
   'updateSimpleUser',
-  
+  'createJournal',
+
 
   'getCommands',
   'getJournalsByUser',
