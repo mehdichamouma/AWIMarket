@@ -246,7 +246,7 @@ export const createJournal = (userId, id, title, creationDate) => cypher(
   query: `MATCH(u:User)
           WHERE u.id = {userId}
 
-          CREATE (j:${labels.JOURNAL} {
+          CREATE (j:Journal {
             id: {id},
             title: {title},
             creationDate: {creationDate}
@@ -311,22 +311,26 @@ export const getJournalsByUser = (userId) => new Promise((resolve, reject) => {
   })
 })
 
-export const createEntry = (journalId, id, description, ressourceType, ressourceUrl ) => cypher(
+export const createEntry = (journalId, id, description, ressourceType, ressourceUrl, creationDate ) => cypher(
   {
   query: `MATCH(j:Journal)
-          WHERE u.id = {journalId}
+          WHERE j.id = {journalId}
 
           CREATE (e:Entry {
             id: {id},
-            title: {title},
+            description: {description},
+            ressourceType: {ressourceType},
+            ressourceUrl: {ressourceUrl},
             creationDate: {creationDate}
           })
-          CREATE((u)-[r:OWN]->(j))
-          RETURN j`,
+          CREATE((j)-[r:HAS]->(e))
+          RETURN e`,
       params: {
-        userId: userId,
+        journalId: journalId,
         id: id,
-        title: title,
+        description: description,
+        ressourceType: ressourceType,
+        ressourceUrl: ressourceUrl,
         creationDate: creationDate,
       }
     }

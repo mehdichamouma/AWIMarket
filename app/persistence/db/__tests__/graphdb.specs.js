@@ -7,6 +7,7 @@ import {
   createUser,
   createSellingCompany,
   createProduct,
+  createEntry
 
 } from ".."
 import config from "../../../../config"
@@ -62,6 +63,13 @@ describe("Graph db", () => {
       })
     })
   })
+  describe("createEntry", () => {
+    it("should create an Entry", () => {
+      return createEntry(1, 1, 'Mehdi le BG', 'text', '', new Date()).then(data => {
+        console.log(data[0]);
 
+      })
+    })
+  })
 
 })

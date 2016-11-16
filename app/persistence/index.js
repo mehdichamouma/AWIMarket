@@ -44,6 +44,7 @@ let methods = [
   'createSellingCompany',
   'updateSimpleUser',
   'createJournal',
+  'createEntry',
 
 
   'getCommands',
