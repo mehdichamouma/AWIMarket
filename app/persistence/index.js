@@ -45,6 +45,7 @@ let methods = [
   'updateSimpleUser',
   'createJournal',
   'createEntry',
+  'createObjective',
 
 
   'getCommands',

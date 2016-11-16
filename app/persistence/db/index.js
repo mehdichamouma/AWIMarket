@@ -342,3 +342,29 @@ export const createEntry = (journalId, id, description, ressourceType, ressource
       return res;
     }
   })
+
+  export const createObjective = (journalId, id, description) => cypher(
+    {
+    query: `MATCH(j:Journal)
+            WHERE j.id = {journalId}
+
+            CREATE (o:Objective {
+              id: {id},
+              description: {description}
+            })
+            CREATE((j)-[r:REACH]->(o))
+            RETURN o`,
+        params: {
+          journalId: journalId,
+          id: id,
+          description: description,
+        }
+      }
+    ).then(res => {
+      if (res.length < 1) {
+              throw new Error('Bad request')
+      }
+      else {
+        return res;
+      }
+    })
