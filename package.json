@@ -6,7 +6,8 @@
   "scripts": {
     "test": "mocha --recursive mocha app/**/*.specs.js",
     "initDb": "babel-node app/utils/populateDb.js",
-    "start": "nodemon app/web/index.js --exec babel-node"
+    "start": "nodemon app/web/index.js --exec babel-node",
+    "webpack": "webpack-dev-server --open --inline --hot"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,8 @@
     "url-loader": "^0.5.7",
     "vue-loader": "^9.8.1",
     "vue-style-loader": "^1.0.0",
-    "webpack": "^1.13.3"
+    "webpack": "^2.1.0-beta.25",
+    "webpack-dev-server": "^2.1.0-beta.0",
+    "webpack-hot-middleware": "^2.13.2"
   }
 }

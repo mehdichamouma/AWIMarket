@@ -1,8 +1,16 @@
 <template>
   <div class="login-layout">
-        <router-view></router-view>
+      <div class="row">
+          <div class="col s6">
+            <img src="img/logo.png" alt="" class="logo"/>
+          </div>
+          <div class="col s6">
+              <router-view class="view"></router-view>
+          </div>
+      </div>
   </div>
 </template>
+
 
 <style>
 

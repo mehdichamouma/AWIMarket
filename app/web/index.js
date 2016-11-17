@@ -20,13 +20,30 @@ import getDbInstance, {configureDbService} from "../persistence"
 //Application config
 import config from "../../config"
 
+
+let app = express();
+
+//WEBPACK HOT RELOADING CONFIGURATION
+var webpack = require('webpack');
+var webpackConfig = require('../../webpack.config');
+var webpackDevMiddleware = require("webpack-dev-middleware")
+var webpackHotMiddleware = require("webpack-hot-middleware")
+var compiler = webpack(webpackConfig);
+
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath,
+    stats: {colors: true}
+}))
+
+app.use(webpackHotMiddleware(compiler, {
+    log: console.log
+}))
+
 //Database configuration
 graphDb.initDb(config.DB_URL)
 configureDbService([graphDb, fake])
 
 //REST API configuration
-//
-let app = express();
 
 //Check all URI:
 //if a corresponding file is found in /public directory, it will be served as static content

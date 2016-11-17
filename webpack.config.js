@@ -1,26 +1,31 @@
+var path = require("path")
 var webpack = require("webpack")
+var DefinePlugin = require('webpack/lib/DefinePlugin');
 
+console.log(path.resolve(__dirname, './public/static'));
 module.exports = {
   entry: [
-    "./client/index.js",
+    'webpack-hot-middleware/client',
+    path.resolve(__dirname, "./client/index.js"),
   ],
   output: {
-    path: "public/static",
-    filename: "app.js"
+    path: '/',
+    publicPath: '/static/',
+    filename: 'app.js'
   },
   module: {
     loaders: [
       {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
+        loader: 'babel-loader',
         query: {
           presets: ['es2015']
         }
       },
       {
         test: /\.vue$/,
-        loader: 'vue',
+        loader: 'vue-loader',
         options: {
           // vue-loader options go here
         }
@@ -34,10 +39,8 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        'AWIMARKET_API_BASE_URL': JSON.stringify(process.env.AWIMARKET_API_BASE_URL),
-      }
-    })
+
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
   ]
 }
