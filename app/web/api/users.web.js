@@ -15,12 +15,18 @@ router.get("/", (req, res) => {
 })
 
 router.post("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.createUser(req.body)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.get("/:userId", (req, res) => {
-  usersService.getUserById(req.params.userId)
+  usersService.getUser(req.params.userId)
   .then((result) => {
     res.status(200).json(result)
   })
@@ -31,13 +37,25 @@ router.get("/:userId", (req, res) => {
 })
 
 router.put("/:userId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.updateUser(req.params.userId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.delete("/:userId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.deleteUser(req.params.userId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 export default router

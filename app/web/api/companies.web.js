@@ -1,31 +1,61 @@
 import express from "express"
-import {getJournalsByUser, createJournal} from "../../services/commands"
+import companiesService from "../../services/companies"
 
 let router = express.Router()
 
 router.get("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  companiesService.getCompanies()
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.post("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  companiesService.createCompany()
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.get("/:companyId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  companiesService.getCompany(req.params.companyId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.put("/:companyId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  companiesService.updateCompany(req.params.companyId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.get("/:companyId/orders", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  companiesService.getOrders(req.params.companyId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 export default router
