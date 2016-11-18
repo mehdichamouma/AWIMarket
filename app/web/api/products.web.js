@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
 })
 
 router.post("/", (req, res) => {
-  productsService.createProducts()
+  productsService.createProducts(req.body)
   .then((result) => {
     res.status(200).json(result)
   })

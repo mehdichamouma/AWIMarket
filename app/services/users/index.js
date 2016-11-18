@@ -5,11 +5,15 @@ export const getUsers = () => {
   return getDB().getUsers()
 }
 
+export const getUserById = (userId) => {
+
+}
+
 // Simple User
 
 // createSimpleUser
-export const createUser = (id,firstName, lastName, email, password, adresse) => {
-  return getDB().createUser(id,firstName, lastName, email, password, adresse)
+export const createUser = (id, firstName, lastName, email, password, adresse) => {
+  return getDB().createUser(id, firstName, lastName, email, password, adresse)
 }
 
 // getSimpleUsers()
