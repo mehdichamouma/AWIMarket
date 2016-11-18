@@ -1,3 +1,4 @@
+
 import getDB from "../../persistence"
 
 let journalsService = {}
