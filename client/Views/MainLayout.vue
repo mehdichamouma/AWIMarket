@@ -3,8 +3,10 @@
     <div class="">
       <nav>
         <div class="nav-wrapper grey lighten-3">
-          <a href="#!" class="brand-logo deep-orange-text left"><img src="img/logo.png" class="menu-logo"/></a>
+          <router-link to="/" class="brand-logo deep-orange-text left"><img src="img/logo.png" class="menu-logo"/></router-link>
           <ul class="right">
+            <li>
+              <router-link to="/admin" class="deep-orange-text">Administration</router-link>
             <li>
               <a v-on:click="toggleNotifications" class="deep-orange-text"><i class="material-icons">shopping_cart</i></a>
             </li>
