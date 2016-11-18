@@ -181,7 +181,7 @@ export const getProduct = (productId) => {
      }
   ).then(res => {
     if (res.length < 1) {
-      throw new Error('Product not found')
+      throw new Error({code:404, description:"Product not found"})
     }
     else {
       return res
@@ -291,8 +291,7 @@ export const getJournal = (journalId) => {
 }
 
 
-export const getJournalsByUser = (userId) => new Promise((resolve, reject) => {
-  return cypher ( {
+export const getJournalsByUser = (userId) =>  cypher ({
     query : `MATCH (u:User)-[:OWN]->(j:Journal)
             WHERE u.id = {userId}
             RETURN j
@@ -303,13 +302,13 @@ export const getJournalsByUser = (userId) => new Promise((resolve, reject) => {
    }
   ).then(res => {
     if (res.length < 1) {
-      throw new Error('Product not found')
+      throw new Error({code:404, description:"Product not found"})
     }
     else {
     return res
     }
   })
-})
+
 
 export const createEntry = (journalId, id, description, ressourceType, ressourceUrl, creationDate ) => cypher(
   {
