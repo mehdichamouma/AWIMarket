@@ -53,8 +53,11 @@ export const createUser = (id,firstName, lastName, email, password, adresse) => 
 export const getUser = (userId) => {
     return cypher ( {
       query : `MATCH (u:User)
-                WHERE u.id = {userId}
-              return u`,
+               WHERE u.id = {userId}
+               	OPTIONAL MATCH (u:User)-[r]-(j:Journal)
+                OPTIONAL MATCH (u:User)-[m]-(c:Command)
+                return u, collect(j) as journals , count (c) as nbCommands
+              `,
       params: {
           userId: userId,
        },
@@ -64,7 +67,13 @@ export const getUser = (userId) => {
       throw new Error('user not found')
     }
     else {
-      return res
+
+      return {
+        user: res[0].u.properties,
+        journals: res[0].journals.map(x => x.properties),
+        nbCommands: res[0].nbCommands
+        console.log(res);
+      }
     }
   })
 }
@@ -87,7 +96,7 @@ export const getUserByCredentials = (email, password) => {
       if (passwordHash.verify(password, res[0].u.properties.password)){
         return {
           email: email,
-          userId: res[0].id,
+          userId: res[0].u.properties.id,
           is_admin: false
         }
       }

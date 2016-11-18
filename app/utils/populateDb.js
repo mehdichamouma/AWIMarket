@@ -131,6 +131,18 @@ let journals = [
     creationDate: new Date(2016,11,16),
   },
   {
+    userId: 1,
+    id: 4,
+    title: 'Polytech',
+    creationDate: new Date(),
+  },
+  {
+    userId: 1,
+    id: 5,
+    title: 'PIFE',
+    creationDate: new Date(),
+  },
+  {
     userId: 2,
     id:2,
     title: 'Stage IG5',

@@ -5,9 +5,12 @@ import {
   getDb,
   createJournal,
   createUser,
+  getUser,
+  getUsers,
   createSellingCompany,
   createProduct,
   getProducts,
+  getProduct,
   createEntry,
   createObjective,
   createNotification,
@@ -19,6 +22,8 @@ import {
 } from ".."
 import config from "../../../../config"
 import populateDb from "../../../utils/populateDb"
+import {expect} from "chai"
+
 
 describe("Graph db", () => {
   before( () => {
@@ -59,6 +64,7 @@ describe("Graph db", () => {
       })
     })
   })
+
   describe("getSellingCompany", () => {
     it("should get a SC", () => {
       return getSellingCompany(1).then(data => {
@@ -92,6 +98,15 @@ describe("Graph db", () => {
   describe("createJournal", () => {
     it("should create a Journal", () => {
       return createJournal(1, 1, 'facebook', new Date()).then(data => {
+        console.log(data[0]);
+
+
+      })
+    })
+  })
+  describe("createJournal", () => {
+    it("should create a Journal", () => {
+      return createJournal(1, 3, 'google', new Date()).then(data => {
         console.log(data[0]);
 
       })
@@ -129,11 +144,22 @@ describe("Graph db", () => {
       })
     })
   })
-  describe("readNotification", () => {
-    it("should readNotification a Notification", () => {
-      return readNotification(1).then(data => {
+  describe("getProduct", () => {
+    it("should get a product", () => {
+      return getProduct(1).then(data => {
         console.log(data[0]);
 
+      })
+    })
+  })
+  describe("getUser", () => {
+    it("should get a user", () => {
+      return getUser(1).then(data => {
+        expect(data).to.have.all.keys(["user", "journals", "nbCommands"])
+        expect(data.journals).to.have.lengthOf(5)
+        console.log(data.user);
+        console.log(data.journals);
+        console.log(data.nbCommands);
       })
     })
   })
