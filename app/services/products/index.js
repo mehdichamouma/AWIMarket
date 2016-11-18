@@ -1,4 +1,5 @@
 import getDB from "../../persistence"
+import uuid from "uuid"
 
 let productsService = {}
 
@@ -6,14 +7,28 @@ productsService.getProducts = () => {
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
-productsService.createProducts = () => {
-  //return getDB().createProduct(idSc, id,Name, desc, price, quantity)
+productsService.createProducts = (data) => {
+  if(data.product != undefined) {
+    let p = data.product
+    if(p.sellingCompany != undefined &&
+        p.name != undefined &&
+        p.description != undefined &&
+        p.price != undefined &&
+        p.quantity != undefined
+      ) {
+      return getDB().createProduct(p.sellingCompany, uuid(), p.name, p.description, p.price, p.quantity)
+    }
+  }
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
 productsService.getProduct = (productId) => {
+  // TODO check productId
   return getDB().getProduct(productId)
-  // return Promise.reject({code:501, description:"Not Implemented"})
+  .catch((result) => {
+    //TODO check error
+    return Promise.reject({code:501, description:""})
+  })
 }
 
 productsService.updateProduct = (productId) => {
@@ -21,6 +36,7 @@ productsService.updateProduct = (productId) => {
 }
 
 productsService.deleteProduct = (productId) => {
+  //return getDB().deleteProduct(productId)
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 

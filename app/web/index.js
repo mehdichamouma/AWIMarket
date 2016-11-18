@@ -12,6 +12,7 @@
 import express from "express"
 import {Server} from "http"
 import socketIO from "socket.io"
+import bodyParser from "body-parser"
 
 //API endpoints
 import api from "./api" //API Router
@@ -66,6 +67,10 @@ graphDb.initDb(config.DB_URL)
 configureDbService([graphDb, fake])
 
 //REST API configuration
+
+//Accept JSON
+
+app.use(bodyParser.json());
 
 //Check all URI:
 //if a corresponding file is found in /public directory, it will be served as static content
