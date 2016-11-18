@@ -7,6 +7,7 @@ import {
   createUser,
   createSellingCompany,
   createProduct,
+  getProducts,
   createEntry,
   createObjective,
   createNotification,
@@ -80,7 +81,14 @@ describe("Graph db", () => {
       })
     })
   })
+  describe("getProducts", () => {
+    it("should get all Product", () => {
+      return getProducts().then(data => {
+        console.log(data[0]);
 
+      })
+    })
+  })
   describe("createJournal", () => {
     it("should create a Journal", () => {
       return createJournal(1, 1, 'facebook', new Date()).then(data => {

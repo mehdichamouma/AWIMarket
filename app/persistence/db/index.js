@@ -208,7 +208,20 @@ export const getProduct = (productId) => {
     }
   })
 }
-
+export const getProducts = () => {
+    return cypher ( {
+      query : `MATCH (p:Product)
+              return p`,
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('Products not found')
+    }
+    else {
+      return res
+    }
+  })
+}
 
 
 
