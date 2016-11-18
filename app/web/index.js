@@ -6,8 +6,12 @@
  *  - the static files at /
  */
 
+
+
 //ExpressJS
 import express from "express"
+import {Server} from "http"
+import socketIO from "socket.io"
 
 //API endpoints
 import api from "./api" //API Router
@@ -22,6 +26,24 @@ import config from "../../config"
 
 
 let app = express();
+let server = Server(app)
+let io = socketIO(server)
+
+io.on('connection', (socket) => {
+  console.log('ok');
+  let ping = (sc) => {
+    sc.emit("message", 'ping')
+    setTimeout(() => pong(sc), 300)
+  }
+  let pong = (sc) => {
+    sc.emit("message", 'pong')
+    setTimeout(() => ping(sc), 300)
+  }
+  socket.on('sendMessages', () => {
+    ping(socket)
+  })
+  socket.emit('ok', {yes: 'ok'})
+})
 
 //WEBPACK HOT RELOADING CONFIGURATION
 var webpack = require('webpack');
@@ -56,6 +78,6 @@ app.use("/api", api)
 
 //Start listening for HTTP Request
 var port = config.PORT;
-app.listen(port, function () {
+server.listen(port, function () {
   console.log("Example app listening on port " + port + "!");
 });

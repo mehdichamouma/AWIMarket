@@ -1,5 +1,5 @@
 import express from "express"
-import {getJournalsByUser, createJournal} from "../../services/journals"
+import journalsService from "../../services/journals"
 
 let router = express.Router()
 
@@ -7,19 +7,19 @@ let router = express.Router()
 
 router.get("/", (req, res) => {
   let {userId} = req.query
-  getJournalsByUser(userId)
+  journalsService.getJournalsByUser(userId)
   .then((journals) => {
     res.json(journals)
   })
-  .catch(() => {
+  .catch((result) => {
     res.status(404)
-    .send('Not found');
+    .send("Not found");
   })
 })
 
 router.post("/", (req, res) => {
   let {userId, journal} = req.query
-  createJournal(userId, JSON.parse(journal))
+  journalsService.addJournal(userId, journal)
   .then((result) => {
     res.status(200)
     .send("Ok");
@@ -33,54 +33,117 @@ router.post("/", (req, res) => {
 // one journal
 
 router.get("/:journalId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.getJournal(req.params.journalId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.put("/:journalId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.updateJournal(req.params.journalId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.delete("/:journalId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.deleteJournal(req.params.journalId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 // all entries
 
 router.get("/:journalId/entries", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.getJournalEntries(req.params.journalId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.post("/:journalId/entries", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.addEntry(req.params.journalId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 // one entries
 
 router.put("/:journalId/entries/:entryId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.updateEntry(req.params.entryId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.delete("/:journalId/entries/:entryId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.deleteEntry(req.params.entryId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 // comments
 
 router.get("/:journalId/comments", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.getComments(req.params.journalId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.delete("/:journalId/comments/:commentId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  journalsService.deleteComments(req.params.commentId)
+  .then((result) => {
+    res.status(200)
+    .send(result);
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 export default router
