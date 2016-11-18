@@ -9,7 +9,9 @@ import {
   createProduct,
   createEntry,
   createObjective,
-  createNotification
+  createNotification,
+  getNotification,
+  readNotification
 
 } from ".."
 import config from "../../../../config"
@@ -89,6 +91,21 @@ describe("Graph db", () => {
       })
     })
   })
+  describe("getNotification", () => {
+    it("should get a Notification", () => {
+      return getNotification(1).then(data => {
+        console.log(data[0]);
 
+      })
+    })
+  })
+  describe("readNotification", () => {
+    it("should readNotification a Notification", () => {
+      return readNotification(1).then(data => {
+        console.log(data[0]);
+
+      })
+    })
+  })
 
 })

@@ -47,6 +47,8 @@ let methods = [
   'createEntry',
   'createObjective',
   'createNotification',
+  'getNotification',
+  'readNotification',
 
 
   'getCommands',

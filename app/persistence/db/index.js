@@ -399,3 +399,40 @@ export const createEntry = (journalId, id, description, ressourceType, ressource
           return res;
         }
       })
+      export const getNotification = (notifId) => {
+          return cypher ( {
+            query : `MATCH (n:Notification)
+                      WHERE n.id = {notifId}
+                    return n`,
+            params: {
+                notifId: notifId,
+             },
+           }
+        ).then(res => {
+          if (res.length < 1) {
+            throw new Error('Notification not found')
+          }
+          else {
+           return res
+          }
+        })
+      }
+      export const readNotification = (notifId) => {
+          return cypher ( {
+            query : `MATCH (n:Notification)
+                      WHERE n.id = {notifId}
+                      SET n.readingDate = timestamp()
+                     return n`,
+            params: {
+                notifId: notifId,
+             },
+           }
+        ).then(res => {
+          if (res.length < 1) {
+            throw new Error('you cannot read this Notification')
+          }
+          else {
+           return res
+          }
+        })
+      }

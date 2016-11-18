@@ -22,4 +22,7 @@
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
 }
+.col.s6{
+  margin-top: 20px;
+}
 </style>
