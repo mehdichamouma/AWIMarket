@@ -1,31 +1,61 @@
 import express from "express"
-import {getJournalsByUser, createJournal} from "../../services/products"
+import productsService from "../../services/products"
 
 let router = express.Router()
 
 router.get("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  productsService.getProducts()
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.post("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  productsService.createProducts()
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.get("/:productId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  productsService.getProduct(req.params.productId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.put("/:productId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  productsService.updateProduct(req.params.productId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.delete("/:productId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  productsService.deleteProduct(req.params.productId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 export default router
