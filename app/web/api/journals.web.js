@@ -3,6 +3,8 @@ import {getJournalsByUser, createJournal} from "../../services/journals"
 
 let router = express.Router()
 
+// all journals
+
 router.get("/", (req, res) => {
   let {userId} = req.query
   getJournalsByUser(userId)
@@ -26,6 +28,59 @@ router.post("/", (req, res) => {
     res.status(result.code)
     .send(result.description);
   })
+})
+
+// one journal
+
+router.get("/:journalId", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
+})
+
+router.put("/:journalId", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
+})
+
+router.delete("/:journalId", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
+})
+
+// all entries
+
+router.get("/:journalId/entries", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
+})
+
+router.post("/:journalId/entries", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
+})
+
+// one entries
+
+router.put("/:journalId/entries/:entryId", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
+})
+
+router.delete("/:journalId/entries/:entryId", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
+})
+
+// comments
+
+router.get("/:journalId/comments", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
+})
+
+router.delete("/:journalId/comments/:commentId", (req, res) => {
+  res.status(501)
+  .send("Not Implemented")
 })
 
 export default router
