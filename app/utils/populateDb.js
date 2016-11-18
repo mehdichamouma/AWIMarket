@@ -8,7 +8,8 @@ import {
   createCommand,
   createJournal,
   createEntry,
-  createObjective
+  createObjective,
+  createNotification
 } from "../persistence/db"
 
 initDb(config.DB_URL)
@@ -185,6 +186,24 @@ let objectives = [
     description: 'integrer java community',
   }
 ]
+let notifications = [
+  {
+    userId: 1,
+    id: 1,
+    content: 'commande validee',
+    type: 'for user',
+    creationDate: new Date(2016,11,16),
+    readingDate: '',
+  },
+  {
+    userId: 2,
+    id: 2,
+    content: 'payement effectue',
+    type: 'for user',
+    creationDate: new Date(2016,11,16),
+    readingDate: '',
+  }
+]
 console.log("clear database");
 clearDb()
 .then(() => {
@@ -224,6 +243,12 @@ clearDb()
   //return Promise.resolve()
   return Promise.all(objectives.map(c => createObjective(c.journalId, c.id, c.description)))
   console.log("objectives created");
+})
+.then(() => {
+  console.log("create notifications");
+  //return Promise.resolve()
+  return Promise.all(notifications.map(c => createNotification(c.userId, c.id, c.content, c.type, c.creationDate, c.readingDate)))
+  console.log("notifications created");
 })
 .then(() => {
   console.log("all it's right");
