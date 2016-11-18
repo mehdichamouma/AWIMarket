@@ -1,6 +1,6 @@
 import urlJoin from "url-join"
 import config from "../../config"
-
+import io from "socket.io-client"
 /**
  * AWIMARKET API CLIENT
  * helpers to fetch data from the AWIMARKET API
@@ -43,6 +43,11 @@ export const authenticate = (email, password) => {
     }
   })
 }
+
+export const getNotificationSocket = () => {
+    const socket = io("ws://echo.websocket.org/")
+}
+
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {
