@@ -7,11 +7,13 @@ productsService.getProducts = () => {
 }
 
 productsService.createProducts = () => {
+  //return getDB().createProduct(idSc, id,Name, desc, price, quantity)
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
 productsService.getProduct = (productId) => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+  return getDB().getProduct(productId)
+  // return Promise.reject({code:501, description:"Not Implemented"})
 }
 
 productsService.updateProduct = (productId) => {
