@@ -368,3 +368,34 @@ export const createEntry = (journalId, id, description, ressourceType, ressource
         return res;
       }
     })
+    export const createNotification = (userId, id, content, type, creationDate, readingDate) => cypher(
+      {
+      query: `MATCH(u:User)
+              WHERE u.id = {userId}
+
+              CREATE (n:Notification {
+                id: {id},
+                content: {content},
+                type: {type},
+                creationDate: {creationDate},
+                readingDate: {readingDate}
+              })
+              CREATE((n)-[r:concern]->(u))
+              RETURN n`,
+          params: {
+            userId: userId,
+            id: id,
+            content: content,
+            type: type,
+            creationDate: creationDate,
+            readingDate: readingDate,
+          }
+        }
+      ).then(res => {
+        if (res.length < 1) {
+                throw new Error('Bad request')
+        }
+        else {
+          return res;
+        }
+      })

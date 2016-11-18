@@ -8,7 +8,8 @@ import {
   createSellingCompany,
   createProduct,
   createEntry,
-  createObjective
+  createObjective,
+  createNotification
 
 } from ".."
 import config from "../../../../config"
@@ -80,7 +81,14 @@ describe("Graph db", () => {
       })
     })
   })
+  describe("createNotification", () => {
+    it("should create a Notification", () => {
+      return createNotification(1, 1, 'validate Order','for User', new Date(), '').then(data => {
+        console.log(data[0]);
 
+      })
+    })
+  })
 
 
 })
