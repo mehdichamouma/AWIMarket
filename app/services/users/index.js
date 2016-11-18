@@ -1,33 +1,38 @@
 import getDB from "../../persistence"
 
+let usersService = {}
+
 // getUsers()
-export const getUsers = () => {
+usersService.getUsers = () => {
   return getDB().getUsers()
 }
 
-export const getUserById = (userId) => {
-
+usersService.getUserById = (userId) => {
+  return getDB().getUser(userId)
+  .catch((error) => {
+    return Promise.reject({code:404, description:"User not found"})
+  })
 }
 
 // Simple User
 
 // createSimpleUser
-export const createUser = (id, firstName, lastName, email, password, adresse) => {
+usersService.createUser = (id, firstName, lastName, email, password, adresse) => {
   return getDB().createUser(id, firstName, lastName, email, password, adresse)
 }
 
 // getSimpleUsers()
-export const getSimpleUsers = () => {
+usersService.getSimpleUsers = () => {
   return getDB().getSimpleUsers()
 }
 
 // getSimpleUser(userId)
-export const getSimpleUser = (userId) => {
+usersService.getSimpleUser = (userId) => {
   return getDB().getSimpleUser(userId)
 }
 
 // updateSimpleUser(user)
-export const updateSimpleUser = (user) => {
+usersService.updateSimpleUser = (user) => {
   return getDB().updateSimpleUser(user)
 }
 
@@ -35,21 +40,23 @@ export const updateSimpleUser = (user) => {
 // Selling company
 
 // createSimpleUser
-export const createSellingCompany = (sellingCompany) => {
+usersService.createSellingCompany = (sellingCompany) => {
   return getDB().createSellingCompany(sellingCompany)
 }
 
 // getSellingCompanies()
-export const getSellingCompanies = () => {
+usersService.getSellingCompanies = () => {
   return getDB().getSellingCompanies()
 }
 
 // getSimpleUser(userId)
-export const getSellingCompany = (userId) => {
+usersService.getSellingCompany = (userId) => {
   return getDB().getSellingCompany(userId)
 }
 
 // updateSimpleUser(user)
-export const updateSellingCompany = (sellingCompany) => {
+usersService.updateSellingCompany = (sellingCompany) => {
   return getDB().updateSellingCompany(sellingCompany)
 }
+
+export default usersService

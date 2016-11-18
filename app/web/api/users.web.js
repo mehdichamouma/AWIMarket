@@ -1,11 +1,17 @@
 import express from "express"
-import { } from "../../services/users"
+import usersService from "../../services/users"
 
 let router = express.Router()
 
 router.get("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.getUsers()
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.post("/", (req, res) => {
@@ -14,8 +20,14 @@ router.post("/", (req, res) => {
 })
 
 router.get("/:userId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.getUserById(req.params.userId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.put("/:userId", (req, res) => {
