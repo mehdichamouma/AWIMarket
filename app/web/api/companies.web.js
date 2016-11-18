@@ -1,5 +1,5 @@
 import express from "express"
-import {} from "../../services/commands"
+import {getJournalsByUser, createJournal} from "../../services/commands"
 
 let router = express.Router()
 
@@ -8,22 +8,22 @@ router.get("/", (req, res) => {
   .send("Not Implemented")
 })
 
-router.get("/:orderId", (req, res) => {
+router.post("/", (req, res) => {
   res.status(501)
   .send("Not Implemented")
 })
 
-router.put("/:orderId", (req, res) => {
+router.get("/:companyId", (req, res) => {
   res.status(501)
   .send("Not Implemented")
 })
 
-router.put("/:orderId/products/:productsId", (req, res) => {
+router.put("/:companyId", (req, res) => {
   res.status(501)
   .send("Not Implemented")
 })
 
-router.post("/:orderId/payment", (req, res) => {
+router.get("/:companyId/orders", (req, res) => {
   res.status(501)
   .send("Not Implemented")
 })

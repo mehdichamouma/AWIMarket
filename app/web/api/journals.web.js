@@ -32,55 +32,55 @@ router.post("/", (req, res) => {
 
 // one journal
 
-router.get("/journals/:journalId", (req, res) => {
+router.get("/:journalId", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
-router.put("/journals/:journalId", (req, res) => {
+router.put("/:journalId", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
-router.delete("/journals/:journalId", (req, res) => {
+router.delete("/:journalId", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
 // all entries
 
-router.get("/journals/:journalId/entries", (req, res) => {
+router.get("/:journalId/entries", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
-router.post("/journals/:journalId/entries", (req, res) => {
+router.post("/:journalId/entries", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
 // one entries
 
-router.put("/journals/:journalId/entries/:entryId", (req, res) => {
+router.put("/:journalId/entries/:entryId", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
-router.delete("/journals/:journalId/entries/:entryId", (req, res) => {
+router.delete("/:journalId/entries/:entryId", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
 // comments
 
-router.get("/journals/:journalId/comments", (req, res) => {
+router.get("/:journalId/comments", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
-router.delete("/journals/:journalId/comments/:commentId", (req, res) => {
+router.delete("/:journalId/comments/:commentId", (req, res) => {
   res.status(501)
   .send("Not Implemented")
-}
+})
 
 export default router
