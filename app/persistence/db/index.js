@@ -64,7 +64,7 @@ export const getUser = (userId) => {
       throw new Error('user not found')
     }
     else {
-      appove(res)
+      return res
     }
   })
 }
