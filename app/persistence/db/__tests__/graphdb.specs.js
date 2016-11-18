@@ -12,7 +12,8 @@ import {
   createNotification,
   getNotification,
   readNotification,
-  deleteSellingCompany
+  deleteSellingCompany,
+  getSellingCompany
 
 } from ".."
 import config from "../../../../config"
@@ -53,6 +54,20 @@ describe("Graph db", () => {
     it("should create a SC", () => {
       return createSellingCompany(1,1,'VachorCompany','ER5555E').then(data => {
         console.log(data[0].has);
+        console.log(data[0]);
+      })
+    })
+  })
+  describe("getSellingCompany", () => {
+    it("should get a SC", () => {
+      return getSellingCompany(1).then(data => {
+        console.log(data[0]);
+      })
+    })
+  })
+  describe("deleteSellingCompany", () => {
+    it("should delete a relatiship between user and a SC", () => {
+      return deleteSellingCompany(1).then(data => {
         console.log(data[0]);
       })
     })

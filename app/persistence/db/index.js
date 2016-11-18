@@ -124,7 +124,6 @@ export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
 // return a Promise which approve with the good result
 // or reject with the error code
 export const getSellingCompany = (companyId) => {
-    console.log(email, password);
     return cypher ( {
       query : `MATCH (sc:SellingCompany)
                 WHERE sc.id = {companyId}
@@ -142,12 +141,15 @@ export const getSellingCompany = (companyId) => {
     }
   })
 }
+/*on casse juste la relation avec le user */
 export const deleteSellingCompany = (companyId) => {
-    console.log(email, password);
     return cypher ( {
       query : `MATCH (sc:SellingCompany)
                 WHERE sc.id = {companyId}
-              return sc`,
+               	OPTIONAL MATCH (u:User)-[r]-(sc)
+				        DELETE r
+                SET sc.deletedAt = timestamp()
+                return sc`,
       params: {
           companyId: companyId,
        },
