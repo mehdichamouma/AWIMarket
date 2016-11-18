@@ -204,56 +204,58 @@ let notifications = [
     readingDate: '',
   }
 ]
-console.log("clear database");
-clearDb()
-.then(() => {
-  console.log("database cleared");
-  return Promise.all(users.map(u => createUser(u.id, u.firstName, u.lastName, u.email, u.password, u.adresse)))
-})
-.then(() => {
-  console.log("users created");
-  console.log("create selling companies");
-  return Promise.all(sellingCompany.map(sc => createSellingCompany(sc.userId, sc.id, sc.nameSc, sc.siret)))
-})
-.then(() => {
-  console.log("create products");
-  return Promise.all(products.map(p => createProduct(p.idSc, p.id, p.Name, p.desc, p.price, p.quantity)))
-  console.log("products created");
-})
-.then(() => {
-  console.log("create commands");
-  //return Promise.resolve()
-  return Promise.all(commands.map(c => createCommand(c.idUser, c.id, c.products)))
-  console.log("commands created");
-})
-.then(() => {
-  console.log("create journals");
-  //return Promise.resolve()
-  return Promise.all(journals.map(c => createJournal(c.userId, c.id, c.title, c.creationDate)))
-  console.log("journals created");
-})
-.then(() => {
-  console.log("create entries");
-  //return Promise.resolve()
-  return Promise.all(entries.map(c => createEntry(c.journalId, c.id, c.description, c.ressourceType, c.ressourceUrl, c.creationDate)))
-  console.log("entries created");
-})
-.then(() => {
-  console.log("create objectives");
-  //return Promise.resolve()
-  return Promise.all(objectives.map(c => createObjective(c.journalId, c.id, c.description)))
-  console.log("objectives created");
-})
-.then(() => {
-  console.log("create notifications");
-  //return Promise.resolve()
-  return Promise.all(notifications.map(c => createNotification(c.userId, c.id, c.content, c.type, c.creationDate, c.readingDate)))
-  console.log("notifications created");
-})
-.then(() => {
-  console.log("all it's right");
-  return Promise.resolve()
-})
-.then(() => {
-  console.log("database populated");
-})
+
+export default () => {
+  console.log("clear database");
+  return clearDb().then(() => {
+    console.log("database cleared");
+    return Promise.all(users.map(u => createUser(u.id, u.firstName, u.lastName, u.email, u.password, u.adresse)))
+  })
+  .then(() => {
+    console.log("users created");
+    console.log("create selling companies");
+    return Promise.all(sellingCompany.map(sc => createSellingCompany(sc.userId, sc.id, sc.nameSc, sc.siret)))
+  })
+  .then(() => {
+    console.log("create products");
+    return Promise.all(products.map(p => createProduct(p.idSc, p.id, p.Name, p.desc, p.price, p.quantity)))
+    console.log("products created");
+  })
+  .then(() => {
+    console.log("create commands");
+    //return Promise.resolve()
+    return Promise.all(commands.map(c => createCommand(c.idUser, c.id, c.products)))
+    console.log("commands created");
+  })
+  .then(() => {
+    console.log("create journals");
+    //return Promise.resolve()
+    return Promise.all(journals.map(c => createJournal(c.userId, c.id, c.title, c.creationDate)))
+    console.log("journals created");
+  })
+  .then(() => {
+    console.log("create entries");
+    //return Promise.resolve()
+    return Promise.all(entries.map(c => createEntry(c.journalId, c.id, c.description, c.ressourceType, c.ressourceUrl, c.creationDate)))
+    console.log("entries created");
+  })
+  .then(() => {
+    console.log("create objectives");
+    //return Promise.resolve()
+    return Promise.all(objectives.map(c => createObjective(c.journalId, c.id, c.description)))
+    console.log("objectives created");
+  })
+  .then(() => {
+    console.log("create notifications");
+    //return Promise.resolve()
+    return Promise.all(notifications.map(c => createNotification(c.userId, c.id, c.content, c.type, c.creationDate, c.readingDate)))
+    console.log("notifications created");
+  })
+  .then(() => {
+    console.log("all it's right");
+    return Promise.resolve()
+  })
+  .then(() => {
+    console.log("database populated");
+  })
+}

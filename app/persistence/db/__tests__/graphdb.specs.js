@@ -16,12 +16,18 @@ import {
 
 } from ".."
 import config from "../../../../config"
-
+import populateDb from "../../../utils/populateDb"
 
 describe("Graph db", () => {
   before( () => {
     initDb(config.DB_TEST_URL)
     return clearDb()
+  })
+
+  after(() => {
+    return populateDb().then(() => {
+      console.log("database reinitialized");
+    })
   })
   // describe("initDb", () => {
   //   it("should initialize db", () => {
