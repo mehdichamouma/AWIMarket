@@ -142,7 +142,25 @@ export const getSellingCompany = (companyId) => {
     }
   })
 }
-
+export const deleteSellingCompany = (companyId) => {
+    console.log(email, password);
+    return cypher ( {
+      query : `MATCH (sc:SellingCompany)
+                WHERE sc.id = {companyId}
+              return sc`,
+      params: {
+          companyId: companyId,
+       },
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('Selling company not found')
+    }
+    else {
+      return res
+    }
+  })
+}
 
 
 

@@ -40,6 +40,7 @@ let methods = [
   'getSimpleUser',
   'getSellingCompanies',
   'getSellingCompany',
+  'deleteSellingCompany'
   'createUser',
   'createSellingCompany',
   'updateSimpleUser',
@@ -54,6 +55,7 @@ let methods = [
   'getCommands',
   'getJournalsByUser',
   'getProducts',
+  'getProduct',
   'getProductsAtPage',
   'getProductsFromSeller',
   'getProductsFromSellerAtPage',

@@ -11,7 +11,8 @@ import {
   createObjective,
   createNotification,
   getNotification,
-  readNotification
+  readNotification,
+  deleteSellingCompany
 
 } from ".."
 import config from "../../../../config"
