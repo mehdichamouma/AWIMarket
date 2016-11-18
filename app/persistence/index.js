@@ -38,6 +38,7 @@ let methods = [
   'getUserByCredentials',
   'getSimpleUsers',
   'getSimpleUser',
+  'getUser',
   'getSellingCompanies',
   'getSellingCompany',
   'deleteSellingCompany',
