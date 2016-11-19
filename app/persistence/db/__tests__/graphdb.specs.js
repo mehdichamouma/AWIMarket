@@ -58,8 +58,7 @@ describe("Graph db", () => {
 
   describe("createSellingCompany", () => {
     it("should create a SC", () => {
-      return createSellingCompany("1","1",'VachorCompany','ER5555E').then(data => {
-        console.log(data[0].has);
+      return createSellingCompany("7","1",'VachorCompany','ER5555E').then(data => {
         console.log(data[0]);
       })
     })
@@ -78,16 +77,15 @@ describe("Graph db", () => {
   })
   describe("deleteSellingCompany", () => {
     it("should delete a relatiship between user and a SC", () => {
-      return deleteSellingCompany(1).then(data => {
+      return deleteSellingCompany('1').then(data => {
         console.log(data[0]);
       })
     })
   })
   describe("createProduct", () => {
     it("should create a Product", () => {
-      return createProduct(1,1,'bois','bois rouge',80, 100).then(data => {
-        console.log(data[0].sell);
-
+      return createProduct('1','1','bois','bois rouge',80, 100).then(data => {
+        console.log(data[0]);
       })
     })
   })
@@ -101,24 +99,17 @@ describe("Graph db", () => {
   })
   describe("createJournal", () => {
     it("should create a Journal", () => {
-      return createJournal(1, 1, 'facebook', new Date()).then(data => {
+      return createJournal("1", "8", 'facebook', new Date()).then(data => {
         console.log(data[0]);
 
 
       })
     })
   })
-  describe("createJournal", () => {
-    it("should create a Journal", () => {
-      return createJournal(1, 3, 'google', new Date()).then(data => {
-        console.log(data[0]);
 
-      })
-    })
-  })
   describe("createEntry", () => {
     it("should create an Entry", () => {
-      return createEntry(1, 1, 'Mehdi le BG', 'text', '', new Date()).then(data => {
+      return createEntry("1","6", 'Mehdi le BG', 'text', '', new Date()).then(data => {
         console.log(data[0]);
 
       })
@@ -126,7 +117,7 @@ describe("Graph db", () => {
   })
   describe("createObjective", () => {
     it("should create an Objective", () => {
-      return createObjective(1, 1, 'Mehdi le BG').then(data => {
+      return createObjective("5", "1", 'Mehdi le BG').then(data => {
         console.log(data[0]);
 
       })
@@ -134,7 +125,7 @@ describe("Graph db", () => {
   })
   describe("createNotification", () => {
     it("should create a Notification", () => {
-      return createNotification(1, 1, 'validate Order','for User', new Date(), '').then(data => {
+      return createNotification("1"," 1", 'validate Order','for User', new Date(), '').then(data => {
         console.log(data[0]);
 
       })
@@ -142,7 +133,7 @@ describe("Graph db", () => {
   })
   describe("getNotification", () => {
     it("should get a Notification", () => {
-      return getNotification(1).then(data => {
+      return getNotification("1").then(data => {
         console.log(data[0]);
 
       })
@@ -150,7 +141,7 @@ describe("Graph db", () => {
   })
   describe("getProduct", () => {
     it("should get a product", () => {
-      return getProduct(1).then(data => {
+      return getProduct("1").then(data => {
         console.log(data[0]);
 
       })
@@ -158,9 +149,9 @@ describe("Graph db", () => {
   })
   describe("getUser", () => {
     it("should get a user", () => {
-      return getUser(1).then(data => {
+      return getUser("1").then(data => {
         expect(data).to.have.all.keys(["user", "journals", "nbCommands"])
-        expect(data.journals).to.have.lengthOf(5)
+        expect(data.journals).to.have.lengthOf(3)
         console.log(data.user);
         console.log(data.journals);
         console.log(data.nbCommands);
@@ -168,7 +159,12 @@ describe("Graph db", () => {
     })
   })
   describe("getUserByCredentials", () => {
-    it("should get a user", () => {
+    it("should get a user with sc", () => {
+      return getUserByCredentials('mehdi@gmail.com', 'azerty').then(data => {
+        expect(data.hasCompany).to.be.true
+      })
+    })
+    it("should get a user without sc", () => {
       return getUserByCredentials('arnaud@gmail.com', 'azerty').then(data => {
         expect(data.hasCompany).to.be.false
       })
