@@ -8,7 +8,7 @@
             <li>
               <router-link to="/admin" class="deep-orange-text">Administration</router-link>
             <li>
-              <a v-on:click="toggleNotifications" class="deep-orange-text">
+              <router-link to="/cart" class="deep-orange-text">
                 <i class="material-icons left">shopping_cart</i>
                 {{ $root.store.state.cart.content.length}}
               </a>
@@ -75,7 +75,8 @@ export default {
 <style>
 
 .menu-logo {
-  height: 30px;
+  height: 22px;
+  margin-left: 10px;
   //width: 100px;
   color: "abc"
 }

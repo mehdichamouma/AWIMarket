@@ -18,5 +18,8 @@ export default {
   },
   cartAddProduct(product, quantity) {
     this.state.cart.content.push({product, quantity})
+  },
+  cartRemoveProduct(index) {
+    this.state.cart.content.splice(index, 1)
   }
 }
