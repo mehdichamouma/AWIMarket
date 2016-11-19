@@ -26,12 +26,7 @@ export default (server) => {
       }
       if(user) {
         console.log(user);
-        userSockets[user.email] = socket
-        notificationsEmitter.on("notification", (userId, notification) => {
-          if(true || user.id === userId) {
-            socket.emit("authenticate", notification)
-          }
-        })
+        userSockets[user.id] = socket
       }
       else {
         //close connexion

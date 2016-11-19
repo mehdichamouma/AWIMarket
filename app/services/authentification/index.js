@@ -9,9 +9,14 @@ export const authenticate = (email, password) => {
   return getDb()
   .getUserByCredentials(email, password)
   .then((data) => {
+    console.log(data);
+    let roles = []
+    roles.isAdmin && roles.push("ADMIN")
+    roles.hasCompany && roles.push("SELLING_COMPANY_OWNER")
     return jwt.sign({
-      id: data.id,
-      roles: ["ADMIN", "SELLING_COMPANY_OWNER"]
+      id: data.userId,
+      email: data.email,
+      roles,
     }, secret)
   })
 }

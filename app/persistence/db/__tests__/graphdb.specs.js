@@ -39,8 +39,14 @@ describe("Graph db", () => {
     //NOTIFICATIONS
 
     describe("createNotification", () => {
+      let n = {
+        id: "4",
+        userId: "1",
+        content: {a: "b", c:"d"},
+        type: "NEW_COMMAND"
+      }
       it("should create a Notification", () => {
-        return createNotification("1"," 1", 'validate Order','for User', new Date(), '').then(data => {
+        return createNotification(n.userId, n.id, n.content, n.type).then(data => {
 
         })
       })
@@ -164,6 +170,7 @@ describe("Graph db", () => {
       it("should get a user with sc", () => {
         return getUserByCredentials('mehdi@gmail.com', 'azerty').then(data => {
           expect(data.hasCompany).to.be.true
+          expect(data).to.have.all.keys(['hasCompany', 'isAdmin', 'name', 'userId', 'email'])
         })
       })
       it("should get a user without sc", () => {

@@ -436,37 +436,39 @@ export const createEntry = (journalId, id, description, ressourceType, ressource
         return res;
       }
     })
-    export const createNotification = (userId, id, content, type, creationDate, readingDate) => cypher(
-      {
-      query: `MATCH(u:User)
-              WHERE u.id = {userId}
+export const createNotification = (userId, id, content, type) => {
+  console.log(content);
+  console.log(JSON.stringify(content));
+  return cypher({
+    query: `MATCH(u:User)
+            WHERE u.id = {userId}
 
-              CREATE (n:Notification {
-                id: {id},
-                content: {content},
-                type: {type},
-                creationDate: {creationDate},
-                readingDate: {readingDate}
-              })
-              CREATE((n)-[r:concern]->(u))
-              RETURN n`,
-          params: {
-            userId: userId,
-            id: generateId(id),
-            content: content,
-            type: type,
-            creationDate: creationDate,
-            readingDate: readingDate,
-          }
-        }
-      ).then(res => {
-        if (res.length < 1) {
-                throw new Error('Bad request')
-        }
-        else {
-          return res;
-        }
-      })
+            CREATE (n:Notification {
+              id: {id},
+              content: {content},
+              type: {type},
+              creationDate: {creationDate}
+            })
+            CREATE((n)-[r:concern]->(u))
+            RETURN n`,
+      params: {
+        userId: userId,
+        id: generateId(id),
+        content: JSON.stringify(content),
+        type: type,
+        creationDate: new Date(),
+      }
+    })
+    .then(res => {
+      if (res.length < 1) {
+        throw new Error('Bad request')
+      }
+      else {
+        return res;
+      }
+  })
+}
+
       export const getNotification = (notifId) => {
           return cypher ( {
             query : `MATCH (n:Notification)

@@ -1,6 +1,5 @@
 import EventEmitter from "events"
 
-
 import getDB from "../../persistence"
 import uuid from "uuid"
 
@@ -16,8 +15,12 @@ notificationsService.setNotificationRead = (id) => {
 
 notificationsService.notificationsEmitter = new EventEmitter()
 
-notificationsService.addNotification = (userId, data) => {
-  notificationsService.notificationsEmitter.emit("notification", userId, data)
+notificationsService.addNotification = (userId, type, payload) => {
+  return getDB()
+  .createNotification(userId, null, payload, type)
+  .then(() => {
+      notificationsService.notificationsEmitter.emit("notification", userId, {type,payload})
+  })
 }
 
 export default notificationsService

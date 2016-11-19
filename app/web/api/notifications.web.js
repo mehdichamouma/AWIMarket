@@ -28,8 +28,14 @@ router.patch("/:notificationId", (req, res) => {
 
 router.post("/test", (req, res) => {
   console.log(req.body);
-  notificationsService.addNotification(req.query.email, req.body)
-  res.send("ok")
+  let {type, payload} = req.body
+  notificationsService.addNotification(req.query.userId, type, payload).then((n)=> {
+    res.send("ok")
+  })
+  .catch(e => {
+    console.log(e);
+    res.json(JSON.stringify(e))
+  })
 })
 
 export default router
