@@ -53,8 +53,11 @@ export const createUser = (id,firstName, lastName, email, password, adresse) => 
 export const getUser = (userId) => {
     return cypher ( {
       query : `MATCH (u:User)
-                WHERE u.id = {userId}
-              return u`,
+               WHERE u.id = {userId}
+               	OPTIONAL MATCH (u:User)-[r]-(j:Journal)
+                OPTIONAL MATCH (u:User)-[m]-(c:Command)
+                return u, collect(j) as journals , count (c) as nbCommands
+              `,
       params: {
           userId: userId,
        },
@@ -64,7 +67,13 @@ export const getUser = (userId) => {
       throw new Error('user not found')
     }
     else {
-      appove(res)
+      console.log(res);
+      return {
+        user: res[0].u.properties,
+        journals: res[0].journals.map(x => x.properties),
+        nbCommands: res[0].nbCommands
+
+      }
     }
   })
 }
@@ -72,9 +81,9 @@ export const getUser = (userId) => {
 export const getUserByCredentials = (email, password) => {
     console.log(email, password);
     return cypher ( {
-      query : `MATCH (u:User)
+      query : `MATCH (u:User)-[:HAS]-(sc:SellingCompany)
                 WHERE u.email = {email}
-              return u`,
+              return u, sc`,
       params: {
           email: email,
        },
@@ -85,9 +94,12 @@ export const getUserByCredentials = (email, password) => {
     }
     else {
       if (passwordHash.verify(password, res[0].u.properties.password)){
+        console.log(res);
+        let hasCompany = res.sc == null
         return {
           email: email,
-          userId: res[0].id,
+          userId: res[0].u.properties.id,
+          hasCompany,
           is_admin: false
         }
       }
@@ -124,7 +136,6 @@ export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
 // return a Promise which approve with the good result
 // or reject with the error code
 export const getSellingCompany = (companyId) => {
-    console.log(email, password);
     return cypher ( {
       query : `MATCH (sc:SellingCompany)
                 WHERE sc.id = {companyId}
@@ -138,16 +149,19 @@ export const getSellingCompany = (companyId) => {
       throw new Error('Selling company not found')
     }
     else {
-      return res
+      return res[0].sc.properties
     }
   })
 }
+/*on casse juste la relation avec le user */
 export const deleteSellingCompany = (companyId) => {
-    console.log(email, password);
     return cypher ( {
       query : `MATCH (sc:SellingCompany)
                 WHERE sc.id = {companyId}
-              return sc`,
+               	OPTIONAL MATCH (u:User)-[r]-(sc)
+				        DELETE r
+                SET sc.deletedAt = timestamp()
+                return sc`,
       params: {
           companyId: companyId,
        },
@@ -206,7 +220,20 @@ export const getProduct = (productId) => {
     }
   })
 }
-
+export const getProducts = () => {
+    return cypher ( {
+      query : `MATCH (p:Product)
+              return p`,
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('Products not found')
+    }
+    else {
+      return res
+    }
+  })
+}
 
 
 

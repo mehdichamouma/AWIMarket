@@ -5,27 +5,34 @@ import {
   getDb,
   createJournal,
   createUser,
+  getUser,
+  getUserByCredentials,
+  getUsers,
   createSellingCompany,
   createProduct,
+  getProducts,
+  getProduct,
   createEntry,
   createObjective,
   createNotification,
   getNotification,
   readNotification,
-  deleteSellingCompany
+  deleteSellingCompany,
+  getSellingCompany
 
 } from ".."
 import config from "../../../../config"
 import populateDb from "../../../utils/populateDb"
+import {expect} from "chai"
+
 
 describe("Graph db", () => {
-  before( () => {
-    initDb(config.DB_TEST_URL)
-    return clearDb()
-  })
-
-  after(() => {
-    return populateDb().then(() => {
+  // before (()=>{
+  //
+  //   return initDb(config.DB_TEST_URL)
+  // })
+  beforeEach(() => {
+    return populateDb(config.DB_TEST_URL).then(() => {
       console.log("database reinitialized");
     })
   })
@@ -42,7 +49,7 @@ describe("Graph db", () => {
 
   describe("createUser", () => {
     it("should create a user", () => {
-      return createUser(1,'nassim','vachor','nass@hotmail.fr','azerty','colombiere').then(data => {
+      return createUser("5",'nassim','vachor','nass@hotmail.fr','azerty','colombiere').then(data => {
         console.log(data[0].t.labels);
         console.log(data[0].t.properties);
       })
@@ -51,8 +58,27 @@ describe("Graph db", () => {
 
   describe("createSellingCompany", () => {
     it("should create a SC", () => {
-      return createSellingCompany(1,1,'VachorCompany','ER5555E').then(data => {
+      return createSellingCompany("1","1",'VachorCompany','ER5555E').then(data => {
         console.log(data[0].has);
+        console.log(data[0]);
+      })
+    })
+  })
+
+  describe("getSellingCompany", () => {
+    it("should get a SC", () => {
+      return getSellingCompany("1").then(data => {
+        expect(data).to.eql({
+          id: "1",
+          nameSc: "company 1",
+          siret: "abc",
+        })
+      })
+    })
+  })
+  describe("deleteSellingCompany", () => {
+    it("should delete a relatiship between user and a SC", () => {
+      return deleteSellingCompany(1).then(data => {
         console.log(data[0]);
       })
     })
@@ -65,10 +91,26 @@ describe("Graph db", () => {
       })
     })
   })
+  describe("getProducts", () => {
+    it("should get all Product", () => {
+      return getProducts().then(data => {
+        console.log(data[0]);
 
+      })
+    })
+  })
   describe("createJournal", () => {
     it("should create a Journal", () => {
       return createJournal(1, 1, 'facebook', new Date()).then(data => {
+        console.log(data[0]);
+
+
+      })
+    })
+  })
+  describe("createJournal", () => {
+    it("should create a Journal", () => {
+      return createJournal(1, 3, 'google', new Date()).then(data => {
         console.log(data[0]);
 
       })
@@ -106,11 +148,29 @@ describe("Graph db", () => {
       })
     })
   })
-  describe("readNotification", () => {
-    it("should readNotification a Notification", () => {
-      return readNotification(1).then(data => {
+  describe("getProduct", () => {
+    it("should get a product", () => {
+      return getProduct(1).then(data => {
         console.log(data[0]);
 
+      })
+    })
+  })
+  describe("getUser", () => {
+    it("should get a user", () => {
+      return getUser(1).then(data => {
+        expect(data).to.have.all.keys(["user", "journals", "nbCommands"])
+        expect(data.journals).to.have.lengthOf(5)
+        console.log(data.user);
+        console.log(data.journals);
+        console.log(data.nbCommands);
+      })
+    })
+  })
+  describe("getUserByCredentials", () => {
+    it("should get a user", () => {
+      return getUserByCredentials('arnaud@gmail.com', 'azerty').then(data => {
+        expect(data.hasCompany).to.be.false
       })
     })
   })

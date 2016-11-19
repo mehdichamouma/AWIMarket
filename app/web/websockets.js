@@ -1,10 +1,10 @@
 import socketIO from "socket.io"
-import {notificationsEmitter} from "../services/notifications"
+import notificationsService from "../services/notifications"
 import {decodeToken} from "../services/authentification"
 
 let userSockets = {}
 
-notificationsEmitter.on("notification", (userId, notification) => {
+notificationsService.notificationsEmitter.on("notification", (userId, notification) => {
   if(userSockets[userId]) {
     userSockets[userId].emit("notification", notification)
   }

@@ -1,31 +1,61 @@
 import express from "express"
-import {} from "../../services/commands"
+import commandsService from "../../services/commands"
 
 let router = express.Router()
 
 router.get("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  commandsService.getCommands()
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.get("/:orderId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  commandsService.getCommand(req.params.orderId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.put("/:orderId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  commandsService.updateCommand(req.params.orderId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
-router.put("/:orderId/products/:productsId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+router.put("/:orderId/products/:productId", (req, res) => {
+  commandsService.updateProduct(req.params.orderId, req.params.productId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.post("/:orderId/payment", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  commandsService.pay(req.params.orderId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 export default router

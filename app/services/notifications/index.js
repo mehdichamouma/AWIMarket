@@ -1,7 +1,23 @@
 import EventEmitter from "events"
 
-export const notificationsEmitter = new EventEmitter()
 
-export const addNotification = (userId, data) => {
-  notificationsEmitter.emit("notification", userId, data)
+import getDB from "../../persistence"
+import uuid from "uuid"
+
+let notificationsService = {}
+
+notificationsService.getNotifications = () => {
+  return Promise.reject({code:501, description:"Not Implemented"})
 }
+
+notificationsService.setNotificationRead = (id) => {
+  return Promise.reject({code:501, description:"Not Implemented"})
+}
+
+notificationsService.notificationsEmitter = new EventEmitter()
+
+notificationsService.addNotification = (userId, data) => {
+  notificationsService.notificationsEmitter.emit("notification", userId, data)
+}
+
+export default notificationsService
