@@ -214,7 +214,7 @@ describe("Graph db", () => {
     })
 
     describe("getProducts", () => {
-      it("should get all Product if no keyword", () => {
+      it("should get all Product", () => {
         return getProducts().then(data => {
           expect(data).to.have.a.lengthOf(5)
           data.forEach(d => {
@@ -224,15 +224,18 @@ describe("Graph db", () => {
           })
         })
       })
+    })
 
+    describe("getProductsByKeywords", () => {
       it("should return the filtered products by keyword", () => {
-        return getProducts('A').then(data => {
+        return getProductsByKeywords('A').then(data => {
           expect(data).to.have.a.lengthOf(3)
           let productNames = data.map(x => x.product.Name)
           expect(productNames).to.have.members(['product A1', 'product A2', 'product A3'])
         })
       })
     })
+    
     //NOTIFICATIONS
 
     describe("getNotification", () => {
