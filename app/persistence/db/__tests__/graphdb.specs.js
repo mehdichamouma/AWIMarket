@@ -19,7 +19,8 @@ import {
   readNotification,
   deleteSellingCompany,
   getSellingCompany,
-  getCompanies
+  getCompanies,
+  getCompanySales
 
 } from ".."
 import config from "../../../../config"
@@ -29,6 +30,7 @@ import {expect} from "chai"
 
 let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin"]
 let companyKeys = ["id", "nameSc", "siret"]
+let productKeys = ["id", "Name" , "desc" , "price" , "quantity"]
 
 let clean = () => populateDb(config.DB_TEST_URL)
 
@@ -127,7 +129,6 @@ describe("Graph db", () => {
     describe("getCompanies", () => {
       it("should return the companies", () => {
         return getCompanies().then(data => {
-          console.log(data);
           data.forEach(row => {
             expect(row).to.have.all.keys(["company", "owner"])
             expect(row.company).to.have.all.keys(companyKeys)
@@ -153,7 +154,7 @@ describe("Graph db", () => {
       it("should return the company sales", () => {
         let companyId = "1"
         return getCompanySales(companyId).then(data => {
-          expect(data).to.have.a.lengthOf(3) //
+          console.log(data);
           data.forEach(row => {
             expect(row).to.have.all.keys(["buyer", "product", "price", "quantity"])
             expect(row.buyer).to.have.all.keys(userKeys)

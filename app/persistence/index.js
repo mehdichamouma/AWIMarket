@@ -41,6 +41,7 @@ let methods = [
   'getUser',
   'getCompanies',
   'getSellingCompany',
+  'getCompanySales',
   'deleteSellingCompany',
   'createUser',
   'createSellingCompany',

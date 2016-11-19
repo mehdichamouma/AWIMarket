@@ -162,8 +162,36 @@ export const getSellingCompany = (companyId) => {
       return{
         company: res[0].sc.properties,
         products: res[0].products.map(x => x.properties),
-        owner: res[0].u.properties
+        owner: omit(res[0].u.properties, 'password')
       }
+    }
+  })
+}
+export const getCompanySales = (companyId) => {
+    return cypher ( {
+      query : `MATCH (sc:SellingCompany)
+                WHERE sc.id = {companyId}
+                MATCH (sc)-[s:SELL]-(p:Product)
+                MATCH (c:Command)-[r:HAS]-(p)
+			          MATCH (u:User)-[l:DO]-(c)
+              return r, p, u`,
+      params: {
+          companyId: companyId,
+       },
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('Selling company not found')
+    }
+    else {
+      return res.map(row => {
+                return {
+                  buyer: omit(row.u.properties,'password'),
+                  product: row.p.properties,
+                  price: row.r.properties.price,
+                  quantity: row.r.properties.quantity
+                }
+              })
     }
   })
 }
