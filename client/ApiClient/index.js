@@ -31,7 +31,7 @@ export const fetchProducts = () => {
   return request("products")
   .then((res) => res.json())
   .then(data => {
-    let products = data.map(row => row.p.properties)
+    let products = data.map(row => row.product)
     console.log(products);
     return products
   })

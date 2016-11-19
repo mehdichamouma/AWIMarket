@@ -139,8 +139,9 @@ export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
       nameSc: nameSc,
       siret: siret,
    },
+}).then(res => {
+  return res[0].sc.properties
 })
-
 // return a Promise which approve with the good result
 // or reject with the error code
 export const getSellingCompany = (companyId) => {
@@ -294,15 +295,21 @@ export const getProduct = (productId) => {
 }
 export const getProducts = () => {
     return cypher ( {
-      query : `MATCH (p:Product)
-              return p`,
+      query : `MATCH (sc:SellingCompany)-[:SELL]-(p:Product)
+
+              return p,sc`,
      }
   ).then(res => {
     if (res.length < 1) {
       throw new Error('Products not found')
     }
     else {
-      return res
+      return res.map(row => {
+                return {
+                   product: row.p.properties,
+                   seller: row.sc.properties,
+                }
+              })
     }
   })
 }
@@ -373,7 +380,20 @@ export const getCommand = (commandId) => {
     }
   })
 }
-
+export const getOrders= () => {
+    return cypher ( {
+      query : `MATCH (c:Command)
+               return c`,
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('Command not found')
+    }
+    else {
+    return res
+    }
+  })
+}
 
 
 

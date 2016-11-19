@@ -54,7 +54,7 @@ let methods = [
   'readNotification',
 
 
-  'getCommands',
+  'getOrders',
   'getJournalsByUser',
   'getProducts',
   'getProduct',

@@ -21,7 +21,8 @@ import {
   getSellingCompany,
   getCompanies,
   getCompanySales,
-  getProductsByKeywords
+  getProductsByKeywords,
+  getOrders
 
 } from ".."
 import config from "../../../../config"
@@ -32,6 +33,7 @@ import {expect} from "chai"
 let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin"]
 let companyKeys = ["id", "nameSc", "siret"]
 let productKeys = ["id", "Name" , "desc" , "price" , "quantity"]
+let orderKeys = ["id","products"]
 
 let clean = () => populateDb(config.DB_TEST_URL)
 
@@ -103,9 +105,8 @@ describe("Graph db", () => {
 
     describe("createSellingCompany", () => {
       it("should create a SC", () => {
-        return createSellingCompany("7","1",'VachorCompany','ER5555E').then(data => {
+        return createSellingCompany("1","1",'VachorCompany','ER5555E').then(data => {
           expect(data).to.have.all.keys(companyKeys)
-          expect(data.id).to.eql("7")
         })
       })
     })
@@ -114,8 +115,9 @@ describe("Graph db", () => {
 
     describe("createUser", () => {
       it("should create a user", () => {
-        return createUser("5",'nassim','vachor','nass@hotmail.fr','azerty','colombiere').then(data => {
+        return createUser("5",'nassim','nass@hotmail.fr','azerty','colombiere','','',false).then(data => {
         })
+
       })
     })
 
@@ -155,7 +157,6 @@ describe("Graph db", () => {
       it("should return the company sales", () => {
         let companyId = "1"
         return getCompanySales(companyId).then(data => {
-          console.log(data);
           data.forEach(row => {
             expect(row).to.have.all.keys(["buyer", "product", "price", "quantity"])
             expect(row.buyer).to.have.all.keys(userKeys)
