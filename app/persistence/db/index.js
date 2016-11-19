@@ -86,7 +86,6 @@ export const getUser = (userId) => {
 }
 
 export const getUserByCredentials = (email, password) => {
-    console.log(email, password);
     return cypher ( {
       query : `MATCH (u:User)
                 WHERE u.email = {email}
@@ -102,11 +101,12 @@ export const getUserByCredentials = (email, password) => {
     }
     else {
       if (passwordHash.verify(password, res[0].u.properties.password)){
-        console.log(res);
+
         let hasCompany = res[0].sc != null
         return {
           email: email,
           userId: res[0].u.properties.id,
+          name : res[0].u.properties.name,
           hasCompany,
           is_admin: false
         }
@@ -190,7 +190,27 @@ export const deleteSellingCompany = (companyId) => {
   })
 }
 
+export const getCompanies = () => {
+    return cypher ( {
+      query : `MATCH (sc:SellingCompany)
+                OPTIONAL MATCH (u:User)-[:HAS]-(sc)
+                return sc, u`,
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('Bad requet')
+    }
+    else {
 
+      return res.map(row => {
+                return {
+                   company: row.sc.properties,
+                   owner: omit(row.u.properties,'password')
+                }
+              })
+    }
+  })
+}
 
 export const createProduct = (idSc, id, name, desc, price, quantity) => cypher({
   query : `MATCH (sc:SellingCompany)

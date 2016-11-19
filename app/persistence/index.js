@@ -39,7 +39,7 @@ let methods = [
   'getSimpleUsers',
   'getSimpleUser',
   'getUser',
-  'getSellingCompanies',
+  'getCompanies',
   'getSellingCompany',
   'deleteSellingCompany',
   'createUser',

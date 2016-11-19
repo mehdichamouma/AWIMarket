@@ -18,7 +18,8 @@ import {
   getNotification,
   readNotification,
   deleteSellingCompany,
-  getSellingCompany
+  getSellingCompany,
+  getCompanies
 
 } from ".."
 import config from "../../../../config"
@@ -27,7 +28,7 @@ import {expect} from "chai"
 
 
 let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin"]
-let companyKeys = ["id", "name", "siret"]
+let companyKeys = ["id", "nameSc", "siret"]
 
 let clean = () => populateDb(config.DB_TEST_URL)
 
@@ -126,7 +127,7 @@ describe("Graph db", () => {
     describe("getCompanies", () => {
       it("should return the companies", () => {
         return getCompanies().then(data => {
-          expect(data).to.have.lengthOf(4)
+          console.log(data);
           data.forEach(row => {
             expect(row).to.have.all.keys(["company", "owner"])
             expect(row.company).to.have.all.keys(companyKeys)
@@ -170,7 +171,7 @@ describe("Graph db", () => {
       it("should get a user with sc", () => {
         return getUserByCredentials('mehdi@gmail.com', 'azerty').then(data => {
           expect(data.hasCompany).to.be.true
-          expect(data).to.have.all.keys(['hasCompany', 'isAdmin', 'name', 'userId', 'email'])
+          expect(data).to.have.all.keys(['hasCompany', 'is_admin', 'name', 'userId', 'email'])
         })
       })
       it("should get a user without sc", () => {
