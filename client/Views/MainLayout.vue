@@ -3,7 +3,7 @@
     <div class="">
       <nav>
         <div class="nav-wrapper grey lighten-3">
-          <router-link to="/" class="brand-logo deep-orange-text left"><img src="img/logo.png" class="menu-logo"/></router-link>
+          <router-link to="/" class="brand-logo deep-orange-text left hide-on-small-only"><img src="img/logo.png" class="menu-logo"/></router-link>
           <ul class="right">
             <li>
               <router-link to="/admin" class="deep-orange-text">Administration</router-link>

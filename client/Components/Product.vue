@@ -5,11 +5,19 @@
     </div>
     <div class="card-content">
       <span class="card-title activator grey-text text-darken-4">{{ title }}<i class="material-icons right">more_vert</i></span>
-      <p><a v-on:click="cartClick">Add to cart</a></p>
-      <p>{{ price }} $ <span class="badge">5</span></p>
+
       <p>
+        <h4>{{ price }} $ </h4>
+      </p>
+      <p>
+        <a class="waves-effect waves-light btn amber accent-2" v-on:click="cartClick">
+          Add to cart
+          <i class="material-icons right">add</i>
+        </a><br>
+        <span class="grey-text text-lighten-2">{{quantityLeft}} products left</span>
 
       </p>
+
     </div>
     <div class="card-reveal">
       <span class="card-title grey-text text-darken-4">{{ title }}<i class="material-icons right">close</i></span>
