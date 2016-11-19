@@ -1,7 +1,7 @@
 import neo4j from 'neo4j'
 import promisify from "es6-promisify"
 import passwordHash from 'password-hash'
-
+import {omit} from 'lodash'
 let db
 let labels = [
   'JOURNAL',
@@ -16,6 +16,7 @@ export const getLabels = () => labels
 export const getDb = () => db
 
 // export const getUsers = () => {
+//     console.log("abc");
 //     return 'ok'
 // }
 
@@ -27,26 +28,29 @@ export const clearDb = () => cypher({
           DETACH DELETE n`
 })
 
-export const createUser = (id,firstName, lastName, email, password, adresse) => cypher({
+export const createUser = (id, name, email, password, address, phone, birthday, is_admin) => cypher({
   query : `CREATE (t:User {
                        id:{id},
-                       firstName:{firstName},
-                       lastName:{lastName},
+                       name:{name},
                        email:{email},
                        password:{password},
-                       adresse:{adresse}
+                       address:{address},
+                       phone:{phone},
+                       birthday:{birthday},
+                       is_admin: {is_admin}
                      })
                      return t`,
   params: {
       id: id,
-      firstName: firstName,
-      lastName: lastName,
+      name: name,
       email: email,
       password: passwordHash.generate(password),
-      adresse: adresse,
+      address: address,
+      phone: phone,
+      birthday: birthday,
+      is_admin:is_admin,
    },
 })
-
 // return a Promise which approve with the good user
 // or reject with the error code
 export const getUser = (userId) => {
@@ -66,8 +70,9 @@ export const getUser = (userId) => {
       throw new Error('user not found')
     }
     else {
+
       return {
-        user: res[0].u.properties,
+        user: omit(res[0].u.properties,'password'),
         journals: res[0].journals.map(x => x.properties),
         nbCommands: res[0].nbCommands
 
@@ -77,6 +82,7 @@ export const getUser = (userId) => {
 }
 
 export const getUserByCredentials = (email, password) => {
+    console.log(email, password);
     return cypher ( {
       query : `MATCH (u:User)
                 WHERE u.email = {email}
@@ -92,6 +98,7 @@ export const getUserByCredentials = (email, password) => {
     }
     else {
       if (passwordHash.verify(password, res[0].u.properties.password)){
+        console.log(res);
         let hasCompany = res[0].sc != null
         return {
           email: email,
@@ -136,7 +143,9 @@ export const getSellingCompany = (companyId) => {
     return cypher ( {
       query : `MATCH (sc:SellingCompany)
                 WHERE sc.id = {companyId}
-              return sc`,
+                OPTIONAL MATCH (u:User)-[:HAS]-(sc)
+                OPTIONAL MATCH (sc)-[:SELL]-(p:Product)
+              return sc, u, collect(p) as products`,
       params: {
           companyId: companyId,
        },
@@ -146,7 +155,11 @@ export const getSellingCompany = (companyId) => {
       throw new Error('Selling company not found')
     }
     else {
-      return res[0].sc.properties
+      return{
+        company: res[0].sc.properties,
+        products: res[0].products.map(x => x.properties),
+        owner: res[0].u.properties
+      }
     }
   })
 }
