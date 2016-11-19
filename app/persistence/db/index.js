@@ -81,8 +81,9 @@ export const getUser = (userId) => {
 export const getUserByCredentials = (email, password) => {
     console.log(email, password);
     return cypher ( {
-      query : `MATCH (u:User)-[:HAS]-(sc:SellingCompany)
+      query : `MATCH (u:User)
                 WHERE u.email = {email}
+                OPTIONAL MATCH (u)-[:HAS]-(sc:SellingCompany)
               return u, sc`,
       params: {
           email: email,
@@ -95,7 +96,7 @@ export const getUserByCredentials = (email, password) => {
     else {
       if (passwordHash.verify(password, res[0].u.properties.password)){
         console.log(res);
-        let hasCompany = res.sc == null
+        let hasCompany = res[0].sc != null
         return {
           email: email,
           userId: res[0].u.properties.id,
@@ -123,7 +124,7 @@ export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
           )
 
           CREATE (u)-[has:HAS]->(sc)
-          RETURN has`,
+          RETURN sc`,
 
   params: {
       userId: userId,
