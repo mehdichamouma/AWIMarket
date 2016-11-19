@@ -17,27 +17,33 @@ import {
 let users = [
   {
     id: "1",
-    firstName: "mehdi",
-    lastName: "chamouma",
+    name: "mehdi CHAMOUMA",
     email: "mehdi@gmail.com",
     password: "azerty",
-    adresse: "montpellier",
+    address: "montpellier",
+    phone :"0658469285",
+    birthday: new Date(1993,11,16),
+    is_admin:true,
   },
   {
     id: "2",
-    firstName: "nassim",
-    lastName: "vachor",
+    name: "nassim VACHOR",
     email: "nassim@gmail.com",
     password: "azerty",
-    adresse: "montpellier",
+    address: "montpellier",
+    phone :"0658469285",
+    birthday: new Date(1992,11,16),
+   is_admin:false,
   },
   {
     id: "3",
-    firstName: "arnaud",
-    lastName: "zaragoza",
+    name: "arnaud ZARAGOZA",
     email: "arnaud@gmail.com",
     password: "azerty",
-    adresse: "montpellier",
+    address: "montpellier",
+     phone :"0658469285",
+     birthday: new Date(1994,11,16),
+    is_admin:false,
   },
 ]
 
@@ -236,7 +242,7 @@ export default (dbUrl, verbose = false) => {
   initDb(dbUrl)
   return clearDb().then(() => {
     log(verbose, "database cleared");
-    return Promise.all(users.map(u => createUser(u.id, u.firstName, u.lastName, u.email, u.password, u.adresse)))
+    return Promise.all(users.map(u => createUser(u.id, u.name, u.email, u.password, u.address, u.phone, u.birthday, u.is_admin)))
   })
   .then(() => {
     log(verbose, "users created");
