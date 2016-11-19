@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 //import store from "./store"
 import router from "./router"
 import App from "./Views/App.vue"
+import store from "./store"
 
 // const app = new Vue(Vue.util.extend({
 //   router,
@@ -15,5 +16,10 @@ import App from "./Views/App.vue"
 new Vue({
   el: '#app',
   router: router,
+  data() {
+    return {
+      store: store
+    }
+  },
   render: h => h(App)
 })

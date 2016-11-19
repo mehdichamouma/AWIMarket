@@ -2,7 +2,10 @@ export default {
   state: {
     message: 'Hello!',
     isConnected: false,
-    user: null
+    user: null,
+    cart: {
+      content: []
+    }
   },
   setMessageAction (newValue) {
     this.state.message = newValue
@@ -12,5 +15,8 @@ export default {
   },
   setUserAction(x) {
     this.state.user = x
+  },
+  cartAddProduct(product, quantity) {
+    this.state.cart.content.push({product, quantity})
   }
 }

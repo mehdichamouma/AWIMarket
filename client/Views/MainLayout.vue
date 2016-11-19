@@ -8,13 +8,19 @@
             <li>
               <router-link to="/admin" class="deep-orange-text">Administration</router-link>
             <li>
-              <a v-on:click="toggleNotifications" class="deep-orange-text"><i class="material-icons">shopping_cart</i></a>
+              <a v-on:click="toggleNotifications" class="deep-orange-text">
+                <i class="material-icons left">shopping_cart</i>
+                {{ $root.store.state.cart.content.length}}
+              </a>
+
             </li>
             <li>
               <a v-on:click="toggleNotifications" class="deep-orange-text"><i class="material-icons">account_box</i></a>
             </li>
             <li>
-              <a v-on:click="toggleNotifications" class="deep-orange-text"><i class="material-icons">notifications</i></a>
+              <a v-on:click="toggleNotifications" class="deep-orange-text">
+                <span class=" new badge" data-badge-caption="notifications">4</span>
+              </a>
             </li>
           </ul>
         </div>
@@ -46,7 +52,7 @@ import {getNotificationSocket} from "../ApiClient"
 export default {
   data: function() {
     return {
-      showNotifications: false
+      showNotifications: false,
     }
   },
   methods: {

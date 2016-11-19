@@ -27,6 +27,15 @@ export const fetchUserJournals = (userId) => {
   })
 }
 
+export const fetchProducts = () => {
+  return request("products")
+  .then((res) => res.json())
+  .then(data => {
+    let products = data.map(row => row.p.properties)
+    console.log(products);
+    return products
+  })
+}
 
 export const authenticate = (email, password) => {
   let credentials = new Buffer(`${email}:${password}`, 'utf8').toString('base64')
