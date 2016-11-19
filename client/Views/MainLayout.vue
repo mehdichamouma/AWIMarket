@@ -41,6 +41,7 @@
 
 <script>
 import io from "socket.io-client"
+import {getNotificationSocket} from "../ApiClient"
 
 export default {
   data: function() {
@@ -55,11 +56,11 @@ export default {
     }
   },
   created() {
-    this.socket = io.connect('http://localhost:3010')
-    this.socket.on('message', (data) => {
+    this.socket = getNotificationSocket()
+    console.log("aa", this.socket);
+    this.socket.on('notification', (data) => {
       console.log(data);
     })
-    this.socket.emit('sendMessages', {my: 'data'})
     console.log("creation");
   }
 }

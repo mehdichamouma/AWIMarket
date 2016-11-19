@@ -11,7 +11,6 @@
 //ExpressJS
 import express from "express"
 import {Server} from "http"
-import socketIO from "socket.io"
 import bodyParser from "body-parser"
 
 //API endpoints
@@ -25,26 +24,14 @@ import getDbInstance, {configureDbService} from "../persistence"
 //Application config
 import config from "../../config"
 
+//Websockets
+import configureWebsockets from "./websockets"
 
 let app = express();
 let server = Server(app)
-let io = socketIO(server)
 
-io.on('connection', (socket) => {
-  console.log('ok');
-  let ping = (sc) => {
-    sc.emit("message", 'ping')
-    setTimeout(() => pong(sc), 300)
-  }
-  let pong = (sc) => {
-    sc.emit("message", 'pong')
-    setTimeout(() => ping(sc), 300)
-  }
-  socket.on('sendMessages', () => {
-    ping(socket)
-  })
-  socket.emit('ok', {yes: 'ok'})
-})
+//WEB SOCKETS
+configureWebsockets(server)
 
 //WEBPACK HOT RELOADING CONFIGURATION
 var webpack = require('webpack');

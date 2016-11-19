@@ -11,9 +11,10 @@ import io from "socket.io-client"
 //
 
 const BASE_URI = config.API_BASE_URL
+let token
 
 const request = (endpoint, ...params) => {
-  return fetch(urlJoin(BASE_URI, endpoint), ...params)
+  return fetch(urlJoin(BASE_URI, "api", endpoint), ...params)
 }
 
 export const fetchUserJournals = (userId) => {
@@ -42,10 +43,22 @@ export const authenticate = (email, password) => {
       throw new Error("Authentication failed")
     }
   })
+  .then((data) => {
+    console.log(data);
+    console.log(data.token);
+    token = data.token
+    return data
+  })
 }
 
+let notificationSocket
 export const getNotificationSocket = () => {
-    const socket = io("ws://echo.websocket.org/")
+    if(!notificationSocket) {
+      notificationSocket = io(urlJoin(BASE_URI, "sockets", "notifications"))
+      notificationSocket.emit("authenticate", token)
+    }
+
+    return notificationSocket
 }
 
 // new async await
