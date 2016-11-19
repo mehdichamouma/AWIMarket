@@ -16,7 +16,6 @@ export const getLabels = () => labels
 export const getDb = () => db
 
 // export const getUsers = () => {
-//     console.log("abc");
 //     return 'ok'
 // }
 
@@ -67,7 +66,6 @@ export const getUser = (userId) => {
       throw new Error('user not found')
     }
     else {
-      console.log(res);
       return {
         user: res[0].u.properties,
         journals: res[0].journals.map(x => x.properties),
@@ -79,7 +77,6 @@ export const getUser = (userId) => {
 }
 
 export const getUserByCredentials = (email, password) => {
-    console.log(email, password);
     return cypher ( {
       query : `MATCH (u:User)
                 WHERE u.email = {email}
@@ -95,7 +92,6 @@ export const getUserByCredentials = (email, password) => {
     }
     else {
       if (passwordHash.verify(password, res[0].u.properties.password)){
-        console.log(res);
         let hasCompany = res[0].sc != null
         return {
           email: email,
