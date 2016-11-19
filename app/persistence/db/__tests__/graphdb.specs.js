@@ -142,6 +142,23 @@ describe("Graph db", () => {
       })
     })
 
+    describe("getCompanySales", () => {
+      it("should return the company sales", () => {
+        let companyId = "1"
+        return getCompanySales(companyId).then(data => {
+          expect(data).to.have.a.lengthOf(3) //
+          data.forEach(row => {
+            expect(row).to.have.all.keys(["buyer", "product", "price", "quantity"])
+            expect(row.buyer).to.have.all.keys(userKeys)
+            expect(row.product).to.have.all.keys(productKeys)
+            if(row.shipmentDate) {
+              expect(row.shipmentData).to.be.a(Date)
+            }
+          })
+        })
+      })
+    })
+
     //USERS
     describe("getUserByCredentials", () => {
       it("should get a user with sc", () => {
@@ -161,6 +178,18 @@ describe("Graph db", () => {
         return getUser("1").then(data => {
           expect(data).to.have.all.keys(["user", "journals", "nbCommands"])
           expect(data.journals).to.have.lengthOf(3)
+        })
+      })
+    })
+
+    describe("getUserOrders", () => {
+      it("should return the user orders", () => {
+        let userId = "3"
+        return getUserOrders(userId).then(data => {
+          expect(data).to.have.lengthOf(2)
+          data.forEach(row => {
+            expect(row).to.have.all.keys(orderKeys)
+          })
         })
       })
     })
@@ -188,6 +217,46 @@ describe("Graph db", () => {
       it("should get a Notification", () => {
         return getNotification("1").then(data => {
 
+        })
+      })
+    })
+
+    describe("getUserNotifications", () => {
+      it("should get the user notifications", () => {
+        return getUserNotifications("1").then(data => {
+          expect(data).to.have.a.lengthOf(2)
+          data.forEach(row => {
+            expect(row).to.have.all.keys(notificationsKeys)
+          })
+        })
+      })
+    })
+
+    //ORDERS
+
+    describe("getOrders", () => {
+      it("should get the orders", () => {
+        return getOrders().then(data => {
+          expect(data).to.have.lengthOf(3)
+          data.forEach(row => {
+            expect(row).to.have.all.keys(orderKeys)
+          })
+        })
+
+      })
+    })
+
+    describe("getOrder", () => {
+      it("should get the order", () => {
+        let orderId = 1
+        return getOrder().then(data => {
+          expect(data).to.have.all.keys(["order", "products", "owner"])
+          expect(data.order).to.have.all.keys(orderKeys)
+          expect(data.owner).to.have.all.keys(userKeys)
+          data.products.forEach(row => {
+            expect(row).to.have.all.keys(["product", "seller", ""])
+            expect(product).to.have.all.keys(productKeys)
+          })
         })
       })
     })

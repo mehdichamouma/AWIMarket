@@ -211,6 +211,14 @@ let notifications = [
     readingDate: '',
   },
   {
+    userId: "1",
+    id: "2",
+    content: 'commande validee',
+    type: 'for user',
+    creationDate: new Date(2016,12,16),
+    readingDate: '',
+  },
+  {
     userId: "2",
     id: "2",
     content: 'payement effectue',
