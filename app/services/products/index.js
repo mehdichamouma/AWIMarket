@@ -40,11 +40,11 @@ productsService.getProduct = (productId) => {
 productsService.updateProduct = (productId, data) => {
   if(productId instanceof String && data.product != undefined) {
     let p = data.product
-    if((p.sellingCompany == undefined || p.sellingCompany instanceof String) &&
-        (p.name == undefined || p.name instanceof String) &&
-        (p.description == undefined || p.description instanceof String) &&
-        (p.price == undefined || p.price instanceof Number) &&
-        (p.quantity == undefined || p.quantity instanceof Number)
+    if(p.sellingCompany != undefined && p.sellingCompany instanceof String &&
+        p.name != undefined && p.name instanceof String &&
+        p.description != undefined && p.description instanceof String &&
+        p.price != undefined && p.price instanceof Number &&
+        p.quantity != undefined && p.quantity instanceof Number
       ) {
       return getDB().updateProduct(p.sellingCompany, productId, p.name, p.description, p.price, p.quantity)
       .catch((error) => {
