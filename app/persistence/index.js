@@ -61,5 +61,6 @@ let methods = [
   'getProductsFromSeller',
   'getProductsFromSellerAtPage',
   'createProduct',
-  'updateProduct'
+  'updateProduct',
+  'deleteProduct'
 ]

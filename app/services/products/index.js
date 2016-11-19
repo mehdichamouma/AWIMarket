@@ -10,11 +10,11 @@ productsService.getProducts = () => {
 productsService.createProducts = (data) => {
   if(data.product != undefined) {
     let p = data.product
-    if(p.sellingCompany != undefined &&
-        p.name != undefined &&
-        p.description != undefined &&
-        p.price != undefined &&
-        p.quantity != undefined
+    if(p.sellingCompany != undefined && p.sellingCompany instanceof String &&
+        p.name != undefined && p.name instanceof String &&
+        p.description != undefined && p.description instanceof String &&
+        p.price != undefined && p.price instanceof Number &&
+        p.quantity != undefined && p.quantity instanceof Number
       ) {
       return getDB().createProduct(p.sellingCompany, uuid(), p.name, p.description, p.price, p.quantity)
       .catch((error) => {
@@ -30,7 +30,6 @@ productsService.getProduct = (productId) => {
   if(typeof productId === "string" || productId instanceof String) {
     return getDB().getProduct(productId)
     .catch((result) => {
-      //TODO check error
       return Promise.reject({code:404, description:"Product not found"})
     })
   }
@@ -38,12 +37,32 @@ productsService.getProduct = (productId) => {
 }
 
 productsService.updateProduct = (productId, data) => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+  if(productId instanceof String && data.product != undefined) {
+    let p = data.product
+    if((p.sellingCompany == undefined || p.sellingCompany instanceof String) &&
+        (p.name == undefined || p.name instanceof String) &&
+        (p.description == undefined || p.description instanceof String) &&
+        (p.price == undefined || p.price instanceof Number) &&
+        (p.quantity == undefined || p.quantity instanceof Number)
+      ) {
+      return getDB().updateProduct(p.sellingCompany, productId, p.name, p.description, p.price, p.quantity)
+      .catch((error) => {
+        return Promise.reject({code:500, description:"Server error"})
+      }
+      )
+    }
+  }
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
 productsService.deleteProduct = (productId) => {
-  //return getDB().deleteProduct(productId)
-  return Promise.reject({code:501, description:"Not Implemented"})
+  if(productId instanceof String) {
+    return getDB().deleteProduct(productId)
+    .catch((error) => {
+      return Promise.reject({code:500, description:"Server error"})
+    }
+  }
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
 /*
