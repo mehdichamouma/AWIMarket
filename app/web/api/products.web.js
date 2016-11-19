@@ -4,7 +4,7 @@ import productsService from "../../services/products"
 let router = express.Router()
 
 router.get("/", (req, res) => {
-  productsService.getProducts()
+  productsService.getProducts(req.params)
   .then((result) => {
     res.status(200).json(result)
   })
