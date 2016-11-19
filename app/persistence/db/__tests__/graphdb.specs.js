@@ -29,6 +29,7 @@ import {expect} from "chai"
 
 let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin"]
 let companyKeys = ["id", "nameSc", "siret"]
+let productKeys = ["id", "name", "quantity", "price"]
 
 let clean = () => populateDb(config.DB_TEST_URL)
 
@@ -213,9 +214,22 @@ describe("Graph db", () => {
     })
 
     describe("getProducts", () => {
-      it("should get all Product", () => {
+      it("should get all Product if no keyword", () => {
         return getProducts().then(data => {
+          expect(data).to.have.a.lengthOf(5)
+          data.forEach(d => {
+            expect(d).to.have.all.keys(['product', 'seller'])
+            expect(d.product).to.have.all.keys(productKeys)
+            expect(d.seller).to.have.all.keys(companyKeys)
+          })
+        })
+      })
 
+      it("should return the filtered products by keyword", () => {
+        return getProducts('A').then(data => {
+          expect(data).to.have.a.lengthOf(3)
+          let productNames = data.map(x => x.product.Name)
+          expect(productNames).to.have.members(['product A1', 'product A2', 'product A3'])
         })
       })
     })
