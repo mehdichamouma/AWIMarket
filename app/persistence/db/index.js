@@ -214,12 +214,12 @@ export const createProduct = (idSc, id, name, desc, price, quantity) => cypher({
    },
 })
 
-export const updateProduct = (idSc, id, name, desc, price, quantity) {
+export const updateProduct = (idSc, id, name, desc, price, quantity) => {
 // TODO
  return Promise.reject({code:501, description:"Not Implemented"})
 }
 
-export const deleteProduct = (id) {
+export const deleteProduct = (id) => {
 // TODO
  return Promise.reject({code:501, description:"Not Implemented"})
 }

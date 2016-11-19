@@ -1,10 +1,12 @@
 import getDB from "../../persistence"
-import uuid from "uuid"
 
 let productsService = {}
 
 productsService.getProducts = () => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+  return getDB().getProducts()
+  .catch((error) => {
+    return Promise.reject({code:500, description:"Server error"})
+  })
 }
 
 productsService.createProducts = (data) => {
@@ -16,11 +18,10 @@ productsService.createProducts = (data) => {
         p.price != undefined && p.price instanceof Number &&
         p.quantity != undefined && p.quantity instanceof Number
       ) {
-      return getDB().createProduct(p.sellingCompany, uuid(), p.name, p.description, p.price, p.quantity)
+      return getDB().createProduct(p.sellingCompany, undefined, p.name, p.description, p.price, p.quantity)
       .catch((error) => {
         return Promise.reject({code:500, description:"Server error"})
-      }
-      )
+      })
     }
   }
   return Promise.reject({code:400, description:"Bad Request"})
@@ -60,7 +61,7 @@ productsService.deleteProduct = (productId) => {
     return getDB().deleteProduct(productId)
     .catch((error) => {
       return Promise.reject({code:500, description:"Server error"})
-    }
+    })
   }
   return Promise.reject({code:400, description:"Bad Request"})
 }
