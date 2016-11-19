@@ -2,11 +2,24 @@ import getDB from "../../persistence"
 
 let productsService = {}
 
-productsService.getProducts = () => {
+productsService.getProducts = (params) => {
+  if(params.keywords != undefined) {
+    return productsService.getProductsByKeywords(params.keywords)
+  }
   return getDB().getProducts()
   .catch((error) => {
     return Promise.reject({code:500, description:"Server error"})
   })
+}
+
+productsService.getProductsByKeywords = (keywords) => {
+  if(keywords != undefined && keywords instanceof String) {
+    return getDB().getProductsByKeywords(keywords)
+    .catch((error) => {
+      return Promise.reject({code:500, description:"Server error"})
+    })
+  }
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
 productsService.createProducts = (data) => {
