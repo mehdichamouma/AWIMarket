@@ -12,9 +12,12 @@
 import express from "express"
 import {Server} from "http"
 import bodyParser from "body-parser"
+import cookieParser from "cookie-parser"
 
 //API endpoints
 import api from "./api" //API Router
+
+import {decodeToken} from "../services/authentification"
 
 //DB Services
 import * as graphDb from "../persistence/db"
@@ -58,6 +61,16 @@ configureDbService([graphDb, fake])
 //Accept JSON
 
 app.use(bodyParser.json());
+app.use(cookieParser())
+
+// middleware to create the user
+app.use(function (req, res, next) {
+  if(req.headers.authorization) {
+    req.user = decodeToken(req.headers.authorization)
+    console.log("Request from user : " + JSON.stringify(req.user))
+  }
+  next()
+});
 
 //Check all URI:
 //if a corresponding file is found in /public directory, it will be served as static content
