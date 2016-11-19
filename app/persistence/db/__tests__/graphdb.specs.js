@@ -20,7 +20,8 @@ import {
   deleteSellingCompany,
   getSellingCompany,
   getCompanies,
-  getCompanySales
+  getCompanySales,
+  getProductsByKeywords
 
 } from ".."
 import config from "../../../../config"
@@ -235,7 +236,7 @@ describe("Graph db", () => {
         })
       })
     })
-    
+
     //NOTIFICATIONS
 
     describe("getNotification", () => {

@@ -306,7 +306,29 @@ export const getProducts = () => {
     }
   })
 }
+export const getProductsByKeywords = (key) => {
+    return cypher ( {
+      query : `MATCH (p:Product)
+                WHERE LOWER(p.Name) CONTAINS LOWER({key})
+              	return p`,
+      params: {
+                  key: key,
+             },
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('Bad requet')
+    }
+    else {
 
+      return res.map(row => {
+                return {
+                   product: row.p.properties,
+                }
+              })
+    }
+  })
+}
 
 
 // The stock quantity is not updated

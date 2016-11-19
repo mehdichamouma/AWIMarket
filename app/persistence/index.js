@@ -58,6 +58,7 @@ let methods = [
   'getJournalsByUser',
   'getProducts',
   'getProduct',
+  'getProductsByKeywords',
   'getProductsAtPage',
   'getProductsFromSeller',
   'getProductsFromSellerAtPage',
