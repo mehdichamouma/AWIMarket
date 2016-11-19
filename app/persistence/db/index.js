@@ -2,6 +2,8 @@ import neo4j from 'neo4j'
 import promisify from "es6-promisify"
 import passwordHash from 'password-hash'
 import {omit} from 'lodash'
+import uuid from "uuid"
+
 let db
 let labels = [
   'JOURNAL',
@@ -14,6 +16,8 @@ export const initDb = (uri, node_prefix) => {
 
 export const getLabels = () => labels
 export const getDb = () => db
+
+let generateId = (id) => id ? id : uuid();
 
 // export const getUsers = () => {
 //     console.log("abc");
@@ -41,7 +45,7 @@ export const createUser = (id, name, email, password, address, phone, birthday, 
                      })
                      return t`,
   params: {
-      id: id,
+      id: generateId(id),
       name: name,
       email: email,
       password: passwordHash.generate(password),
@@ -131,7 +135,7 @@ export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
 
   params: {
       userId: userId,
-      id: id,
+      id: generateId(id),
       nameSc: nameSc,
       siret: siret,
    },
@@ -188,7 +192,7 @@ export const deleteSellingCompany = (companyId) => {
 
 
 
-export const createProduct = (idSc, id,Name, desc, price, quantity) => cypher({
+export const createProduct = (idSc, id, name, desc, price, quantity) => cypher({
   query : `MATCH (sc:SellingCompany)
           WHERE sc.id = {idSc}
           CREATE (p:Product {
@@ -202,8 +206,8 @@ export const createProduct = (idSc, id,Name, desc, price, quantity) => cypher({
         RETURN sell`,
   params: {
       idSc: idSc,
-      id: id,
-      Name: Name,
+      id: generateId(id),
+      Name: name,
       desc: desc,
       price: price,
       quantity: quantity,
@@ -261,9 +265,9 @@ export const createCommand = (userId, id, products) => {
             CREATE((c)-[r2:HAS {quantity: product.quantity, price: product.price}]->(p))
             RETURN p, u, c`,
     params: {
-      userId,
-      id,
-      products,
+      userId: userId,
+      id: generateId(id),
+      products: products,
       commandName: `Order ${id}`
     }
   })
@@ -310,7 +314,7 @@ export const createJournal = (userId, id, title, creationDate) => cypher(
           RETURN j`,
       params: {
         userId: userId,
-        id: id,
+        id: generateId(id),
         title: title,
         creationDate: creationDate,
       }
@@ -381,7 +385,7 @@ export const createEntry = (journalId, id, description, ressourceType, ressource
           RETURN e`,
       params: {
         journalId: journalId,
-        id: id,
+        id: generateId(id),
         description: description,
         ressourceType: ressourceType,
         ressourceUrl: ressourceUrl,
@@ -438,7 +442,7 @@ export const createEntry = (journalId, id, description, ressourceType, ressource
               RETURN n`,
           params: {
             userId: userId,
-            id: id,
+            id: generateId(id),
             content: content,
             type: type,
             creationDate: creationDate,

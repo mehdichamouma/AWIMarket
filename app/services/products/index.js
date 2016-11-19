@@ -17,21 +17,27 @@ productsService.createProducts = (data) => {
         p.quantity != undefined
       ) {
       return getDB().createProduct(p.sellingCompany, uuid(), p.name, p.description, p.price, p.quantity)
+      .catch((error) => {
+        return Promise.reject({code:500, description:"Server error"})
+      }
+      )
     }
   }
   return Promise.reject({code:400, description:"Bad Request"})
 }
 
 productsService.getProduct = (productId) => {
-  // TODO check productId
-  return getDB().getProduct(productId)
-  .catch((result) => {
-    //TODO check error
-    return Promise.reject({code:404, description:"Product not found"})
-  })
+  if(typeof productId === "string" || productId instanceof String) {
+    return getDB().getProduct(productId)
+    .catch((result) => {
+      //TODO check error
+      return Promise.reject({code:404, description:"Product not found"})
+    })
+  }
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
-productsService.updateProduct = (productId) => {
+productsService.updateProduct = (productId, data) => {
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
