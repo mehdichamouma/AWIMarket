@@ -6,6 +6,7 @@ import {
   createJournal,
   createUser,
   getUser,
+  getUserByCredentials,
   getUsers,
   createSellingCompany,
   createProduct,
@@ -26,13 +27,12 @@ import {expect} from "chai"
 
 
 describe("Graph db", () => {
-  before( () => {
-    initDb(config.DB_TEST_URL)
-    return clearDb()
-  })
-
-  after(() => {
-    return populateDb().then(() => {
+  // before (()=>{
+  //
+  //   return initDb(config.DB_TEST_URL)
+  // })
+  beforeEach(() => {
+    return populateDb(config.DB_TEST_URL).then(() => {
       console.log("database reinitialized");
     })
   })
@@ -49,7 +49,7 @@ describe("Graph db", () => {
 
   describe("createUser", () => {
     it("should create a user", () => {
-      return createUser(1,'nassim','vachor','nass@hotmail.fr','azerty','colombiere').then(data => {
+      return createUser("5",'nassim','vachor','nass@hotmail.fr','azerty','colombiere').then(data => {
         console.log(data[0].t.labels);
         console.log(data[0].t.properties);
       })
@@ -58,7 +58,7 @@ describe("Graph db", () => {
 
   describe("createSellingCompany", () => {
     it("should create a SC", () => {
-      return createSellingCompany(1,1,'VachorCompany','ER5555E').then(data => {
+      return createSellingCompany("1","1",'VachorCompany','ER5555E').then(data => {
         console.log(data[0].has);
         console.log(data[0]);
       })
@@ -67,8 +67,12 @@ describe("Graph db", () => {
 
   describe("getSellingCompany", () => {
     it("should get a SC", () => {
-      return getSellingCompany(1).then(data => {
-        console.log(data[0]);
+      return getSellingCompany("1").then(data => {
+        expect(data).to.eql({
+          id: "1",
+          nameSc: "company 1",
+          siret: "abc",
+        })
       })
     })
   })
@@ -160,6 +164,13 @@ describe("Graph db", () => {
         console.log(data.user);
         console.log(data.journals);
         console.log(data.nbCommands);
+      })
+    })
+  })
+  describe("getUserByCredentials", () => {
+    it("should get a user", () => {
+      return getUserByCredentials('arnaud@gmail.com', 'azerty').then(data => {
+        expect(data.hasCompany).to.be.false
       })
     })
   })

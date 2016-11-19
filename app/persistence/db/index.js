@@ -67,12 +67,12 @@ export const getUser = (userId) => {
       throw new Error('user not found')
     }
     else {
-
+      console.log(res);
       return {
         user: res[0].u.properties,
         journals: res[0].journals.map(x => x.properties),
         nbCommands: res[0].nbCommands
-        console.log(res);
+
       }
     }
   })
@@ -81,9 +81,9 @@ export const getUser = (userId) => {
 export const getUserByCredentials = (email, password) => {
     console.log(email, password);
     return cypher ( {
-      query : `MATCH (u:User)
+      query : `MATCH (u:User)-[:HAS]-(sc:SellingCompany)
                 WHERE u.email = {email}
-              return u`,
+              return u, sc`,
       params: {
           email: email,
        },
@@ -94,9 +94,12 @@ export const getUserByCredentials = (email, password) => {
     }
     else {
       if (passwordHash.verify(password, res[0].u.properties.password)){
+        console.log(res);
+        let hasCompany = res.sc == null
         return {
           email: email,
           userId: res[0].u.properties.id,
+          hasCompany,
           is_admin: false
         }
       }
@@ -146,7 +149,7 @@ export const getSellingCompany = (companyId) => {
       throw new Error('Selling company not found')
     }
     else {
-      return res
+      return res[0].sc.properties
     }
   })
 }

@@ -19,7 +19,7 @@ productsService.createProducts = (data) => {
       return getDB().createProduct(p.sellingCompany, uuid(), p.name, p.description, p.price, p.quantity)
     }
   }
-  return Promise.reject({code:501, description:"Not Implemented"})
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
 productsService.getProduct = (productId) => {
@@ -27,7 +27,7 @@ productsService.getProduct = (productId) => {
   return getDB().getProduct(productId)
   .catch((result) => {
     //TODO check error
-    return Promise.reject({code:501, description:""})
+    return Promise.reject({code:404, description:"Product not found"})
   })
 }
 

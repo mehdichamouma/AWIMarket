@@ -1,26 +1,26 @@
 import getDB from "../../persistence"
 import uuid from "uuid"
 
-let commandsService = {}
+let companiesService = {}
 
-commandsService.getCommands = () => {
+companiesService.getCompanies = () => {
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
-commandsService.getCommand = (commandId) => {
+companiesService.createCompany = () => {
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
-commandsService.updateCommand = (commandId) => {
+companiesService.getCompany = (id) => {
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
-commandsService.updateProduct = (commandId, productId) => {
+companiesService.updateCompany = (id) => {
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
-commandsService.pay = (commandId) => {
+companiesService.getOrders = (id) => {
   return Promise.reject({code:501, description:"Not Implemented"})
 }
 
-export default commandsService
+export default companiesService

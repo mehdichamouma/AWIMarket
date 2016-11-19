@@ -1,31 +1,61 @@
 import express from "express"
-import { } from "../../services/users"
+import usersService from "../../services/users"
 
 let router = express.Router()
 
 router.get("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.getUsers()
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.post("/", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.createUser(req.body)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.get("/:userId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.getUser(req.params.userId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.put("/:userId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.updateUser(req.params.userId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 router.delete("/:userId", (req, res) => {
-  res.status(501)
-  .send("Not Implemented")
+  usersService.deleteUser(req.params.userId)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 export default router
