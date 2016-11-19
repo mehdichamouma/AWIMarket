@@ -1,26 +1,65 @@
 import getDB from "../../persistence"
-import uuid from "uuid"
 
 let companiesService = {}
 
 companiesService.getCompanies = () => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+  return getDB().getSellingCompanies()
+  .catch((error) => {
+    return Promise.reject({code:500, description:"Server error (persistence/db/getCompanies)"})
+  })
 }
 
-companiesService.createCompany = () => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+companiesService.createCompany = (data) => {
+  if(data.company != undefined) {
+    let p = data.company
+    if(p.userId != undefined && p.userId instanceof String &&
+      p.companyName != undefined && p.companyName instanceof String &&
+      p.siret != undefined && p.siret instanceof String
+      ) {
+      return getDB().createSellingCompany(p.userId, undefined, p.companyName, p.siret)
+      .catch((error) => {
+        return Promise.reject({code:500, description:"Server error (persistence/db/createCompany)"})
+      })
+    }
+  }
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
-companiesService.getCompany = (id) => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+companiesService.getCompany = (companyId) => {
+  if(companyId != undefined && companyId instanceof String)
+  {
+    return getDB().getSellingCompany(companyId)
+    .catch((error) => {
+      return Promise.reject({code:500, description:"Server error (persistence/db/getCompany)"})
+    })
+  }
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
-companiesService.updateCompany = (id) => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+companiesService.updateCompany = (companyId, data) => {
+  if(data.company != undefined) {
+    let p = data.company
+    if(p.companyName != undefined && p.companyName instanceof String &&
+      p.siret != undefined && p.siret instanceof String
+      ) {
+      return getDB().updateSellingCompany(companyId, p.companyName, p.siret)
+      .catch((error) => {
+        return Promise.reject({code:500, description:"Server error (persistence/db/createCompany)"})
+      })
+    }
+  }
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
-companiesService.getOrders = (id) => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+companiesService.getOrders = (companyId) => {
+  if(companyId != undefined && companyId instanceof String)
+  {
+    return getDB().getOrdersByCompanyId(companyId)
+    .catch((error) => {
+      return Promise.reject({code:500, description:"Server error (persistence/db/getOrders)"})
+    })
+  }
+  return Promise.reject({code:400, description:"Bad Request"})
 }
 
 export default companiesService

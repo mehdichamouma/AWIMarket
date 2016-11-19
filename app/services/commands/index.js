@@ -12,7 +12,10 @@ let productAllowStatus = [
 ]
 
 commandsService.getCommands = () => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+  return getDB().getCommands()
+  .catch((error) => {
+    return Promise.reject({code:500, description:"Server error (persistence/db/getCommands)"})
+  })
 }
 
 commandsService.createCommand = (data) => {
