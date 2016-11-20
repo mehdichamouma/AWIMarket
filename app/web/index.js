@@ -67,8 +67,11 @@ app.use(cookieParser())
 app.use(function (req, res, next) {
   if(req.headers.authorization) {
     req.user = decodeToken(req.headers.authorization)
-    console.log("Request from user : " + JSON.stringify(req.user))
   }
+  else {
+    req.user = null
+  }
+  console.log("Request from user : " + JSON.stringify(req.user))
   next()
 });
 
