@@ -1,4 +1,6 @@
 import express from "express"
+import bodyParser from "body-parser"
+
 import journals from "./journals.web"
 import auth from "./authentification.web"
 import users from "./users.web"
@@ -6,8 +8,13 @@ import products from "./products.web"
 import commands from "./commands.web"
 import notifications from "./notifications.web"
 import companies from "./companies.web"
+import medias from "./medias.web"
 
 let api = express.Router()
+
+api.use("/medias", medias)
+
+api.use(bodyParser.json());
 
 api.use("/journals", journals)
 api.use("/auth", auth)
