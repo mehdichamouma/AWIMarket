@@ -1,10 +1,10 @@
 <template>
   <div class="login-layout">
       <div class="row">
-          <div class="col s6">
+          <div class="col s12 m6">
             <img src="img/logo.png" alt="" class="logo"/>
           </div>
-          <div class="col s6">
+          <div class="col s12 m6">
               <router-view class="view"></router-view>
           </div>
       </div>

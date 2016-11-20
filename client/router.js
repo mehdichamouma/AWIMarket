@@ -15,6 +15,9 @@ import ManagePayments from "./Views/admin/ManagePayments.vue"
 import Cart from "./Views/Cart.vue"
 
 import store from "./store"
+
+import {me, setToken} from "./ApiClient"
+
 console.log(store.state);
 const router = new VueRouter({
   routes: [
@@ -53,12 +56,32 @@ router.beforeEach((to, from, next) => {
   console.log(to.meta.secure);
   let secure = to.matched.some(record => record.meta.secure)
   if(secure) {
+    console.log(store.state.user);
     if(store.state.user) {
       next()
     }
     else {
-      next('/login')
+      let token = store.state.token || localStorage.userToken
+      console.log("token", token);
+      if(token) {
+        console.log("...");
+        localStorage.userToken = token
+        setToken(token)
+        me().then((user) => {
+          store.setUserAction(user)
+          next()
+        })
+        .catch(e => {
+          console.error(e);
+          next('/login')
+        })
+      }
+      else {
+        next('/login')
+      }
     }
+
+
   }
   else {
     next()

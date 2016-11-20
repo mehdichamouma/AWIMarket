@@ -37,7 +37,7 @@
 
 <script>
 
-import {authenticate} from "../ApiClient"
+import {authenticate, setToken, me} from "../ApiClient"
 //import router from "../router"
 import store from "../store"
 
@@ -53,11 +53,12 @@ export default {
     changeText: function () {
       authenticate(this.email, this.password)
       .then((data) => {
-        store.setUserAction("abc")
+        let {token} = data
+        this.$root.store.setUserToken(token)
         this.$router.push({path: '/'})
-        this.error = data.token
       })
-      .catch(e => {
+      .catch(e =>{
+        console.error(e);
         this.error = "wrong email and password"
       })
     }
