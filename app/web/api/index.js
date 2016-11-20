@@ -10,6 +10,8 @@ import notifications from "./notifications.web"
 import companies from "./companies.web"
 import medias from "./medias.web"
 
+import usersService from "../../services/users"
+
 let api = express.Router()
 
 api.use("/medias", medias)
@@ -26,7 +28,10 @@ api.use("/companies", companies)
 
 api.get("/me", (req, res) => {
   if(req.user != null) {
-    res.status(200).json(req.user)
+    usersService.getUser(req.user.id)
+    .then((user) => {
+      res.status(200).json(user)
+    })
   }
   else {
     res.status(401).send("You are not log")

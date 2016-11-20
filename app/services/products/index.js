@@ -62,7 +62,7 @@ productsService.getProduct = (productId) => {
   return Promise.reject({code:400, description:"Bad Request"})
 }
 
-// Access : SellingComany
+// Access : SellingComany owner
 productsService.updateProduct = (productId, req) => {
   let data = req.body
   let user = req.user
@@ -91,6 +91,7 @@ productsService.updateProduct = (productId, req) => {
   return Promise.reject({code:401, description:"Unauthorized"})
 }
 
+// Access : SC owner
 productsService.deleteProduct = (req, productId) => {
   let user = req.user
   if(user != null && user.roles.includes("SELLING_COMPANY_OWNER")) {
@@ -110,37 +111,5 @@ productsService.deleteProduct = (req, productId) => {
   }
   return Promise.reject({code:401, description:"Unauthorized"})
 }
-
-/*
-// getProducts(keyWords)
-productsService.getProducts = (keyWords = null) => {
-  return Promise.reject({code:501, description:"Not Implemented"})
-}
-
-// getProductsAtPage(keyWords, page, nbProducts)
-productsService.getProductsAtPage = (keyWords = null, page, nbProducts) => {
-  return getDB().getProductsAtPage(keyWords, page, nbProducts)
-}
-
-// getProductsFromSeller(sellerId)
-productsService.getProductsFromSeller = (sellerId) => {
-  return getDB().getProductsFromSeller(sellerId)
-}
-
-// getProductsFromSellerAtPage(sellerId, page, nbProducts)
-productsService.getProductsFromSellerAtPage = (sellerId, page, nbProducts) => {
-  return getDB().getProductsFromSellerAtPage(sellerId, page, nbProducts)
-}
-
-// createProduct(sellerId, product)
-productsService.createProduct = (sellerId, product) => {
-  return getDB().createProduct(sellerId, product)
-}
-
-// updateProduct(product)
-productsService.updateProduct = (product) => {
-  return getDB().updateProduct(product)
-}
-*/
 
 export default productsService
