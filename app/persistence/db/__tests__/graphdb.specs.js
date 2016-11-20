@@ -299,6 +299,7 @@ describe("Graph db", () => {
           expect(data).to.have.all.keys(["order", "products", "owner"])
           expect(data.order).to.have.all.keys(orderKeys)
           expect(data.owner).to.have.all.keys(userKeys)
+          expect(data.products).to.have.a.lengthOf(2)
           data.products.forEach(row => {
             expect(row).to.have.all.keys(["product", "seller", "rowInfo"])
             expect(row.product).to.have.all.keys(productKeys),
