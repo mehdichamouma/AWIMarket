@@ -232,11 +232,11 @@ let notifications = [
     content: 'commande validee',
     type: 'for user',
     creationDate: new Date(2016,12,16),
-    readingDate: '',
+    readingDate:'',
   },
   {
     userId: "2",
-    id: "2",
+    id: "3",
     content: 'payement effectue',
     type: 'for user',
     creationDate: new Date(2016,11,16),
@@ -252,16 +252,16 @@ export default (dbUrl, verbose = false) => {
   initDb(dbUrl)
   return clearDb().then(() => {
     log(verbose, "database cleared");
-    return Promise.all(users.map(u => createUser(u.id, u.name, u.email, u.password, u.address, u.phone, u.birthday, u.is_admin)))
+    return Promise.all(users.map(u => createUser(u.id, u.name, u.email, u.password, u.address, u.phone, u.birthday, u.is_admin, u.profilePicture)))
   })
   .then(() => {
     log(verbose, "users created");
     log(verbose, "create selling companies");
-    return Promise.all(sellingCompany.map(sc => createSellingCompany(sc.userId, sc.id, sc.nameSc, sc.siret)))
+    return Promise.all(sellingCompany.map(sc => createSellingCompany(sc.userId, sc.id, sc.nameSc, sc.siret, sc.image)))
   })
   .then(() => {
     log(verbose, "create products");
-    return Promise.all(products.map(p => createProduct(p.idSc, p.id, p.Name, p.desc, p.price, p.quantity)))
+    return Promise.all(products.map(p => createProduct(p.idSc, p.id, p.Name, p.desc, p.price, p.quantity, p.image)))
     log(verbose, "products created");
   })
   .then(() => {

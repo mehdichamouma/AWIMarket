@@ -15,7 +15,6 @@ import {
   createEntry,
   createObjective,
   createNotification,
-  getNotification,
   readNotification,
   deleteSellingCompany,
   getSellingCompany,
@@ -23,7 +22,9 @@ import {
   getCompanySales,
   getProductsByKeywords,
   getOrders,
-  getOrder
+  getOrder,
+  getUserOrders,
+  getUserNotifications
 
 } from ".."
 import config from "../../../../config"
@@ -35,6 +36,7 @@ let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin
 let companyKeys = ["id", "nameSc", "siret", "image"]
 let productKeys = ["id", "Name" , "desc" , "price" , "quantity", "image"]
 let orderKeys = ["id","name"]
+let notificationsKeys= ["id","content","type","creationDate","readingDate"]
 
 let clean = () => populateDb(config.DB_TEST_URL)
 
@@ -90,7 +92,7 @@ describe("Graph db", () => {
 
     describe("createProduct", () => {
       it("should create a Product", () => {
-        return createProduct('1','1','bois','bois rouge',80, 100).then(data => {
+        return createProduct('1','1','bois','bois rouge',80, 100,'080a3a58-c3a9-46f3-9481-dc61704027dd.jpg').then(data => {
         })
       })
     })
@@ -106,7 +108,7 @@ describe("Graph db", () => {
 
     describe("createSellingCompany", () => {
       it("should create a SC", () => {
-        return createSellingCompany("1","1",'VachorCompany','ER5555E').then(data => {
+        return createSellingCompany("1","1",'VachorCompany','ER5555E','585b23a9-f185-4ab1-95c6-6ec94fe71462.jpg' ).then(data => {
           expect(data).to.have.all.keys(companyKeys)
         })
       })
@@ -116,7 +118,7 @@ describe("Graph db", () => {
 
     describe("createUser", () => {
       it("should create a user", () => {
-        return createUser("5",'nassim','nass@hotmail.fr','azerty','colombiere','','',false).then(data => {
+        return createUser("5",'nassim','nass@hotmail.fr','azerty','colombiere','','',false, '4119ea64-31c5-46ec-8743-c9ca9575637d.jpg').then(data => {
         })
 
       })
@@ -207,7 +209,15 @@ describe("Graph db", () => {
         return getUserOrders(userId).then(data => {
           expect(data).to.have.lengthOf(2)
           data.forEach(row => {
-            expect(row).to.have.all.keys(orderKeys)
+            expect(row).to.have.all.keys(["order", "products"])
+            expect(row.order).to.have.all.keys(orderKeys)
+            row.products.forEach(row => {
+              expect(row).to.have.all.keys(["product", "seller", "rowInfo"])
+              expect(row.product).to.have.all.keys(productKeys),
+              expect(row.rowInfo).to.have.all.keys(["quantity", "price"]),
+              expect(row.seller).to.have.all.keys(companyKeys)
+            })
+
           })
         })
       })
@@ -250,14 +260,6 @@ describe("Graph db", () => {
     })
 
     //NOTIFICATIONS
-
-    describe("getNotification", () => {
-      it("should get a Notification", () => {
-        return getNotification("1").then(data => {
-
-        })
-      })
-    })
 
     describe("getUserNotifications", () => {
       it("should get the user notifications", () => {

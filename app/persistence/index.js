@@ -39,6 +39,8 @@ let methods = [
   'getSimpleUsers',
   'getSimpleUser',
   'getUser',
+  'getUserOrders',
+  'getUserNotifications',
   'getCompanies',
   'getSellingCompany',
   'getCompanySales',
@@ -50,7 +52,6 @@ let methods = [
   'createEntry',
   'createObjective',
   'createNotification',
-  'getNotification',
   'readNotification',
 
 
