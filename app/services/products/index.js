@@ -22,7 +22,13 @@ productsService.getProductsByKeywords = (keywords) => {
   return Promise.reject({code:400, description:"Bad Request"})
 }
 
-productsService.createProducts = (data) => {
+productsService.createProducts = (req) => {
+  let data = req.body
+  let user = req.user
+  if(user != null && user.roles) {
+    console.log("User is log");
+  }
+
   if(data.product != undefined) {
     let p = data.product
     if(p.sellingCompany != undefined && p.sellingCompany instanceof String &&
