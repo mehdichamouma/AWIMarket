@@ -31,9 +31,9 @@ import populateDb from "../../../utils/populateDb"
 import {expect} from "chai"
 
 
-let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin"]
-let companyKeys = ["id", "nameSc", "siret"]
-let productKeys = ["id", "Name" , "desc" , "price" , "quantity"]
+let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin", "profilePicture"]
+let companyKeys = ["id", "nameSc", "siret", "image"]
+let productKeys = ["id", "Name" , "desc" , "price" , "quantity", "image"]
 let orderKeys = ["id","name"]
 
 let clean = () => populateDb(config.DB_TEST_URL)

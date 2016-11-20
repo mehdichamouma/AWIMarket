@@ -24,6 +24,7 @@ let users = [
     phone :"0658469285",
     birthday: new Date(1993,11,16),
     is_admin:true,
+    profilePicture: "4119ea64-31c5-46ec-8743-c9ca9575637d.jpg"
   },
   {
     id: "2",
@@ -34,6 +35,7 @@ let users = [
     phone :"0658469285",
     birthday: new Date(1992,11,16),
    is_admin:false,
+   profilePicture: "4119ea64-31c5-46ec-8743-c9ca9575637d.jpg"
   },
   {
     id: "3",
@@ -44,6 +46,7 @@ let users = [
      phone :"0658469285",
      birthday: new Date(1994,11,16),
     is_admin:false,
+    profilePicture: "4119ea64-31c5-46ec-8743-c9ca9575637d.jpg"
   },
 ]
 
@@ -53,12 +56,14 @@ let sellingCompany = [
     id: "1",
     nameSc: "company 1",
     siret: "abc",
+    image: "585b23a9-f185-4ab1-95c6-6ec94fe71462.jpg"
   },
   {
     userId: "2",
     id: "2",
     nameSc: "company 2",
     siret: "pma",
+    image: "585b23a9-f185-4ab1-95c6-6ec94fe71462.jpg"
   }
 ]
 let products = [
@@ -69,6 +74,7 @@ let products = [
     desc: "this is the product A1",
     price: 40,
     quantity: 20,
+    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg",
   },
   {
     idSc: "1",
@@ -77,6 +83,7 @@ let products = [
     desc: "this is the product A2",
     price: 30,
     quantity: 10,
+    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg"
   },
   {
     idSc: "1",
@@ -85,6 +92,7 @@ let products = [
     desc: "this is the product A3",
     price: 70,
     quantity: 0,
+    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg"
   },
   {
     idSc: "2",
@@ -93,6 +101,7 @@ let products = [
     desc: "this is the product B1",
     price: 10,
     quantity: 5,
+    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg",
   },
   {
     idSc: "2",
@@ -101,6 +110,7 @@ let products = [
     desc: "this is the product B2",
     price: 20,
     quantity: 50,
+    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg",
   },
 ]
 
