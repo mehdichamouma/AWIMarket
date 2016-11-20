@@ -218,6 +218,9 @@ describe("Graph db", () => {
     describe("getProduct", () => {
       it("should get a product", () => {
         return getProduct("1").then(data => {
+          expect(data).to.have.all.keys(['product', 'seller']),
+          expect(data.product).to.have.all.keys(productKeys),
+          expect(data.seller).to.have.all.keys(companyKeys)
 
         })
       })
