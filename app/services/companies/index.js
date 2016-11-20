@@ -12,12 +12,17 @@ companiesService.getCompanies = () => {
 companiesService.createCompany = (data) => {
   if(data.company != undefined) {
     let p = data.company
-    if(p.userId != undefined && p.userId instanceof String &&
-      p.companyName != undefined && p.companyName instanceof String &&
-      p.siret != undefined && p.siret instanceof String
+    console.log(p);
+    console.log(p.userId instanceof String);
+    if(p.userId != undefined && typeof p.userId == "string" &&
+      p.companyName != undefined && typeof p.companyName == "string" &&
+      p.siret != undefined && typeof p.siret == "string" &&
+      p.image != undefined && typeof p.image == "string"
       ) {
+        console.log("ok");
       return getDB().createSellingCompany(p.userId, undefined, p.companyName, p.siret)
       .catch((error) => {
+        console.log(error);
         return Promise.reject({code:500, description:"Server error (persistence/db/createCompany)"})
       })
     }

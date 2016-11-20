@@ -13,26 +13,26 @@ import io from "socket.io-client"
 const BASE_URI = config.API_BASE_URL
 let token
 
-export const setToken = (token) => token = token
+export const setToken = (t) => token = t
 
 const request = (endpoint, ...params) => {
   let url = urlJoin(BASE_URI, "api", endpoint)
+  let requestHeaders = {}
   let [userOptions = {}, ...otherParams] = params
   let {headers = {}, ...otherOptions} = userOptions
-  let secureHeaders = {}
   if(token) {
-    secureHeaders = {
-      'Authorization': token
-    }
+    requestHeaders["Authorization"] = token
   }
-  let options = {
-    ...otherOptions,
-    headers: {
-      ...secureHeaders,
-      ...headers
-    }
+  let options = Object.assign({}, otherOptions)
+
+  if(!(otherOptions.body instanceof FormData)) {
+    requestHeaders["Content-Type"] = "application/json"
+    options.body = JSON.stringify(otherOptions.body)
   }
-  console.log(options);
+
+  Object.assign(options, {headers: requestHeaders})
+
+
   return fetch(url, options, ...otherParams)
 }
 
@@ -118,6 +118,24 @@ export const me = () => {
         }
       },
     ]
+  })
+}
+
+export const upload = (file) => {
+  let formData = new FormData()
+  formData.append("media", file)
+  return request("medias", {
+    method: 'POST',
+    body: formData
+  })
+  .then((res) => res.json())
+}
+
+export const createCompany = (data) => {
+  console.log(data);
+  return request("companies", {
+    method: 'POST',
+    body: data
   })
 }
 // new async await

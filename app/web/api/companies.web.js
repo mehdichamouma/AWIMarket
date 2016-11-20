@@ -15,7 +15,13 @@ router.get("/", (req, res) => {
 })
 
 router.post("/", (req, res) => {
-  companiesService.createCompany()
+  let data = {}
+  console.log(req.body);
+  data.company = {
+    userId: String(req.user.id),
+    ...req.body
+  }
+  companiesService.createCompany(data)
   .then((result) => {
     res.status(200).json(result)
   })

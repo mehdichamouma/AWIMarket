@@ -6,6 +6,11 @@
           <router-link to="/" class="brand-logo deep-orange-text left hide-on-small-only"><img src="img/logo.png" class="menu-logo"/></router-link>
           <ul class="right">
             <li>
+              <router-link to="/createCompany" class="deep-orange-text">
+                Create your company
+              </router-link>
+            </li>
+            <li>
               <router-link to="/admin" class="deep-orange-text">Administration</router-link>
             <li>
               <router-link to="/cart" class="deep-orange-text">
