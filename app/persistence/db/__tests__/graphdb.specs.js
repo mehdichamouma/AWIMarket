@@ -299,8 +299,8 @@ describe("Graph db", () => {
           data.products.forEach(row => {
             expect(row).to.have.all.keys(["product", "seller", "rowInfo"])
             expect(row.product).to.have.all.keys(productKeys),
-            expect(row.product).to.have.all.keys(["quantity", "price"]),
-            expect(row.product).to.have.all.keys(companyKeys)
+            expect(row.rowInfo).to.have.all.keys(["quantity", "price"]),
+            expect(row.seller).to.have.all.keys(companyKeys)
           })
         })
       })

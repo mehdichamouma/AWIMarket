@@ -390,31 +390,23 @@ export const createCommand = (userId, id, products) => {
 // or reject with the error code
 export const getOrder = (orderId) => {
     return cypher ( {
-      query : `MATCH (c:Command)-[h:HAS]->(p:Product)
-               WHERE c.id = {orderId}
-               match (sc:SellingCompany)-[:SELL]->(p)
-               match (u:User)-[DO]->(c)
-              return u, c, collect(p) as products, collect(h) as rowInfo, collect(sc) as seller`,
+      query : `
+        MATCH (c:Command)-[h:HAS]->(p:Product)
+        WHERE c.id = "1"
+        MATCH (sc:SellingCompany)-[:SELL]->(p)
+        MATCH (u:User)-[DO]->(c)
+        RETURN u as owner, c as order, collect({rowInfo: h, product: p, seller: sc}) as products
+      `,
       params: {
           orderId: orderId,
-       },
+      },
+      lean: true
      }
   ).then(res => {
-    if (res.length < 1) {
-      throw new Error('Command not found')
-    }
-    else {
-      return {
-         owner: omit(res[0].u.properties,'password'),
-         order: res[0].c.properties,
-         products: zip (
-                  {
-                  product: res[0].products.map(x => x.properties),
-                  rowInfo: res[0].rowInfo.map(x => x.properties),
-                  seller: res[0].seller.map(x => x.properties)
-                }
-                )
-      }
+    return {
+      owner: omit(res[0].owner, 'password'),
+      order: res[0].order,
+      products: res[0].products
     }
   })
 }
