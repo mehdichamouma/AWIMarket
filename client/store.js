@@ -3,6 +3,7 @@ export default {
     message: 'Hello!',
     isConnected: false,
     user: null,
+    token: null,
     cart: {
       content: []
     }
@@ -21,5 +22,8 @@ export default {
   },
   cartRemoveProduct(index) {
     this.state.cart.content.splice(index, 1)
+  },
+  setUserToken(token) {
+    this.state.token = token
   }
 }

@@ -17,4 +17,13 @@ api.use("/orders", commands)
 api.use("/notifications", notifications)
 api.use("/companies", companies)
 
+api.get("/me", (req, res) => {
+  if(req.user != null) {
+    res.status(200).json(req.user)
+  }
+  else {
+    res.status(401).send("You are not log")
+  }
+})
+
 export default api

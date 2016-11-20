@@ -22,6 +22,11 @@
                 <span class=" new badge" data-badge-caption="notifications">4</span>
               </a>
             </li>
+            <li>
+              <a v-on:click="logout" class="grey-text text-ligthen-3">
+                <i class="material-icons">exit_to_app</i>
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -47,7 +52,7 @@
 
 <script>
 import io from "socket.io-client"
-import {getNotificationSocket} from "../ApiClient"
+import {getNotificationSocket, setToken} from "../ApiClient"
 
 export default {
   data: function() {
@@ -59,6 +64,13 @@ export default {
     toggleNotifications: function () {
       console.log("ok");
       this.showNotifications = !this.showNotifications
+    },
+    logout() {
+      setToken(null)
+      this.$root.store.setUserAction(null)
+      this.$root.store.setUserToken(null)
+      localStorage.removeItem("userToken")
+      this.$router.push("/login")
     }
   },
   created() {

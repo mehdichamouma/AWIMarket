@@ -13,8 +13,27 @@ import io from "socket.io-client"
 const BASE_URI = config.API_BASE_URL
 let token
 
+export const setToken = (token) => token = token
+
 const request = (endpoint, ...params) => {
-  return fetch(urlJoin(BASE_URI, "api", endpoint), ...params)
+  let url = urlJoin(BASE_URI, "api", endpoint)
+  let [userOptions = {}, ...otherParams] = params
+  let {headers = {}, ...otherOptions} = userOptions
+  let secureHeaders = {}
+  if(token) {
+    secureHeaders = {
+      'Authorization': token
+    }
+  }
+  let options = {
+    ...otherOptions,
+    headers: {
+      ...secureHeaders,
+      ...headers
+    }
+  }
+  console.log(options);
+  return fetch(url, options, ...otherParams)
 }
 
 export const fetchUserJournals = (userId) => {
@@ -70,6 +89,37 @@ export const getNotificationSocket = () => {
     return notificationSocket
 }
 
+export const me = () => {
+  return Promise.resolve({
+    user: {
+
+    },
+    company: {
+
+    },
+    roles: ['ADMIN', 'SELLING_COMPANY_OWNER'],
+    notifications: [
+      {
+        type: 'ABC',
+        payload: {
+          'a': 'b'
+        }
+      },
+      {
+        type: 'ABC',
+        payload: {
+          'a': 'b'
+        }
+      },
+      {
+        type: 'ABC',
+        payload: {
+          'a': 'b'
+        }
+      },
+    ]
+  })
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {
