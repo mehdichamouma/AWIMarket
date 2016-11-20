@@ -48,7 +48,7 @@ router.put("/:productId", (req, res) => {
 })
 
 router.delete("/:productId", (req, res) => {
-  productsService.deleteProduct(req.params.productId)
+  productsService.deleteProduct(req, req.params.productId)
   .then((result) => {
     res.status(200).json(result)
   })

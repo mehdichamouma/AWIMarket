@@ -1,27 +1,41 @@
 <template>
   <div>
     <div class="card-panel white lighten-5 truncate">
-      <span class="title">Connexion</span><br>
+      <span class="title">Subscribe</span><br>
       <span class="red-text">{{error}}</span>
+      </div>
+        <div class="card-panel white lighten-5">
+        <div class="row">
+        <form class="col s12">
+         <div class="row">
+           <div class="input-field col s12 m12 l6">
+             <i class="material-icons prefix">account_circle</i>
+             <input id="icon_prefix" type="text" class="validate">
+             <label for="icon_prefix">First Name</label>
+           </div>
+           <div class="input-field col s12 m12 l6">
+             <i class="material-icons prefix">email</i>
+             <input id="icon_prefix" type="text" class="validate">
+             <label for="icon_prefix">Email</label>
+           </div>
+           <div class="input-field col s12 m12 l6">
+             <i class="material-icons prefix">vpn_key</i>
+             <input id="icon_prefix" type="text" class="validate">
+             <label for="icon_prefix">Password</label>
+           </div>
+           <div class="input-field col s6 m12 l6">
+             <i class="material-icons prefix">phone</i>
+             <input id="icon_telephone" type="tel" class="validate">
+             <label for="icon_telephone">Telephone</label>
+           </div>
+         </div>
+        </form>
     </div>
-    <div class="card-panel white lighten-5">
-          <div class="row">
-            <div class="input-field col s12">
-              <input id="email" type="email" class="validate" v-model="email">
-              <label for="email">Email</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <input id="password" type="password" class="validate" v-model="password">
-              <label for="password">Password</label>
-            </div>
-          </div>
 
           <div class="right-align">
               <div>
-                  <div class="row">
-                    <button class="btn waves-effect waves-light red darken-2" type="submit" v-on:click="changeText">Connexion
+                  <div class="row" >
+                    <button class="btn waves-effect waves-light green accent-3 darken-2 col s6 offset-s3"  type="submit" v-on:click="changeText">Sign Up
                       <i class="material-icons right">send</i>
                     </button>
                   </div>

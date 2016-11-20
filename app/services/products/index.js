@@ -30,7 +30,6 @@ productsService.createProducts = (req) => {
   let data = req.body
   let user = req.user
   if(user != null && user.roles.includes("SELLING_COMPANY_OWNER")) {
-
     if(data.product) {
       let p = data.product
       if(typeof p.name == "string" &&
@@ -47,7 +46,6 @@ productsService.createProducts = (req) => {
         })
       }
     }
-    console.log("ici");
     return Promise.reject({code:400, description:"Bad Request"})
   }
   return Promise.reject({code:401, description:"Unauthorized"})
@@ -69,27 +67,22 @@ productsService.updateProduct = (productId, req) => {
   let data = req.body
   let user = req.user
   if(user != null && user.roles.includes("SELLING_COMPANY_OWNER")) {
-    if(productId instanceof String && data.product != undefined) {
+    if(typeof productId == "string" && data.product != undefined) {
       let p = data.product
-      if(p.name != undefined && p.name instanceof String &&
-          p.description != undefined && p.description instanceof String &&
-          p.price != undefined && p.price instanceof Number &&
-          p.quantity != undefined && p.quantity instanceof Number
-        ) {
-          return getDB().getUser(user.id)
-          .then((result) => {
-            return getDB().getProduct(productId)
-            .then((product) => {
-              if(product.id == result.company.id) {
-                return getDB().updateProduct(result.company.id, productId, p.name, p.description, p.price, p.quantity)
-                .catch((error) => {
-                  return Promise.reject({code:500, description:"Server error"})
-                })
-              }
-            })
+      if(typeof p.name == "string" &&
+          typeof p.description == "string" &&
+          typeof p.price == "number" &&
+          typeof p.quantity == "number"
+      ){
+        return getDB().getUser(user.id)
+        .then((result) => {
+          return getDB().getProduct(productId)
+          .then((product) => {
+            if(product.seller.id == result.company.id) {
+              return getDB().updateProduct(result.company.id, productId, p.name, p.description, p.price, p.quantity)
+            }
+            return Promise.reject({code:400, description:"You are not the owner of this product"})
           })
-        .catch((error) => {
-          return Promise.reject({code:500, description:"Server error"})
         })
       }
     }
@@ -98,14 +91,24 @@ productsService.updateProduct = (productId, req) => {
   return Promise.reject({code:401, description:"Unauthorized"})
 }
 
-productsService.deleteProduct = (productId) => {
-  if(productId instanceof String) {
-    return getDB().deleteProduct(productId)
-    .catch((error) => {
-      return Promise.reject({code:500, description:"Server error"})
-    })
+productsService.deleteProduct = (req, productId) => {
+  let user = req.user
+  if(user != null && user.roles.includes("SELLING_COMPANY_OWNER")) {
+    if(typeof productId == "string") {
+      return getDB().getUser(user.id)
+      .then((result) => {
+        return getDB().getProduct(productId)
+        .then((product) => {
+          if(product.seller.id == result.company.id) {
+            return getDB().deleteProduct(productId)
+          }
+          return Promise.reject({code:400, description:"You are not the owner of this product"})
+        })
+      })
+    }
+    return Promise.reject({code:400, description:"Bad Request"})
   }
-  return Promise.reject({code:400, description:"Bad Request"})
+  return Promise.reject({code:401, description:"Unauthorized"})
 }
 
 /*

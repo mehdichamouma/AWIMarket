@@ -20,7 +20,7 @@ companiesService.createCompany = (data) => {
       p.image != undefined && typeof p.image == "string"
       ) {
         console.log("ok");
-      return getDB().createSellingCompany(p.userId, undefined, p.companyName, p.siret)
+      return getDB().createSellingCompany(p.userId, undefined, p.companyName, p.siret, p.image)
       .catch((error) => {
         console.log(error);
         return Promise.reject({code:500, description:"Server error (persistence/db/createCompany)"})

@@ -26,7 +26,7 @@
                     </button>
                   </div>
                   <div class="row">
-                  <router-link class="grey-text darken-4" to="login/new">Pas encore de compte ? Cliquez ici pour vous inscrire</router-link>
+                  <router-link class="grey-text darken-4" to="/login/new">Pas encore de compte ? Cliquez ici pour vous inscrire</router-link>
                   </div>
               </div>
           </div>
