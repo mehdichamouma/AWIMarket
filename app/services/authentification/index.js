@@ -11,8 +11,8 @@ export const authenticate = (email, password) => {
   .then((data) => {
     console.log(data);
     let roles = []
-    roles.isAdmin && roles.push("ADMIN")
-    roles.hasCompany && roles.push("SELLING_COMPANY_OWNER")
+    data.isAdmin && roles.push("ADMIN")
+    data.hasCompany && roles.push("SELLING_COMPANY_OWNER")
     return jwt.sign({
       id: data.userId,
       email: data.email,

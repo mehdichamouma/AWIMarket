@@ -37,7 +37,7 @@ router.get("/:productId", (req, res) => {
 })
 
 router.put("/:productId", (req, res) => {
-  productsService.updateProduct(req.params.productId)
+  productsService.updateProduct(req.params.productId, req)
   .then((result) => {
     res.status(200).json(result)
   })
