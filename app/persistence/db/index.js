@@ -33,7 +33,7 @@ export const clearDb = () => cypher({
           DETACH DELETE n`
 })
 
-export const createUser = (id, name, email, password, address, phone, birthday, is_admin) => cypher({
+export const createUser = (id, name, email, password, address, phone, birthday, is_admin, profilePicture) => cypher({
   query : `CREATE (t:User {
                        id:{id},
                        name:{name},
@@ -42,7 +42,8 @@ export const createUser = (id, name, email, password, address, phone, birthday, 
                        address:{address},
                        phone:{phone},
                        birthday:{birthday},
-                       is_admin: {is_admin}
+                       is_admin: {is_admin},
+                       profilePicture: {profilePicture}
                      })
                      return t`,
   params: {
@@ -54,6 +55,7 @@ export const createUser = (id, name, email, password, address, phone, birthday, 
       phone: phone,
       birthday: birthday,
       is_admin:is_admin,
+      profilePicture: profilePicture,
    },
 })
 // return a Promise which approve with the good user
@@ -146,13 +148,14 @@ export const getUserByCredentials = (email, password) => {
   })
 }
 
-export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
+export const createSellingCompany = (userId, id, nameSc, siret,image) => cypher({
   query : `MATCH (u:User)
             WHERE u.id = {userId}
             CREATE(sc:SellingCompany {
               id:{id},
               nameSc:{nameSc},
-              siret:{siret}
+              siret:{siret},
+              image:{image}
             }
           )
 
@@ -164,6 +167,7 @@ export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
       id: generateId(id),
       nameSc: nameSc,
       siret: siret,
+      image:image,
    },
 }).then(res => {
   return res[0].sc.properties
@@ -267,7 +271,7 @@ export const getCompanies = () => {
   })
 }
 
-export const createProduct = (idSc, id, name, desc, price, quantity) => cypher({
+export const createProduct = (idSc, id, name, desc, price, quantity, image) => cypher({
   query : `MATCH (sc:SellingCompany)
           WHERE sc.id = {idSc}
           CREATE (p:Product {
@@ -275,7 +279,8 @@ export const createProduct = (idSc, id, name, desc, price, quantity) => cypher({
                        Name:{Name},
                        desc:{desc},
                        price:{price},
-                       quantity:{quantity}
+                       quantity:{quantity},
+                       image: {image}
                      })
         CREATE (sc)-[sell:SELL]->(p)
         RETURN sell`,
@@ -286,6 +291,7 @@ export const createProduct = (idSc, id, name, desc, price, quantity) => cypher({
       desc: desc,
       price: price,
       quantity: quantity,
+      image:image,
    },
 })
 
@@ -395,7 +401,7 @@ export const getOrder = (orderId) => {
     return cypher ( {
       query : `
         MATCH (c:Command)-[h:HAS]->(p:Product)
-        WHERE c.id = "1"
+        WHERE c.id = {orderId}
         MATCH (sc:SellingCompany)-[:SELL]->(p)
         MATCH (u:User)-[DO]->(c)
         RETURN u as owner, c as order, collect({rowInfo: h, product: p, seller: sc}) as products
@@ -443,8 +449,55 @@ export const getOrders= () => {
   })
 }
 
+export const getUserOrders= (userId) => {
+    return cypher ( {
+      query : ` MATCH (u:User)-[DO]->(c)
+                WHERE u.id = {userId}
+                MATCH (c:Command)-[h:HAS]->(p:Product)
+                MATCH (sc:SellingCompany)-[:SELL]->(p)
+                RETURN c as order, collect({rowInfo: h, product: p, seller: sc})  as products`,
+                params:{
+                  userId:userId
+                },
+                lean: true
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('No command')
+    }
+    else {
 
+      return res.map(row => {
+                return {
+                  order: res[0].order,
+                  products: res[0].products
+                }
+              })
+    }
+  })
+}
+export const getUserNotifications= (userId) => {
+    return cypher ( {
+      query : ` MATCH (n:Notification)-[concern]->(u:User)
+                WHERE u.id = {userId}
+                RETURN n`,
+                params:{
+                  userId:userId
+                },
+                lean: true
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('No command')
+    }
+    else {
 
+      return res.map(row => {
+                return  row.n
+              })
+    }
+  })
+}
 // create a new journal
 // if the create works then it approve with the created journal
 // else it will reject with an error in parameter
@@ -574,7 +627,7 @@ export const createEntry = (journalId, id, description, ressourceType, ressource
         return res;
       }
     })
-export const createNotification = (userId, id, content, type) => {
+export const createNotification = (userId, id, content, type, creationDate, readingDate) => {
   console.log(content);
   console.log(JSON.stringify(content));
   return cypher({
@@ -585,7 +638,8 @@ export const createNotification = (userId, id, content, type) => {
               id: {id},
               content: {content},
               type: {type},
-              creationDate: {creationDate}
+              creationDate: {creationDate},
+              readingDate: {readingDate}
             })
             CREATE((n)-[r:concern]->(u))
             RETURN n`,
@@ -594,7 +648,8 @@ export const createNotification = (userId, id, content, type) => {
         id: generateId(id),
         content: JSON.stringify(content),
         type: type,
-        creationDate: new Date(),
+        creationDate: creationDate || new Date(),
+        readingDate:readingDate
       }
     })
     .then(res => {
@@ -607,24 +662,6 @@ export const createNotification = (userId, id, content, type) => {
   })
 }
 
-      export const getNotification = (notifId) => {
-          return cypher ( {
-            query : `MATCH (n:Notification)
-                      WHERE n.id = {notifId}
-                    return n`,
-            params: {
-                notifId: notifId,
-             },
-           }
-        ).then(res => {
-          if (res.length < 1) {
-            throw new Error('Notification not found')
-          }
-          else {
-           return res
-          }
-        })
-      }
       export const readNotification = (notifId) => {
           return cypher ( {
             query : `MATCH (n:Notification)
