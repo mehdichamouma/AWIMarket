@@ -30,13 +30,13 @@ productsService.createProducts = (req) => {
   let data = req.body
   let user = req.user
   if(user != null && user.roles.includes("SELLING_COMPANY_OWNER")) {
-    if(data.product != undefined) {
+
+    if(data.product) {
       let p = data.product
-      if(p.sellingCompany != undefined && p.sellingCompany instanceof String &&
-          p.name != undefined && p.name instanceof String &&
-          p.description != undefined && p.description instanceof String &&
-          p.price != undefined && p.price instanceof Number &&
-          p.quantity != undefined && p.quantity instanceof Number
+      if(typeof p.name == "string" &&
+          typeof p.description == "string" &&
+          typeof p.price == "number" &&
+          typeof p.quantity == "number"
         ) {
         return getDB().getUser(user.id)
         .then((result) => {
@@ -47,6 +47,7 @@ productsService.createProducts = (req) => {
         })
       }
     }
+    console.log("ici");
     return Promise.reject({code:400, description:"Bad Request"})
   }
   return Promise.reject({code:401, description:"Unauthorized"})

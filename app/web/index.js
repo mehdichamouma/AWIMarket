@@ -11,7 +11,6 @@
 //ExpressJS
 import express from "express"
 import {Server} from "http"
-import bodyParser from "body-parser"
 import cookieParser from "cookie-parser"
 
 //API endpoints
@@ -59,8 +58,6 @@ configureDbService([graphDb, fake])
 //REST API configuration
 
 //Accept JSON
-
-app.use(bodyParser.json());
 app.use(cookieParser())
 
 // middleware to create the user
