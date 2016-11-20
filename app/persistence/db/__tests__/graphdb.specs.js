@@ -189,7 +189,6 @@ describe("Graph db", () => {
     describe("getUser", () => {
       it("should get a user with sc", () => {
         return getUser("1").then(data => {
-          console.log(data);
           expect(data).to.have.all.keys(["user", "journals", "nbCommands","hasCompany","company"])
           expect(data.journals).to.have.lengthOf(3)
         })
@@ -275,11 +274,14 @@ describe("Graph db", () => {
         return getOrders().then(data => {
           expect(data).to.have.lengthOf(3)
           data.forEach(row => {
-            expect(row).to.have.all.keys(["order", "products", "owner"])
+            expect(row).to.have.all.keys(["order", "products", "owner", "rowInfo"])
             expect(row.owner).to.have.all.keys(userKeys)
             expect(row.order).to.have.all.keys(orderKeys)
             row.products.forEach(row => {
               expect(row).to.have.all.keys(productKeys)
+            })
+            row.rowInfo.forEach(row => {
+              expect(row).to.have.all.keys(["quantity", "price"])
             })
           })
         })
@@ -289,14 +291,16 @@ describe("Graph db", () => {
 
     describe("getOrder", () => {
       it("should get the order", () => {
-        let orderId = 1
+        let orderId = "1"
         return getOrder(orderId).then(data => {
           expect(data).to.have.all.keys(["order", "products", "owner"])
           expect(data.order).to.have.all.keys(orderKeys)
           expect(data.owner).to.have.all.keys(userKeys)
           data.products.forEach(row => {
-            expect(row).to.have.all.keys(["product", "seller", ""])
-            expect(product).to.have.all.keys(productKeys)
+            expect(row).to.have.all.keys(["product", "seller", "rowInfo"])
+            expect(row.product).to.have.all.keys(productKeys),
+            expect(row.product).to.have.all.keys(["quantity", "price"]),
+            expect(row.product).to.have.all.keys(companyKeys)
           })
         })
       })

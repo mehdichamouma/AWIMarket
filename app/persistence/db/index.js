@@ -2,6 +2,7 @@ import neo4j from 'neo4j'
 import promisify from "es6-promisify"
 import passwordHash from 'password-hash'
 import {omit} from 'lodash'
+import {zip} from 'lodash'
 import uuid from "uuid"
 
 let db
@@ -387,14 +388,15 @@ export const createCommand = (userId, id, products) => {
 
 // return a Promise which approve with the good command
 // or reject with the error code
-export const getOrder = (commandId) => {
+export const getOrder = (orderId) => {
     return cypher ( {
-      query : `MATCH (c:Command)-[:HAS]->(p:Product)
-               WHERE c.id = {commandId}
+      query : `MATCH (c:Command)-[h:HAS]->(p:Product)
+               WHERE c.id = {orderId}
+               match (sc:SellingCompany)-[:SELL]->(p)
                match (u:User)-[DO]->(c)
-              return c`,
+              return u, c, collect(p) as products, collect(h) as rowInfo, collect(sc) as seller`,
       params: {
-          commandId: commandId,
+          orderId: orderId,
        },
      }
   ).then(res => {
@@ -402,15 +404,25 @@ export const getOrder = (commandId) => {
       throw new Error('Command not found')
     }
     else {
-    return res
+      return {
+         owner: omit(res[0].u.properties,'password'),
+         order: res[0].c.properties,
+         products: zip (
+                  {
+                  product: res[0].products.map(x => x.properties),
+                  rowInfo: res[0].rowInfo.map(x => x.properties),
+                  seller: res[0].seller.map(x => x.properties)
+                }
+                )
+      }
     }
   })
 }
 export const getOrders= () => {
     return cypher ( {
-      query : `MATCH (c:Command)-[:HAS]->(p:Product)
-                match (u:User)-[DO]->(c)
-                return u, c, collect(p) as products`,
+      query : `MATCH (c:Command)-[h:HAS]->(p:Product)
+               match (u:User)-[DO]->(c)
+                return u, c, collect(p) as products, collect(h) as rowInfo`,
      }
   ).then(res => {
     if (res.length < 1) {
@@ -422,7 +434,8 @@ export const getOrders= () => {
                 return {
                    owner: omit(row.u.properties,'password'),
                    order: row.c.properties,
-                   products: row.products.map(x => x.properties)
+                   products: row.products.map(x => x.properties),
+                   rowInfo: row.rowInfo.map(x => x.properties)
                 }
               })
     }
