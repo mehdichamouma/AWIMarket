@@ -61,10 +61,10 @@ export const getUser = (userId) => {
     return cypher ( {
       query : `MATCH (u:User)
                WHERE u.id = {userId}
+                OPTIONAL MATCH (u:User)-[h:HAS]->(sc:SellingCompany)
                	OPTIONAL MATCH (u:User)-[r]-(j:Journal)
                 OPTIONAL MATCH (u:User)-[m]-(c:Command)
-                return u, collect(j) as journals , count (c) as nbCommands
-              `,
+                return u, sc, collect( DISTINCT j) as journals , count (c) as nbCommands`,
       params: {
           userId: userId,
        },
@@ -74,13 +74,25 @@ export const getUser = (userId) => {
       throw new Error('user not found')
     }
     else {
-
+      let hasCompany = res[0].sc != null
+      if (hasCompany){
       return {
         user: omit(res[0].u.properties,'password'),
         journals: res[0].journals.map(x => x.properties),
-        nbCommands: res[0].nbCommands
+        nbCommands: res[0].nbCommands,
+        hasCompany,
+        company: res[0].sc.properties
 
       }
+    }
+    else {
+      return {
+        user: omit(res[0].u.properties,'password'),
+        journals: res[0].journals.map(x => x.properties),
+        nbCommands: res[0].nbCommands,
+        hasCompany
+      }
+    }
     }
   })
 }
@@ -103,13 +115,28 @@ export const getUserByCredentials = (email, password) => {
       if (passwordHash.verify(password, res[0].u.properties.password)){
 
         let hasCompany = res[0].sc != null
-        return {
-          email: email,
-          userId: res[0].u.properties.id,
-          name : res[0].u.properties.name,
-          hasCompany,
-          is_admin: false
+        if (hasCompany) {
+          return {
+            email: email,
+            userId: res[0].u.properties.id,
+            name : res[0].u.properties.name,
+            hasCompany,
+            company : res[0].sc.properties,
+            is_admin: false
+          }
+
         }
+        else {
+          return {
+            email: email,
+            userId: res[0].u.properties.id,
+            name : res[0].u.properties.name,
+            hasCompany,
+            is_admin: false
+          }
+
+        }
+
       }
       else {
           throw new Error('wrong password')
@@ -117,8 +144,6 @@ export const getUserByCredentials = (email, password) => {
     }
   })
 }
-
-
 
 export const createSellingCompany = (userId, id, nameSc, siret) => cypher({
   query : `MATCH (u:User)
@@ -233,8 +258,8 @@ export const getCompanies = () => {
 
       return res.map(row => {
                 return {
-                   company: row.sc.properties,
-                   owner: omit(row.u.properties,'password')
+                    company: row.sc.properties,
+                    owner: omit(row.u.properties,'password')
                 }
               })
     }
@@ -362,10 +387,11 @@ export const createCommand = (userId, id, products) => {
 
 // return a Promise which approve with the good command
 // or reject with the error code
-export const getCommand = (commandId) => {
+export const getOrder = (commandId) => {
     return cypher ( {
-      query : `MATCH (c:Command)
-                WHERE c.id = {commandId}
+      query : `MATCH (c:Command)-[:HAS]->(p:Product)
+               WHERE c.id = {commandId}
+               match (u:User)-[DO]->(c)
               return c`,
       params: {
           commandId: commandId,
@@ -382,15 +408,23 @@ export const getCommand = (commandId) => {
 }
 export const getOrders= () => {
     return cypher ( {
-      query : `MATCH (c:Command)
-               return c`,
+      query : `MATCH (c:Command)-[:HAS]->(p:Product)
+                match (u:User)-[DO]->(c)
+                return u, c, collect(p) as products`,
      }
   ).then(res => {
     if (res.length < 1) {
       throw new Error('Command not found')
     }
     else {
-    return res
+
+      return res.map(row => {
+                return {
+                   owner: omit(row.u.properties,'password'),
+                   order: row.c.properties,
+                   products: row.products.map(x => x.properties)
+                }
+              })
     }
   })
 }

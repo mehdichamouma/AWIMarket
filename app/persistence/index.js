@@ -55,6 +55,7 @@ let methods = [
 
 
   'getOrders',
+  'getOrder',
   'getJournalsByUser',
   'getProducts',
   'getProduct',

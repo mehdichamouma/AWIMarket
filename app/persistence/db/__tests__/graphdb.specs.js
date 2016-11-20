@@ -22,7 +22,8 @@ import {
   getCompanies,
   getCompanySales,
   getProductsByKeywords,
-  getOrders
+  getOrders,
+  getOrder
 
 } from ".."
 import config from "../../../../config"
@@ -33,7 +34,7 @@ import {expect} from "chai"
 let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin"]
 let companyKeys = ["id", "nameSc", "siret"]
 let productKeys = ["id", "Name" , "desc" , "price" , "quantity"]
-let orderKeys = ["id","products"]
+let orderKeys = ["id","name"]
 
 let clean = () => populateDb(config.DB_TEST_URL)
 
@@ -174,21 +175,29 @@ describe("Graph db", () => {
       it("should get a user with sc", () => {
         return getUserByCredentials('mehdi@gmail.com', 'azerty').then(data => {
           expect(data.hasCompany).to.be.true
-          expect(data).to.have.all.keys(['hasCompany', 'is_admin', 'name', 'userId', 'email'])
+          expect(data).to.have.all.keys(['hasCompany', 'is_admin', 'name', 'userId', 'email', 'company'])
         })
       })
       it("should get a user without sc", () => {
         return getUserByCredentials('arnaud@gmail.com', 'azerty').then(data => {
+          expect(data).to.have.all.keys(['hasCompany', 'is_admin', 'name', 'userId', 'email'])
           expect(data.hasCompany).to.be.false
         })
       })
     })
 
     describe("getUser", () => {
-      it("should get a user", () => {
+      it("should get a user with sc", () => {
         return getUser("1").then(data => {
-          expect(data).to.have.all.keys(["user", "journals", "nbCommands"])
+          console.log(data);
+          expect(data).to.have.all.keys(["user", "journals", "nbCommands","hasCompany","company"])
           expect(data.journals).to.have.lengthOf(3)
+        })
+      })
+      it("should get a user without sc", () => {
+        return getUser("3").then(data => {
+          expect(data).to.have.all.keys(["user", "journals", "nbCommands","hasCompany"])
+          expect(data.journals).to.have.lengthOf(1)
         })
       })
     })
@@ -266,7 +275,12 @@ describe("Graph db", () => {
         return getOrders().then(data => {
           expect(data).to.have.lengthOf(3)
           data.forEach(row => {
-            expect(row).to.have.all.keys(orderKeys)
+            expect(row).to.have.all.keys(["order", "products", "owner"])
+            expect(row.owner).to.have.all.keys(userKeys)
+            expect(row.order).to.have.all.keys(orderKeys)
+            row.products.forEach(row => {
+              expect(row).to.have.all.keys(productKeys)
+            })
           })
         })
 
@@ -276,7 +290,7 @@ describe("Graph db", () => {
     describe("getOrder", () => {
       it("should get the order", () => {
         let orderId = 1
-        return getOrder().then(data => {
+        return getOrder(orderId).then(data => {
           expect(data).to.have.all.keys(["order", "products", "owner"])
           expect(data.order).to.have.all.keys(orderKeys)
           expect(data.owner).to.have.all.keys(userKeys)
