@@ -406,31 +406,37 @@ export const getOrder = (orderId) => {
       lean: true
      }
   ).then(res => {
-    return {
-      owner: omit(res[0].owner, 'password'),
-      order: res[0].order,
-      products: res[0].products
+    if (res.length < 1) {
+      throw new Error('Command not found')
     }
+    else {
+      return {
+        owner: omit(res[0].owner, 'password'),
+        order: res[0].order,
+        products: res[0].products
+      }
+  }
   })
 }
 export const getOrders= () => {
     return cypher ( {
-      query : `MATCH (c:Command)-[h:HAS]->(p:Product)
-               match (u:User)-[DO]->(c)
-                return u, c, collect(p) as products, collect(h) as rowInfo`,
+      query : ` MATCH (c:Command)-[h:HAS]->(p:Product)
+                MATCH (sc:SellingCompany)-[:SELL]->(p)
+                MATCH (u:User)-[DO]->(c)
+                RETURN u as owner, c as order, collect({rowInfo: h, product: p, seller: sc})  as products`,
+                lean: true
      }
   ).then(res => {
     if (res.length < 1) {
-      throw new Error('Command not found')
+      throw new Error('No command')
     }
     else {
 
       return res.map(row => {
                 return {
-                   owner: omit(row.u.properties,'password'),
-                   order: row.c.properties,
-                   products: row.products.map(x => x.properties),
-                   rowInfo: row.rowInfo.map(x => x.properties)
+                  owner: omit(res[0].owner, 'password'),
+                  order: res[0].order,
+                  products: res[0].products
                 }
               })
     }

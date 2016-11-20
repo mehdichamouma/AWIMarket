@@ -277,14 +277,14 @@ describe("Graph db", () => {
         return getOrders().then(data => {
           expect(data).to.have.lengthOf(3)
           data.forEach(row => {
-            expect(row).to.have.all.keys(["order", "products", "owner", "rowInfo"])
+            expect(row).to.have.all.keys(["order", "products", "owner"])
             expect(row.owner).to.have.all.keys(userKeys)
             expect(row.order).to.have.all.keys(orderKeys)
             row.products.forEach(row => {
-              expect(row).to.have.all.keys(productKeys)
-            })
-            row.rowInfo.forEach(row => {
-              expect(row).to.have.all.keys(["quantity", "price"])
+              expect(row).to.have.all.keys(["product", "seller", "rowInfo"])
+              expect(row.product).to.have.all.keys(productKeys),
+              expect(row.rowInfo).to.have.all.keys(["quantity", "price"]),
+              expect(row.seller).to.have.all.keys(companyKeys)
             })
           })
         })
