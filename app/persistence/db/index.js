@@ -303,9 +303,9 @@ export const deleteProduct = (id) => {
 // or reject with the error code
 export const getProduct = (productId) => {
     return cypher ( {
-      query : `MATCH (p:Product)
+      query : `MATCH (sc:SellingCompany)-[:SELL]-(p:Product)
                 WHERE p.id = {productId}
-              return p`,
+              return p,sc`,
       params: {
           productId: productId,
        },
@@ -315,7 +315,10 @@ export const getProduct = (productId) => {
       throw new Error({code:404, description:"Product not found"})
     }
     else {
-      return res
+      return {
+        product: res[0].p.properties,
+        seller: res[0].sc.properties
+      }
     }
   })
 }
