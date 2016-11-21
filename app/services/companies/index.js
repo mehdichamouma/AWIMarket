@@ -2,8 +2,9 @@ import getDB from "../../persistence"
 
 let companiesService = {}
 
+// Access : all
 companiesService.getCompanies = () => {
-  return getDB().getSellingCompanies()
+  return getDB().getCompanies()
 }
 
 // Access : User without company
@@ -30,24 +31,43 @@ companiesService.createCompany = (req) => {
   return Promise.reject({code:401, description:"You already have a company"})
 }
 
+// Access : all
 companiesService.getCompany = (companyId) => {
-  if(companyId != undefined && companyId instanceof String)
+  if(companyId != undefined && typeof companyId == "string")
   {
     return getDB().getSellingCompany(companyId)
   }
   return Promise.reject({code:400, description:"Bad Request"})
 }
 
-companiesService.updateCompany = (companyId, data) => {
-  if(data.company != undefined) {
-    let p = data.company
-    if(p.companyName != undefined && p.companyName instanceof String &&
-      p.siret != undefined && p.siret instanceof String
-      ) {
-      return getDB().updateSellingCompany(companyId, p.companyName, p.siret)
-    }
+// Access : SC
+companiesService.updateCompany = (companyId, req) => {
+  let data = req.body
+  let user = req.user
+
+  if(user == null) {
+    return Promise.reject({code:401, description:"You need to be log."})
   }
-  return Promise.reject({code:400, description:"Bad Request"})
+  if(!data.company) {
+    return Promise.reject({code:400, description:"Bad Request"})
+  }
+  let p = data.company
+  if(typeof p.companyName == "string" &&
+    typeof p.siret == "string"
+    ) {
+    return Promise.reject({code:400, description:"Bad Request"})
+  }
+
+  return getDB().getUser(user.id)
+  .then((userFromDb) => {
+    if(userFromDb.company) {
+      if(companyId == userFromDb.company.id) {
+        return getDB().updateSellingCompany(userFromDb.company.id, p.companyName, p.siret)
+      }
+      return Promise.reject({code:401, description:"It's not your company"})
+    }
+    return Promise.reject({code:401, description:"You can't udate a company"})
+  })
 }
 
 companiesService.getOrders = (companyId) => {
