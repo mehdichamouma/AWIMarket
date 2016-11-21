@@ -24,7 +24,7 @@ const request = (endpoint, ...params) => {
     requestHeaders["Authorization"] = token
   }
   let options = Object.assign({}, otherOptions)
-
+  Object.assign(requestHeaders, headers)
   if(!(otherOptions.body instanceof FormData)) {
     requestHeaders["Content-Type"] = "application/json"
     options.body = JSON.stringify(otherOptions.body)
