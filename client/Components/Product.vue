@@ -1,7 +1,7 @@
 <template>
-  <div class="card">
+  <div class="card product">
     <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator" src="http://placehold.it/350x150">
+      <img class="activator" v-bind:src="productImage">
     </div>
     <div class="card-content">
       <span class="card-title activator grey-text text-darken-4">{{ title }}<i class="material-icons right">more_vert</i></span>
@@ -10,10 +10,10 @@
         <h4>{{ price }} $ </h4>
       </p>
       <p>
-        <a class="waves-effect waves-light btn amber accent-2" v-on:click="cartClick">
-          Add to cart
-          <i class="material-icons right">add</i>
-        </a><br>
+        <router-link class="waves-effect waves-light btn amber accent-2" :to="{ name: 'showProduct', params: {productId: id}}">
+          show
+          <i class="material-icons right">arrow_forward</i>
+        </router-link><br>
         <span class="grey-text text-lighten-2">{{quantityLeft}} products left</span>
 
       </p>
@@ -29,11 +29,17 @@
 <script>
 
 export default {
-  props: ['title', 'price', 'description', 'quantityLeft'],
+  props: ['id', 'title', 'price', 'description', 'quantityLeft', 'productImage'],
   methods: {
     cartClick() {
       this.$emit('cartClick')
-    }
+    },
   }
 }
 </script>
+
+<style>
+  .product .card-image {
+    height: 150px;
+  }
+</style>

@@ -138,6 +138,10 @@ export const createCompany = (data) => {
     body: data
   })
 }
+
+export const fetchProduct = (productId) => {
+  return request(`products/${productId}`)
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {
