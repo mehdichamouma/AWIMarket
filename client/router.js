@@ -13,6 +13,8 @@ import ManageProducts from "./Views/admin/ManageProducts.vue"
 import ManageUsers from "./Views/admin/ManageUsers.vue"
 import ManagePayments from "./Views/admin/ManagePayments.vue"
 import Cart from "./Views/Cart.vue"
+import CompanyCreation from "./Views/companies/CompanyCreation.vue"
+import Product from "./Views/Product.vue"
 
 import store from "./store"
 
@@ -36,6 +38,8 @@ const router = new VueRouter({
       children: [
         {path: '', component: Home},
         {path: 'cart', component: Cart},
+        {path: 'createCompany', component: CompanyCreation},
+        {path: 'products/show/:productId', name: 'showProduct', component: Product},
         {
           path: '/admin',
           component: AdminLayout,

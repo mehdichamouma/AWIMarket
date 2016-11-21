@@ -18,9 +18,10 @@ companiesService.createCompany = (req) => {
         if(data.company) {
           let p = data.company
           if(typeof p.companyName == "string" &&
-            typeof p.siret == "string"
+            typeof p.siret == "string" &&
+            typeof p.image == "string"
           ) {
-            return getDB().createSellingCompany(user.id, undefined, p.companyName, p.siret)
+            return getDB().createSellingCompany(p.userId, undefined, p.companyName, p.siret, p.image)
           }
         }
         return Promise.reject({code:400, description:"Bad Request"})

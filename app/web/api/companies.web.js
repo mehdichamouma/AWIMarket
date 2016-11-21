@@ -16,6 +16,7 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   companiesService.createCompany(req)
+  companiesService.createCompany(req)
   .then((result) => {
     res.status(200).json(result)
   })

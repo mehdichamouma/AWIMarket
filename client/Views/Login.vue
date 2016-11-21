@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-right:2.5%">
     <div class="card-panel white lighten-5 truncate">
       <span class="title">Connexion</span><br>
       <span class="red-text">{{error}}</span>
@@ -18,7 +18,7 @@
             </div>
           </div>
 
-          <div class="right-align">
+          <div class="center-align">
               <div>
                   <div class="row">
                     <button class="btn waves-effect waves-light red darken-2" type="submit" v-on:click="changeText">Connexion
@@ -26,7 +26,7 @@
                     </button>
                   </div>
                   <div class="row">
-                  <router-link class="grey-text darken-4" to="/login/new">Pas encore de compte ? Cliquez ici pour vous inscrire</router-link>
+                  <router-link class="grey-text darken-4" to="/login/new">Pas encore de compte ? <br class="hide-on-med-and-up" /> Cliquez ici pour vous inscrire</router-link>
                   </div>
               </div>
           </div>
