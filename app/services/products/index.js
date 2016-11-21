@@ -15,7 +15,7 @@ productsService.getProducts = (params) => {
 
 // Access : Everybody
 productsService.getProductsByKeywords = (keywords) => {
-  if(keywords != undefined && keywords instanceof String) {
+  if(typeof keywords == "string") {
     return getDB().getProductsByKeywords(keywords)
     .catch((error) => {
       return Promise.reject({code:500, description:"Server error"})

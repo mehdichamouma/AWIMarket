@@ -5,11 +5,11 @@ import mediasService from "../../medias"
 let router = express.Router()
 
 router.get("/", (req, res) => {
-  productsService.getProducts(req.params)
+  productsService.getProducts(req.query)
   .then((result) => {
     let json = result.map(r => {
       let o = Object.assign({}, r)
-      o.seller.image = mediasService.getUrl(o.seller.image)
+      //o.seller.image = mediasService.getUrl(o.seller.image)
       o.product.image = mediasService.getUrl(o.product.image)
       return o
     })
