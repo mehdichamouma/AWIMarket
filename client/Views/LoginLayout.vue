@@ -1,7 +1,7 @@
 <template>
   <div class="login-layout">
       <div class="row">
-          <div class="col s12 m6">
+          <div class="col s8 offset-s3 m6">
             <img src="img/logo.png" alt="" class="logo"/>
           </div>
           <div class="col s12 m6 ">
@@ -22,7 +22,7 @@
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
 }
-.col.s6{
+.col.s8.m6{
   margin-top: 20px;
 }
 </style>
