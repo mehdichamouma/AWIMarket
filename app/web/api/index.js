@@ -12,6 +12,8 @@ import medias from "./medias.web"
 
 import usersService from "../../services/users"
 import mediasService from "../../medias"
+import notificationsService from "../../services/notifications"
+
 import populateDb from "../../utils/populateDb"
 
 import basic from "basic-auth"
@@ -33,9 +35,12 @@ api.use("/companies", companies)
 
 api.get("/me", (req, res) => {
   if(req.user != null) {
-    usersService.getUser(req.user.id)
-    .then((user) => {
-      let json = Object.assign({}, user)
+    Promise.all([
+      usersService.getUser(req.user.id),
+      notificationsService.getNotifications(req.user.id)
+    ])
+    .then(([user, notifications]) => {
+      let json = Object.assign({}, user, {notifications})
       json.user.profilePicture = mediasService.getUrl(json.user.profilePicture)
       if(json.company) {
         json.company.image = mediasService.getUrl(json.company.image)

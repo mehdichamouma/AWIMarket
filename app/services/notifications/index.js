@@ -5,8 +5,9 @@ import uuid from "uuid"
 
 let notificationsService = {}
 
-notificationsService.getNotifications = () => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+notificationsService.getNotifications = (userId) => {
+  return getDB().getUserNotifications(userId)
+  //return Promise.reject({code:501, description:"Not Implemented"})
 }
 
 notificationsService.setNotificationRead = (id) => {

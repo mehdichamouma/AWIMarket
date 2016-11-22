@@ -662,7 +662,7 @@ export const createNotification = (userId, id, content, type, creationDate, read
         content: JSON.stringify(content),
         type: type,
         creationDate: creationDate || new Date(),
-        readingDate:readingDate
+        readingDate:readingDate ? readingDate : null
       }
     })
     .then(res => {

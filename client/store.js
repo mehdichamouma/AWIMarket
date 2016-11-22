@@ -25,5 +25,10 @@ export default {
   },
   setUserToken(token) {
     this.state.token = token
+  },
+  addNotification(data) {
+    if(this.state.user && this.state.user.notifications) {
+      this.state.user.notifications.unshift(data)
+    }
   }
 }
