@@ -4,7 +4,7 @@
       <span class="title">Connexion</span><br>
       <span class="red-text">{{error}}</span>
     </div>
-    <div class="card-panel white lighten-5">
+    <form class="card-panel white lighten-5">
           <div class="row">
             <div class="input-field col s12">
               <input id="email" type="email" class="validate" v-model="email">
@@ -31,7 +31,7 @@
               </div>
           </div>
 
-    </div>
+    </form>
   </div>
 </template>
 
@@ -45,12 +45,13 @@ export default {
   data() {
     return {
       error: null,
-      email: "john@doe.fr",
-      password: "azerty"
+      email: null,
+      password: null
     }
   },
   methods: {
-    changeText: function () {
+    changeText: function (e) {
+      e.preventDefault()
       authenticate(this.email, this.password)
       .then((data) => {
         let {token} = data

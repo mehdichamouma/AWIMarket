@@ -111,8 +111,10 @@ export default {
       console.log("ok");
       console.log($("#notifications"));
       console.log($("#notifications").modal);
-
-      $('#notifications').modal('open');
+      $(document).ready(function(){
+        $('.modal').modal();
+        $('#notifications').modal('open');
+      });
     },
     logout() {
       setToken(null)

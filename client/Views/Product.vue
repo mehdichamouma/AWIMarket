@@ -28,7 +28,7 @@
                       <div class="card-content">
                         <div class="row">
                           <p class="range-field col s12">
-                            <input type="range" id="quantity" min="1" v-bind:max="product.quantityLeft" v-model="quantity"/>
+                            <input type="range" id="quantity" min="1" v-bind:max="product.quantityLeft" v-model="quantity" v-bind:disabled="inCart"/>
                             <label for="quantity">Quantity</label>
                           </p>
                         </div>
@@ -40,15 +40,17 @@
                       </div>
                       <div class="card-action">
                         <div class="row">
-                          <div class="col s12">
+                          <div class="col s12" v-if="!inCart">
                             <p class="center-align">
                               <span>Total: {{totalPrice}} $</span>
                             </p>
                           </div>
-                          <div class="col s12">
-                            <div class="center-align">
-                              <a class="waves-effect waves-light btn" v-on:click="handleCartClick">Add to cart</a>
-                            </div>
+                          <div class="col s12 center-align">
+                              <a class="waves-effect waves-light btn" v-on:click="handleCartClick" v-if="!inCart">Add to cart</a>
+                              <router-link class="waves-effect waves-light btn-flat" to="/cart" v-else>Got to my cart</router-link>
+                          </div>
+                          <div class="col s12 center-align" v-if="inCart">
+                              The product is already in your cart
                           </div>
                         </div>
                       </div>
@@ -140,18 +142,23 @@ export default {
     },
     canEdit() {
       return this.isAdmin || this.isOwner
+    },
+    inCart() {
+      let user = this.$root.store.state.user
+      let cart = this.$root.store.state.cart
+      return cart.content.some(p => p.product.id == this.product.id)
     }
   },
   methods: {
     handleCartClick() {
       let productId = this.$route.params.productId
       let product = {
-        id: productId,
-        desc: this.productDescription,
-        Name: this.productTitle,
-        image: this.imageUrl,
-        quantity: this.quantityLeft,
-        price: this.price
+        id: this.product.id,
+        desc: this.product.productDescription,
+        Name: this.product.productTitle,
+        image: this.product.imageUrl,
+        quantity: this.product.quantityLeft,
+        price: this.product.price
       }
       if(product) {
         this.$root.store.cartAddProduct(product, this.quantity)

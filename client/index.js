@@ -24,10 +24,10 @@ new Vue({
     }
   },
   render: h => h(App),
-  ready: function() {
+  ready: () => {
+    $('.materialboxed').materialbox();
     $(document).ready(function(){
       $('.materialboxed').materialbox();
-      $('.modal').modal();
     });
   }
 })

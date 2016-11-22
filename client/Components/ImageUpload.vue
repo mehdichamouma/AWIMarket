@@ -1,7 +1,4 @@
 <template lang="html">
-  <div class="card-panel grey z-depth-2 lighten-3">
-
-
   <div class="row">
     <div class="col s4 m2">
       <img v-if="imageSource" v-bind:src="imageSource" class="materialboxed z-depth-1 image"/>
@@ -13,10 +10,9 @@
            <i class="material-icons prefix">add_a_photo</i>
            <input id="icon_telephone" type="file" v-on:change="upload" />
 
-        <input  class="file-path validate" placeholder="Upload your profil picture" type="text">
+        <input  class="file-path validate" v-bind:placeholder="placeholder" type="text">
       </div>
     </div>
-  </div>
   </div>
 </template>
 
@@ -30,6 +26,7 @@ export default {
       imageSource: null
     }
   },
+  props: ["placeholder"],
   methods: {
     upload(e) {
       upload(e.currentTarget.files[0])
