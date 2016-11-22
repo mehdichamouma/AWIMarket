@@ -5,9 +5,10 @@
   "main": "app/web/index.js",
   "scripts": {
     "test": "mocha --recursive mocha app/**/*.specs.js",
-    "initDb": "babel-node scripts/initDb.js",
-    "start": "nodemon app/web/index.js --exec babel-node",
-    "webpack": "webpack-dev-server --open --inline --hot"
+    "initDb": "./node_modules/.bin/babel-node scripts/initDb.js",
+    "start": "./node_modules/.bin/babel-node app/web/index.js",
+    "webpack": "webpack-dev-server --open --inline --hot",
+    "dev": "nodemon app/web/index.js --exec babel-node"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "homepage": "https://github.com/Azar06/AWIMarket#readme",
   "dependencies": {
     "aws-sdk": "^2.7.5",
+    "babel-cli": "^6.18.0",
     "basic-auth": "^1.0.4",
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
