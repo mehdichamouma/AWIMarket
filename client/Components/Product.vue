@@ -4,19 +4,36 @@
       <img class="activator" v-bind:src="productImage">
     </div>
     <div class="card-content">
-      <span class="card-title activator grey-text text-darken-4">{{ title }}<i class="material-icons right">more_vert</i></span>
+      <div class="row">
+        <div class="col s12">
+          <span class="card-title activator grey-text text-darken-4">
 
-      <p>
-        <h4>{{ price }} $ </h4>
-      </p>
-      <p>
-        <router-link class="waves-effect waves-light btn amber accent-2" :to="{ name: 'showProduct', params: {productId: id}}">
-          show
-          <i class="material-icons right">arrow_forward</i>
-        </router-link><br>
-        <span class="grey-text text-lighten-2">{{quantityLeft}} products left</span>
-
-      </p>
+            {{ title }}
+            <i class="material-icons right">more_vert</i>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <h4>{{ price }} $ </h4>
+        </div>
+        <div class="col s12">
+          <span class="grey-text text-lighten-2">{{quantityLeft}} products left</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <router-link class="waves-effect waves-light btn amber accent-2" :to="{ name: 'showProduct', params: {productId: id}}">
+            show
+            <i class="material-icons right">arrow_forward</i>
+          </router-link><br>
+        </div>
+        <div class="col s6 right-align">
+            <div class="chip" v-if="isOwner">
+              My product
+            </div>
+        </div>
+      </div>
 
     </div>
     <div class="card-reveal">
@@ -29,11 +46,17 @@
 <script>
 
 export default {
-  props: ['id', 'title', 'price', 'description', 'quantityLeft', 'productImage'],
+  props: ['id', 'title', 'price', 'description', 'quantityLeft', 'productImage', 'company'],
   methods: {
     cartClick() {
       this.$emit('cartClick')
     },
+  },
+  computed: {
+    isOwner() {
+      let user = this.$root.store.state.user
+      return user.company && this.company.id == user.company.id
+    }
   }
 }
 </script>

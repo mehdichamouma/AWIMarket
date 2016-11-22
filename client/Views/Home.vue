@@ -21,13 +21,14 @@
           <div class="row">
             <div v-for="(p, index) in products" class="col s12 m6 l4">
               <product
-                v-bind:id="p.id"
-                v-bind:title="p.Name"
-                v-bind:price="p.price"
-                v-bind:description="p.desc"
-                v-bind:quantityLeft="p.quantity"
-                v-bind:productImage="p.image"
+                v-bind:id="p.product.id"
+                v-bind:title="p.product.Name"
+                v-bind:price="p.product.price"
+                v-bind:description="p.product.desc"
+                v-bind:quantityLeft="p.product.quantity"
+                v-bind:productImage="p.product.image"
                 v-on:cartClick="handleCartClick(index)"
+                v-bind:company="p.seller"
               />
             </div>
           </div>

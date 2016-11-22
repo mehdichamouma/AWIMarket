@@ -41,11 +41,6 @@
         </nav>
       </header>
       <main>
-        <div class='row'>
-            <div class='col s12'>
-              <router-view></router-view>
-            </div>
-        </div>
         <div id="notifications" class="modal bottom-sheet">
           <div class="modal-content">
             <h4>Notifications</h4>
@@ -77,7 +72,13 @@
                         </ul>
           </div>
         </div>
+        <div class='row'>
+            <div class='col s12'>
+              <router-view></router-view>
+            </div>
+        </div>
       </main>
+
     <footer class="page-footer">
       <div class="footer-copyright">
         <div class="container">
@@ -106,7 +107,7 @@ export default {
     }
   },
   methods: {
-    toggleNotifications: function () {
+    toggleNotifications: function (e) {
       console.log("ok");
       console.log($("#notifications"));
       console.log($("#notifications").modal);
@@ -128,10 +129,9 @@ export default {
       console.log(data);
     })
     console.log("creation");
-    $(document).ready(function(){
-      $('.materialboxed').materialbox();
-      $('.modal').modal();
-    });
+  },
+  beforeCreate() {
+
   }
 }
 </script>

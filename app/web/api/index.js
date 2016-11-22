@@ -32,6 +32,9 @@ api.get("/me", (req, res) => {
     .then((user) => {
       res.status(200).json(user)
     })
+    .catch(e => {
+      res.status(e.code).json(e.description)
+    })
   }
   else {
     res.status(401).send("You are not log")

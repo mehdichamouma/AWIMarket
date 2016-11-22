@@ -13,6 +13,8 @@ import store from "./store"
 //   router,
 // }, App))
 
+
+
 new Vue({
   el: '#app',
   router: router,
@@ -21,5 +23,11 @@ new Vue({
       store: store
     }
   },
-  render: h => h(App)
+  render: h => h(App),
+  ready: function() {
+    $(document).ready(function(){
+      $('.materialboxed').materialbox();
+      $('.modal').modal();
+    });
+  }
 })

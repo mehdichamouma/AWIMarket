@@ -14,7 +14,7 @@ export const authenticate = (email, password) => {
     data.isAdmin && roles.push("ADMIN")
     data.hasCompany && roles.push("SELLING_COMPANY_OWNER")
     return jwt.sign({
-      id: data.userId,
+      id: String(data.userId),
       email: data.email,
       roles,
     }, secret)

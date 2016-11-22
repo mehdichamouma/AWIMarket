@@ -50,9 +50,7 @@ export const fetchProducts = () => {
   return request("products")
   .then((res) => res.json())
   .then(data => {
-    let products = data.map(row => row.product)
-    console.log(products);
-    return products
+    return data
   })
 }
 
@@ -90,35 +88,7 @@ export const getNotificationSocket = () => {
 }
 
 export const me = () => {
-  return Promise.resolve({
-    user: {
-
-    },
-    company: {
-
-    },
-    roles: ['ADMIN', 'SELLING_COMPANY_OWNER'],
-    notifications: [
-      {
-        type: 'ABC',
-        payload: {
-          'a': 'b'
-        }
-      },
-      {
-        type: 'ABC',
-        payload: {
-          'a': 'b'
-        }
-      },
-      {
-        type: 'ABC',
-        payload: {
-          'a': 'b'
-        }
-      },
-    ]
-  })
+  return request("me").then(res => res.json())
 }
 
 export const upload = (file) => {
