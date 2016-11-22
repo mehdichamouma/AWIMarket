@@ -12,6 +12,10 @@ import medias from "./medias.web"
 
 import usersService from "../../services/users"
 import mediasService from "../../medias"
+import populateDb from "../../utils/populateDb"
+
+import basic from "basic-auth"
+import config from "../../../config"
 
 let api = express.Router()
 
@@ -45,6 +49,19 @@ api.get("/me", (req, res) => {
   else {
     res.status(401).send("You are not log")
   }
+})
+
+api.get("/resetDB", (req, res) => {
+    let o = basic(req)
+    if(o) {
+      let {name, pass} = o
+      if(name == "admin" && pass == "azerty123") {
+        return populateDb(config.DB_URL).then(() => {
+          res.send("Database reinitialized")
+        })
+      }
+    }
+    return res.status(401).send("Authrorization needed")
 })
 
 export default api
