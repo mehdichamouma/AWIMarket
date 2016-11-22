@@ -10,7 +10,7 @@
               <div class="nav-wrapper">
                 <form>
                   <div class="input-field">
-                    <input id="search" type="search" required placeholder="Browse products">
+                    <input id="search" type="search" v-on:input="search($event)" required placeholder="Browse products">
                     <label for="search"><i class="material-icons">search</i></label>
                     <i class="material-icons">close</i>
                   </div>
@@ -19,7 +19,7 @@
             </nav>
           </div>
           <div class="row">
-            <div v-for="(p, index) in products" class="col s12 m6 l4">
+            <div v-for="(p, index) in products" class="col s12 m6 l4" :key="p.product.id">
               <product
                 v-bind:id="p.product.id"
                 v-bind:title="p.product.Name"
@@ -41,6 +41,9 @@
 
 import Product from "../Components/Product.vue"
 import {fetchProducts} from "../ApiClient"
+import {debounce} from "lodash"
+
+let debouncedFetchProducts = debounce(fetchProducts, 150)
 
 export default {
   components: {
@@ -64,6 +67,14 @@ export default {
       if(product) {
         this.$root.store.cartAddProduct(product, 2)
       }
+    },
+    search(e) {
+      console.log(e);
+      let {value} = e.target
+      debouncedFetchProducts(value)
+      .then(products => {
+        this.products = products
+      })
     }
   }
 }

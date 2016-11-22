@@ -1,6 +1,8 @@
 import urlJoin from "url-join"
 import config from "../../config"
 import io from "socket.io-client"
+import querystring from "querystring"
+
 /**
  * AWIMARKET API CLIENT
  * helpers to fetch data from the AWIMARKET API
@@ -46,8 +48,12 @@ export const fetchUserJournals = (userId) => {
   })
 }
 
-export const fetchProducts = () => {
-  return request("products")
+export const fetchProducts = (keywords) => {
+  let qs = ""
+  if(keywords) {
+    qs = "?" + querystring.stringify({keywords})
+  }
+  return request("products" + qs)
   .then((res) => res.json())
   .then(data => {
     return data
