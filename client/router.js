@@ -15,6 +15,8 @@ import ManagePayments from "./Views/admin/ManagePayments.vue"
 import Cart from "./Views/Cart.vue"
 import CompanyCreation from "./Views/companies/CompanyCreation.vue"
 import Product from "./Views/Product.vue"
+import Profile from "./Views/Profile.vue"
+
 
 import store from "./store"
 
@@ -40,6 +42,7 @@ const router = new VueRouter({
         {path: 'cart', component: Cart},
         {path: 'createCompany', component: CompanyCreation},
         {path: 'products/show/:productId', name: 'showProduct', component: Product},
+        {path: 'profile/:userId', name: "profile", component: Profile},
         {
           path: '/admin',
           component: AdminLayout,
@@ -49,7 +52,7 @@ const router = new VueRouter({
             {path: 'products', component: ManageProducts},
             {path: 'payments', component: ManagePayments},
           ]
-        }
+        },
       ]
     },
   ]

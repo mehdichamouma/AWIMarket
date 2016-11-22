@@ -20,9 +20,11 @@
 
               </li>
               <li>
-                <a v-on:click="toggleNotifications" class="deep-orange-text">
-                  <i class="material-icons">account_box</i>
-                </a>
+                <router-link :to="{name:'profile', params: {userId: userId}}" class="deep-orange-text">
+                  <div class="crop">
+                      <img v-bind:src="profilePicture" />
+                  </div>
+                </router-link>
               </li>
               <li>
                 <a v-on:click="toggleNotifications" class="deep-orange-text">
@@ -132,8 +134,13 @@ export default {
     })
     console.log("creation");
   },
-  beforeCreate() {
-
+  computed: {
+    profilePicture() {
+      return this.$root.store.state.user.user.profilePicture
+    },
+    userId() {
+      return this.$root.store.state.user.user.id
+    }
   }
 }
 </script>
@@ -175,4 +182,16 @@ main {
   flex: 1 0 auto;
 }
 
+.crop {
+  height: 64px;
+  width: 40px;
+  overflow: hidden;
+  padding: 11px 2px;
+}
+
+.crop img {
+  width: 40px;
+  margin: auto;
+  border: 2px rgba(255, 255, 255, 1);
+}
 </style>

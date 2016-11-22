@@ -1,5 +1,6 @@
 import express from "express"
 import usersService from "../../services/users"
+import mediasService from "../../medias"
 
 let router = express.Router()
 
@@ -28,7 +29,12 @@ router.post("/", (req, res) => {
 router.get("/:userId", (req, res) => {
   usersService.getUser(req.params.userId)
   .then((result) => {
-    res.status(200).json(result)
+    let json = Object.assign({}, result)
+    json.user.profilePicture = mediasService.getUrl(json.user.profilePicture)
+    if(json.company) {
+      json.company.image = mediasService.getUrl(json.company.image)
+    }
+    res.status(200).json(json)
   })
   .catch((result) => {
     res.status(result.code)

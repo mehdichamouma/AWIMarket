@@ -11,6 +11,7 @@ import companies from "./companies.web"
 import medias from "./medias.web"
 
 import usersService from "../../services/users"
+import mediasService from "../../medias"
 
 let api = express.Router()
 
@@ -30,7 +31,12 @@ api.get("/me", (req, res) => {
   if(req.user != null) {
     usersService.getUser(req.user.id)
     .then((user) => {
-      res.status(200).json(user)
+      let json = Object.assign({}, user)
+      json.user.profilePicture = mediasService.getUrl(json.user.profilePicture)
+      if(json.company) {
+        json.company.image = mediasService.getUrl(json.company.image)
+      }
+      res.status(200).json(json)
     })
     .catch(e => {
       res.status(e.code).json(e.description)

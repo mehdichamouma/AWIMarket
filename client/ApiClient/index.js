@@ -112,6 +112,10 @@ export const createCompany = (data) => {
 export const fetchProduct = (productId) => {
   return request(`products/${productId}`)
 }
+
+export const fetchUser = (userId) => {
+  return request(`users/${userId}`)
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {
