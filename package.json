@@ -6,8 +6,9 @@
   "scripts": {
     "test": "mocha --recursive mocha app/**/*.specs.js",
     "initDb": "babel-node scripts/initDb.js",
-    "start": "nodemon app/web/index.js --exec babel-node",
-    "webpack": "webpack-dev-server --open --inline --hot"
+    "start": "babel-node app/web/index.js",
+    "webpack": "webpack-dev-server --open --inline --hot",
+    "dev": "nodemon app/web/index.js --exec babel-node"
   },
   "repository": {
     "type": "git",
