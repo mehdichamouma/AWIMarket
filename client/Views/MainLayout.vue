@@ -1,56 +1,86 @@
 <template>
-  <div>
-    <div class="">
-      <nav>
-        <div class="nav-wrapper grey lighten-3">
-          <router-link to="/" class="brand-logo deep-orange-text left hide-on-small-only"><img src="img/logo.png" class="menu-logo"/></router-link>
-          <ul class="right">
-            <li>
-              <router-link to="/createCompany" class="deep-orange-text">
-                Create your company
-              </router-link>
-            </li>
-            <li>
-              <router-link to="/admin" class="deep-orange-text">Administration</router-link>
-            <li>
-              <router-link to="/cart" class="deep-orange-text">
-                <i class="material-icons left">shopping_cart</i>
-                {{ $root.store.state.cart.content.length}}
-              </a>
+  <div class="content">
+      <header class="">
+        <nav>
+          <div class="nav-wrapper grey lighten-3">
+            <router-link to="/" class="brand-logo deep-orange-text left hide-on-small-only"><img src="img/logo.png" class="menu-logo"/></router-link>
+            <ul class="right">
+              <li>
+                <router-link to="/createCompany" class="deep-orange-text">
+                  Create your company
+                </router-link>
+              </li>
+              <li>
+                <router-link to="/cart" class="deep-orange-text">
+                  <i class="material-icons left">shopping_cart</i>
+                  {{ $root.store.state.cart.content.length}}
+                </a>
 
-            </li>
-            <li>
-              <a v-on:click="toggleNotifications" class="deep-orange-text"><i class="material-icons">account_box</i></a>
-            </li>
-            <li>
-              <a v-on:click="toggleNotifications" class="deep-orange-text">
-                <span class=" new badge" data-badge-caption="notifications">4</span>
-              </a>
-            </li>
-            <li>
-              <a v-on:click="logout" class="grey-text text-ligthen-3">
-                <i class="material-icons">exit_to_app</i>
-              </a>
-            </li>
-          </ul>
+              </li>
+              <li>
+                <a v-on:click="toggleNotifications" class="deep-orange-text"><i class="material-icons">account_box</i></a>
+              </li>
+              <li>
+                <a v-on:click="toggleNotifications" class="deep-orange-text">
+                  <span class=" new badge" data-badge-caption="notifications">4</span>
+                </a>
+              </li>
+              <li>
+                <a v-on:click="logout" class="grey-text text-ligthen-3">
+                  <i class="material-icons">exit_to_app</i>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+        </nav>
+      </header>
+      <main>
+        <div class='row'>
+            <div class='col s12'>
+              <router-view></router-view>
+            </div>
         </div>
-
-      </nav>
-
-      <div v-if="showNotifications" class="awimarket-notifications grey lighten-4">
-          <ul class="collection">
-            <li class="collection-item">a</li>
-            <li class="collection-item">b</li>
-            <li class="collection-item">c</li>
-            <li class="collection-item">d</li>
-          </ul>
+        <div id="notifications" class="modal bottom-sheet">
+          <div class="modal-content">
+            <h4>Notifications</h4>
+            <ul class="collection">
+                          <li class="collection-item avatar">
+                            <img src="images/yuna.jpg" alt="" class="circle">
+                            <span class="title">Title</span>
+                            <p>First Line <br> Second Line </p>
+                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                          </li>
+                          <li class="collection-item avatar">
+                            <i class="material-icons circle">folder</i>
+                            <span class="title">Title</span>
+                            <p>First Line <br> Second Line </p>
+                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                          </li>
+                          <li class="collection-item avatar">
+                            <i class="material-icons circle green">assessment</i>
+                            <span class="title">Title</span>
+                            <p>First Line <br> Second Line </p>
+                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                          </li>
+                          <li class="collection-item avatar">
+                            <i class="material-icons circle red">play_arrow</i>
+                            <span class="title">Title</span>
+                            <p>First Line <br> Second Line </p>
+                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                          </li>
+                        </ul>
+          </div>
+        </div>
+      </main>
+    <footer class="page-footer">
+      <div class="footer-copyright">
+        <div class="container">
+        © 2016 Copyright Text
+        <router-link to="/admin" class="grey-text text-lighten-4 right">Administration</router-link>
+        </div>
       </div>
-    </div>
-    <div class='row'>
-        <div class='col s12'>
-          <router-view></router-view>
-        </div>
-    </div>
+    </footer>
 
   </div>
 </template>
@@ -68,7 +98,10 @@ export default {
   methods: {
     toggleNotifications: function () {
       console.log("ok");
-      this.showNotifications = !this.showNotifications
+      console.log($("#notifications"));
+      console.log($("#notifications").modal);
+
+      $('#notifications').modal('open');
     },
     logout() {
       setToken(null)
@@ -85,6 +118,10 @@ export default {
       console.log(data);
     })
     console.log("creation");
+    $(document).ready(function(){
+      $('.materialboxed').materialbox();
+      $('.modal').modal();
+    });
   }
 }
 </script>
@@ -110,4 +147,15 @@ export default {
   width: 90%;
   position: relative;
 }
+
+.content {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
 </style>
