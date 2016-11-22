@@ -3,13 +3,15 @@
       <header class="">
         <nav>
           <div class="nav-wrapper grey lighten-3">
-            <router-link to="/" class="brand-logo deep-orange-text left hide-on-small-only"><img src="img/logo.png" class="menu-logo"/></router-link>
+            <router-link to="/" class="logo-container left center-align valign-wrapper">
+              <div class="valign">
+                <span class="deep-orange-text logo">
+                  <i id="icon" class="fa fa-opencart"></i>
+                  <span class="hide-on-small-only grey-text text-lighten-0">AWIMarket</span>
+                </span>
+              </div>
+            </router-link>
             <ul class="right">
-              <li>
-                <router-link to="/createCompany" class="deep-orange-text">
-                  Create your company
-                </router-link>
-              </li>
               <li>
                 <router-link to="/cart" class="deep-orange-text">
                   <i class="material-icons left">shopping_cart</i>
@@ -18,11 +20,14 @@
 
               </li>
               <li>
-                <a v-on:click="toggleNotifications" class="deep-orange-text"><i class="material-icons">account_box</i></a>
+                <a v-on:click="toggleNotifications" class="deep-orange-text">
+                  <i class="material-icons">account_box</i>
+                </a>
               </li>
               <li>
                 <a v-on:click="toggleNotifications" class="deep-orange-text">
-                  <span class=" new badge" data-badge-caption="notifications">4</span>
+                  <i class="material-icons left">notifications</i>
+                  4
                 </a>
               </li>
               <li>
@@ -77,7 +82,12 @@
       <div class="footer-copyright">
         <div class="container">
         © 2016 Copyright Text
-        <router-link to="/admin" class="grey-text text-lighten-4 right">Administration</router-link>
+        <div class="right">
+        <router-link to="/admin" class="grey-text text-lighten-4">Administration</router-link>
+        <router-link to="/createCompany" class="grey-text text-lighten-4">
+          Create your company
+        </router-link>
+        </div>
         </div>
       </div>
     </footer>
@@ -127,7 +137,12 @@ export default {
 </script>
 
 <style>
-
+.logo {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 300;
+  font-size: 24px;
+  margin-left: 5px;
+}
 .menu-logo {
   height: 22px;
   margin-left: 10px;
