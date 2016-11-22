@@ -242,6 +242,15 @@ describe("Graph db", () => {
       })
     })
 
+    describe("getAdmins", () => {
+      it("should return the admins", () => {
+        return getAdmins().then(data => {
+          expect(data).to.have.a.lengthOf(1)
+          expect(data[0].user.id).to.eql("1")
+        })
+      })
+    })
+
     //PRODUCTS
 
     describe("getProduct", () => {
