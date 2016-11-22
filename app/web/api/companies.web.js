@@ -1,11 +1,15 @@
 import express from "express"
 import companiesService from "../../services/companies"
+import mediasService from "../../medias"
 
 let router = express.Router()
 
 router.get("/", (req, res) => {
   companiesService.getCompanies()
   .then((result) => {
+    result.forEach(row => {
+      row.company.image = mediasService.getUrl(row.company.image)
+    })
     res.status(200).json(result)
   })
   .catch((result) => {
