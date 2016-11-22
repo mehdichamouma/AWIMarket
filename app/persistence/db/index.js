@@ -100,6 +100,19 @@ export const getUser = (userId) => {
   })
 }
 
+export const getUserByEmail = (email) => {
+  return cypher ( {
+    query : `MATCH (u:User)
+              WHERE u.email = {email}
+              OPTIONAL MATCH (u)-[:HAS]-(sc:SellingCompany)
+            return u, sc`,
+     params: {
+        email: email,
+     },
+     lean: true
+   })
+}
+
 export const getUserByCredentials = (email, password) => {
     return cypher ( {
       query : `MATCH (u:User)

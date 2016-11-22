@@ -8,8 +8,34 @@ usersService.getUsers = () => {
 }
 
 usersService.createUser = (data) => {
-  return Promise.reject({code:501, description:"Not Implemented"})
-  return getDB().createUser(id, firstName, lastName, email, password, adresse)
+  //return Promise.reject({code:501, description:"Not Implemented"})
+  let {
+    name,
+    email,
+    password,
+    address = null,
+    phone = null,
+    birthday = null,
+    profilePicture
+  } = data
+  return getDB().getUserByEmail(email)
+  .then((results) => {
+    console.log(results);
+    if(results.length != 0) {
+      return Promise.reject({code: 400, description: "email is taken"})
+    }
+    return getDB().createUser(undefined, name, email, password, address, phone, birthday, false, profilePicture)
+  })
+  .catch(error => {
+    if(error.code) {
+      return Promise.reject(error)
+    }
+    return Promise.reject({code: 400, description: "invalid user data"})
+  })
+}
+
+usersService.getUserByEmail = (email) => {
+  return getDB().getUserByEmail(email)
 }
 
 usersService.getUser = (userId) => {

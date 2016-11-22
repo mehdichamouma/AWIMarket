@@ -3,6 +3,7 @@ let router = express.Router()
 import {authenticate} from "../../services/authentification"
 import auth from "basic-auth"
 
+import usersService from "../../services/users"
 /**
  * GET /api/auth/token
  *
@@ -37,6 +38,22 @@ router.get("/token", (req, res) => {
     })
   }
 
+})
+
+router.post("/signup", (req, res) => {
+  usersService.createUser(req.body)
+  .then((result) => {
+    return authenticate(req.body.email, req.body.password).then((token) => {
+      res.status(200).json({
+        token
+      })
+    })
+  })
+  .catch((result) => {
+    console.log(result);
+    res.status(result.code)
+    .send(result.description);
+  })
 })
 
 export default router

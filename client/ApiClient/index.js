@@ -122,6 +122,13 @@ export const fetchProduct = (productId) => {
 export const fetchUser = (userId) => {
   return request(`users/${userId}`)
 }
+
+export const signup = (data) => {
+  return request(`auth/signup`, {
+    method: "POST",
+    body: data
+  })
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {
