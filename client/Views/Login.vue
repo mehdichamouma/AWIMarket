@@ -1,9 +1,19 @@
 <template>
   <div style="margin-right:2.5%">
     <div class="card-panel white lighten-5 truncate">
-      <span class="title">Connexion</span><br>
-      <span class="red-text">{{error}}</span>
+      <div class="row">
+        <div class="col s12">
+          <h5>Connexion</h5>
+          <span class="red-text">{{error}}</span>
+        </div>
+        <div class="col s12">
+            <a class=" waves-effect waves-light btn blue darken-4">
+              <i class="fa fa-facebook left"></i>facebook
+            </a>
+        </div>
     </div>
+    </div>
+
     <form class="card-panel white lighten-5">
           <div class="row">
             <div class="input-field col s12">
@@ -25,6 +35,7 @@
                       <i class="material-icons right">send</i>
                     </button>
                   </div>
+
                   <div class="row">
                   <router-link class="grey-text darken-4" to="/login/new">Pas encore de compte ? <br class="hide-on-med-and-up" /> Cliquez ici pour vous inscrire</router-link>
                   </div>
