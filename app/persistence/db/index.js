@@ -503,15 +503,10 @@ export const getUserNotifications= (userId) => {
                 lean: true
      }
   ).then(res => {
-    if (res.length < 1) {
-      throw new Error('No command')
-    }
-    else {
       console.log(res);
       return res.map(row => Object.assign({}, row.n, {
         content: JSON.parse(row.n.content)
       }))
-    }
   })
 }
 // create a new journal

@@ -48,6 +48,7 @@ api.get("/me", (req, res) => {
       res.status(200).json(json)
     })
     .catch(e => {
+      console.error(e);
       res.status(e.code).json(e.description)
     })
   }

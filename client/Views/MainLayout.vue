@@ -29,7 +29,7 @@
               <li>
                 <a v-on:click="toggleNotifications" class="deep-orange-text">
                   <i class="material-icons left">notifications</i>
-                  4
+                  {{notifications.length}}
                 </a>
               </li>
               <li>
@@ -123,7 +123,10 @@ export default {
     console.log("aa", this.socket);
     this.socket.on('notification', (data) => {
       console.log(data);
-      this.$root.store.addNotification(data)
+      let notif = Object.assign({}, data, {
+        content: data.payload
+      })
+      this.$root.store.addNotification(notif)
       $(document).ready(function(){
         $('.modal').modal();
         $('#notifications').modal('open');
@@ -152,14 +155,16 @@ export default {
         console.log(n);
         switch (n.type) {
           case 'NEW_COMMAND':
-            o.text = `A new order from ${n.content.user.name} has to be invalidate`
+            o.text = `A new payment from ${n.content.user.name} has to be validated`
             o.to = {name: 'showOrder', params: {orderId: n.commandId}}
             o.imageSource = n.content.user.profilePicture
             break;
           default:
+            return null
         }
         return o
       })
+      .filter(n => n != null)
     }
   }
 }
