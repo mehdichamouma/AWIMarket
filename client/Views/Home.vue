@@ -1,9 +1,18 @@
 <template>
-  <div class="row">
-        <div class="card-panel z-depth-0 grey lighten-5">
-          <h3>Welcome on AWIMarket</h3>
-          <p>We help you to not need help.</p>
+  <div>
+    <div class="parallax-container valign-wrapper">
+      <div class="parallax">
+        <img src="/img/classic-living-room-style.jpg" />
+
+      </div>
+      <div class="row valign center-align">
+        <div class="col s12">
+          <h4 class="grey-text text-lighten-4">AWIMarket,</h4>
+          <h2 class="white-text">Another Way to Imagine the market.</h2>
         </div>
+      </div>
+    </div>
+    <div class="row">
         <div class="card-panel z-depth-0 grey lighten-5">
           <div class="row">
             <nav>
@@ -33,7 +42,7 @@
             </div>
           </div>
         </div>
-
+    </div>
   <div>
 </template>
 
@@ -55,6 +64,9 @@ export default {
     }
   },
   beforeCreate() {
+    $(document).ready(function(){
+      $('.parallax').parallax();
+    });
     fetchProducts().then(products => {
       console.log(products);
       this.products = products
@@ -76,6 +88,6 @@ export default {
         this.products = products
       })
     }
-  }
+  },
 }
 </script>

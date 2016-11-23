@@ -56,11 +56,7 @@
             </ul>
           </div>
         </div>
-        <div class='row'>
-            <div class='col s12'>
-              <router-view></router-view>
-            </div>
-        </div>
+        <router-view></router-view>
       </main>
 
     <footer class="page-footer">
@@ -133,6 +129,11 @@ export default {
         $('#notifications').modal('open');
       });
     })
+  },
+  mounted() {
+    $(document).ready(function(){
+      $('.parallax').parallax();
+    });
   },
   computed: {
     profilePicture() {
