@@ -89,5 +89,10 @@ export default {
       })
     }
   },
+  mounted() {
+    $(document).ready(function(){
+      $('.parallax').parallax();
+    });
+  },
 }
 </script>

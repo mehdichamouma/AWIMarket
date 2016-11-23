@@ -130,11 +130,6 @@ export default {
       });
     })
   },
-  mounted() {
-    $(document).ready(function(){
-      $('.parallax').parallax();
-    });
-  },
   computed: {
     profilePicture() {
       return this.$root.store.state.user.user.profilePicture
