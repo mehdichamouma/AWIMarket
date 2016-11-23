@@ -47,10 +47,10 @@
           <div class="modal-content">
             <h4>Notifications</h4>
             <ul class="collection">
-              <li class="collection-item avatar" v-for="notification in notifications">
-                <i class="material-icons circle">folder</i>
-                <span class="title">Title</span>
-                <p>First Line <br> Second Line </p>
+              <router-link :to="notification.to" class="collection-item avatar" v-for="notification in notifications">
+                <img class="circle" :src="notification.imageSource" width="50"/>
+                <span class="title">Notification</span>
+                <p>{{notification.text}}</p>
                 <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
               </li>
             </ul>
@@ -148,7 +148,22 @@ export default {
       return this.$root.store.state.user.company
     },
     notifications() {
+      console.log(this.$root.store.state.user.notifications);
       return this.$root.store.state.user.notifications
+      .filter(n => n.type)
+      .map(n => {
+        let o = {}
+        console.log(n);
+        switch (n.type) {
+          case 'NEW_COMMAND':
+            o.text = `A new order from ${n.content.user.name} has to be invalidate`
+            o.to = {name: 'showOrder', params: {orderId: n.commandId}}
+            o.imageSource = n.content.user.profilePicture
+            break;
+          default:
+        }
+        return o
+      })
     }
   }
 }
