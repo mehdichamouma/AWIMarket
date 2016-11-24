@@ -420,7 +420,8 @@ export const getProductsByKeywords = (key) => {
 
 
 // The stock quantity is not updated
-export const createCommand = (userId, id, products) => {
+export const createCommand = (userId, id, products, status = 'PENDING') => {
+  let _id = generateId(id)
   return cypher({
     query: `MATCH(u:User)
             WHERE u.id = {userId}
@@ -434,11 +435,13 @@ export const createCommand = (userId, id, products) => {
             RETURN p, u, c`,
     params: {
       userId: userId,
-      id: generateId(id),
+      id: _id,
       products: products,
-      commandName: `Order ${id}`
-    }
-  })
+      commandName: `Order ${_id}`,
+      status: status
+    },
+    lean: true
+  }).then(() => _id)
 }
 
 // return a Promise which approve with the good command
@@ -537,10 +540,10 @@ export const getUserNotifications= (userId) => {
       throw new Error('No command')
     }
     else {
-
-      return res.map(row => {
-                return  row.n
-              })
+      console.log(res);
+      return res.map(row => Object.assign({}, row.n, {
+        content: JSON.parse(row.n.content)
+      }))
     }
   })
 }
@@ -695,7 +698,7 @@ export const createNotification = (userId, id, content, type, creationDate, read
         content: JSON.stringify(content),
         type: type,
         creationDate: creationDate || new Date(),
-        readingDate:readingDate
+        readingDate:readingDate ? readingDate : null
       }
     })
     .then(res => {

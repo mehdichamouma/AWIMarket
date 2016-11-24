@@ -24,10 +24,4 @@ new Vue({
     }
   },
   render: h => h(App),
-  ready: () => {
-    $('.materialboxed').materialbox();
-    $(document).ready(function(){
-      $('.materialboxed').materialbox();
-    });
-  }
 })

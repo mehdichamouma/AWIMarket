@@ -2,34 +2,55 @@
   <table>
     <thead>
       <tr>
-          <th data-field="id">Name</th>
-          <th data-field="name">Item Name</th>
-          <th data-field="price">Item Price</th>
+          <th data-field="actions">Image</th>
+          <th data-field="name">Company</th>
+          <th data-field="seller">Owner</th>
       </tr>
     </thead>
 
     <tbody>
-      <tr>
-        <td>Alvin</td>
-        <td>Eclair</td>
-        <td>$0.87</td>
-      </tr>
-      <tr>
-        <td>Alan</td>
-        <td>Jellybean</td>
-        <td>$3.76</td>
-      </tr>
-      <tr>
-        <td>Jonathan</td>
-        <td>Lollipop</td>
-        <td>$7.00</td>
+      <tr v-for="row in rows">
+        <td>
+          <div class="crop">
+            <img :src="row.company.image" alt="" />
+          </div>
+        </td>
+        <td>
+          <router-link :to="{name:'showCompany', params: {companyId: row.company.id}}">
+            {{row.company.nameSc}}
+          </router-link>
+          <br>SIRET <em>{{row.company.siret}}</em>
+        </td>
+        <td>
+          <router-link :to="{name: 'profile', params: {userId: row.owner.id}}">
+            {{row.owner.name}}
+          </router-link>
+        </td>
+        <td>
+          <a class=""><i class="material-icons left">edit</i></a>
+          <a class=""><i class="material-icons left">delete</i></a>
+        </td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script>
+import {fetchCompanies} from "../../ApiClient"
+
 export default {
+  data() {
+    return {
+      rows: []
+    }
+  },
+  beforeCreate() {
+    fetchCompanies()
+    .then(res => res.json())
+    .then(results => {
+      this.rows = results
+    })
+  }
 }
 </script>
 

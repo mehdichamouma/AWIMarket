@@ -47,50 +47,42 @@
           <div class="modal-content">
             <h4>Notifications</h4>
             <ul class="collection">
-                          <li class="collection-item avatar">
-                            <img src="images/yuna.jpg" alt="" class="circle">
-                            <span class="title">Title</span>
-                            <p>First Line <br> Second Line </p>
-                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                          </li>
-                          <li class="collection-item avatar">
-                            <i class="material-icons circle">folder</i>
-                            <span class="title">Title</span>
-                            <p>First Line <br> Second Line </p>
-                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                          </li>
-                          <li class="collection-item avatar">
-                            <i class="material-icons circle green">assessment</i>
-                            <span class="title">Title</span>
-                            <p>First Line <br> Second Line </p>
-                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                          </li>
-                          <li class="collection-item avatar">
-                            <i class="material-icons circle red">play_arrow</i>
-                            <span class="title">Title</span>
-                            <p>First Line <br> Second Line </p>
-                            <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
-                          </li>
-                        </ul>
+              <router-link :to="notification.to" class="collection-item avatar" v-for="notification in notifications">
+                <img class="circle" :src="notification.imageSource" width="50"/>
+                <span class="title">Notification</span>
+                <p>{{notification.text}}</p>
+                <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class='row'>
-            <div class='col s12'>
-              <router-view></router-view>
-            </div>
-        </div>
+        <router-view></router-view>
       </main>
 
     <footer class="page-footer">
+      <div class="container">
+        <h5 class="white-text">AWIMarket</h5>
+        <ul>
+          <li v-if="isAdmin">
+            <router-link to="/admin" class="grey-text text-lighten-4">
+              Administration
+            </router-link>
+          </li>
+          <li v-if="userCompany">
+            <router-link :to="{name: 'showCompany', params: {companyId: userCompany.id}}" class="grey-text text-lighten-4">
+              Manage {{userCompany.nameSc}}
+            </router-link>
+          </li>
+          <li v-else>
+            <router-link to="/createCompany" class="grey-text text-lighten-4">
+              Create your company
+            </router-link>
+          </li>
+        </ul>
+      </div>
       <div class="footer-copyright">
         <div class="container">
         © 2016 Copyright Text
-        <div class="right">
-        <router-link to="/admin" class="grey-text text-lighten-4">Administration</router-link>
-        <router-link to="/createCompany" class="grey-text text-lighten-4">
-          Create your company
-        </router-link>
-        </div>
         </div>
       </div>
     </footer>
@@ -131,8 +123,12 @@ export default {
     console.log("aa", this.socket);
     this.socket.on('notification', (data) => {
       console.log(data);
+      this.$root.store.addNotification(data)
+      $(document).ready(function(){
+        $('.modal').modal();
+        $('#notifications').modal('open');
+      });
     })
-    console.log("creation");
   },
   computed: {
     profilePicture() {
@@ -140,6 +136,30 @@ export default {
     },
     userId() {
       return this.$root.store.state.user.user.id
+    },
+    isAdmin() {
+      return this.$root.store.state.user.user.is_admin
+    },
+    userCompany() {
+      return this.$root.store.state.user.company
+    },
+    notifications() {
+      console.log(this.$root.store.state.user.notifications);
+      return this.$root.store.state.user.notifications
+      .filter(n => n.type)
+      .map(n => {
+        let o = {}
+        console.log(n);
+        switch (n.type) {
+          case 'NEW_COMMAND':
+            o.text = `A new order from ${n.content.user.name} has to be invalidate`
+            o.to = {name: 'showOrder', params: {orderId: n.commandId}}
+            o.imageSource = n.content.user.profilePicture
+            break;
+          default:
+        }
+        return o
+      })
     }
   }
 }

@@ -3,7 +3,7 @@ import getDB from "../../persistence"
 let usersService = {}
 
 usersService.getUsers = () => {
-  return Promise.reject({code:501, description:"Not Implemented"})
+  //return Promise.reject({code:501, description:"Not Implemented"})
   return getDB().getUsers()
 }
 

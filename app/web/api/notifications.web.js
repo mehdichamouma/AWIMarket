@@ -5,7 +5,7 @@ import notificationsService from "../../services/notifications"
 let router = express.Router()
 
 router.get("/", (req, res) => {
-  notificationsService.getNotifications()
+  notificationsService.getNotifications(req.user.id)
   .then((result) => {
     res.status(200).json(result)
   })

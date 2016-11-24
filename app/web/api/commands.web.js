@@ -9,10 +9,24 @@ router.get("/", (req, res) => {
     res.status(200).json(result)
   })
   .catch((result) => {
+    console.log(result);
     res.status(result.code)
     .send(result.description);
   })
 })
+
+router.post("/", (req, res) => {
+  commandsService.createCommand(req.user, req.body.products)
+  .then((result) => {
+    res.status(200).json(result)
+  })
+  .catch((result) => {
+    console.log(result);
+    res.status(result.code)
+    .send(result.description);
+  })
+})
+
 
 router.get("/:orderId", (req, res) => {
   commandsService.getCommand(req.params.orderId)

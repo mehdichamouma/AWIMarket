@@ -119,6 +119,10 @@ export const fetchProduct = (productId) => {
   return request(`products/${productId}`)
 }
 
+export const fetchCompanies = () => {
+  return request(`companies`)
+}
+
 export const fetchUser = (userId) => {
   return request(`users/${userId}`)
 }
