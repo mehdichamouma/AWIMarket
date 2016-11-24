@@ -1,6 +1,6 @@
 import express from "express"
 let router = express.Router()
-import {authenticate} from "../../services/authentification"
+import {authenticate, refresh} from "../../services/authentification"
 import auth from "basic-auth"
 
 import usersService from "../../services/users"
@@ -56,4 +56,12 @@ router.post("/signup", (req, res) => {
   })
 })
 
+router.post("/refresh", (req, res)=> {
+  refresh(req.body.token)
+  .then(newToken => {
+    res.json({
+      token: newToken
+    })
+  })
+})
 export default router

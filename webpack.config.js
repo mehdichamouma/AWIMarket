@@ -21,6 +21,7 @@ module.exports = {
         publicPath: '/static/',
         filename: 'app.js'
       },
+      devtool: '#eval-source-map',
       module: {
         loaders: [
           {

@@ -19,14 +19,17 @@ router.get("/", (req, res) => {
 })
 
 router.post("/", (req, res) => {
-  companiesService.createCompany(req)
+  //companiesService.createCompany(req)
   companiesService.createCompany(req)
   .then((result) => {
     res.status(200).json(result)
   })
   .catch((result) => {
-    res.status(result.code)
-    .send(result.description);
+    if(result.code) {
+      res.status(result.code)
+      .send(result.description);
+    }
+    res.status(500).send("companiesService.createCompany")
   })
 })
 

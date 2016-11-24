@@ -1,3 +1,5 @@
+import {setToken} from "./ApiClient"
+
 export default {
   state: {
     message: 'Hello!',
@@ -24,7 +26,22 @@ export default {
     this.state.cart.content.splice(index, 1)
   },
   setUserToken(token) {
+    localStorage.userToken = token
+    setToken(token)
     this.state.token = token
+  },
+  getUserToken() {
+    if(this.state.token) {
+      return this.state.token
+    }
+    else {
+      let token = localStorage.userToken
+      if(token) {
+        this.setUserToken(localStorage.userToken)
+        return token
+      }
+      return null
+    }
   },
   addNotification(data) {
     if(this.state.user && this.state.user.notifications) {

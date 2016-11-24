@@ -16,6 +16,7 @@ import Cart from "./Views/Cart.vue"
 import CompanyCreation from "./Views/companies/CompanyCreation.vue"
 import Product from "./Views/Product.vue"
 import Profile from "./Views/Profile.vue"
+import Company from "./Views/Company.vue"
 
 
 import store from "./store"
@@ -43,6 +44,7 @@ const router = new VueRouter({
         {path: 'createCompany', component: CompanyCreation},
         {path: 'products/show/:productId', name: 'showProduct', component: Product},
         {path: 'profile/:userId', name: "profile", component: Profile},
+        {path: 'companies/show/:companyId', name: "showCompany", component: Company},
         {
           path: '/admin',
           component: AdminLayout,
@@ -68,15 +70,17 @@ router.beforeEach((to, from, next) => {
       next()
     }
     else {
-      let token = store.state.token || localStorage.userToken
-      console.log("token", token);
-      if(token) {
+      console.log(store.getUserToken());
+      if(store.getUserToken()) {
         console.log("...");
-        localStorage.userToken = token
-        setToken(token)
         me().then((user) => {
-          store.setUserAction(user)
-          next()
+          if(user.user) {
+            store.setUserAction(user)
+            next()
+          }
+          else {
+            next('/login')
+          }
         })
         .catch(e => {
           console.error(e);

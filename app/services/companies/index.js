@@ -21,13 +21,14 @@ companiesService.createCompany = (req) => {
             typeof p.siret == "string" &&
             typeof p.image == "string"
           ) {
-            return getDB().createSellingCompany(p.userId, undefined, p.companyName, p.siret, p.image)
+            return getDB().createSellingCompany(user.id, undefined, p.companyName, p.siret, p.image)
           }
         }
         return Promise.reject({code:400, description:"Bad Request"})
       }
       return Promise.reject({code:401, description:"You already have a company"})
     })
+    //.catch((e) => Promise.reject({code: 500, description: "services/companiesService/createCompany"}))
   }
   return Promise.reject({code:401, description:"You already have a company"})
 }

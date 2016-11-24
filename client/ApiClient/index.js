@@ -111,7 +111,9 @@ export const createCompany = (data) => {
   console.log(data);
   return request("companies", {
     method: 'POST',
-    body: data
+    body: {
+      company: data
+    }
   })
 }
 
@@ -132,6 +134,16 @@ export const signup = (data) => {
     method: "POST",
     body: data
   })
+}
+
+export const refreshToken = (token) => {
+  return request(`auth/refresh`, {
+    method: "POST",
+    body: {
+      token: token
+    }
+  })
+  .then(res => res.json())
 }
 // new async await
 //

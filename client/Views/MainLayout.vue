@@ -138,6 +138,7 @@ export default {
       return this.$root.store.state.user.user.profilePicture
     },
     userId() {
+      console.log(this.$root.store.state);
       return this.$root.store.state.user.user.id
     },
     isAdmin() {

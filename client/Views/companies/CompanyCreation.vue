@@ -21,12 +21,6 @@
             </div>
           </div>
           <div class="row">
-            <div class="input-field col s12 m7">
-              <input id="password" type="text" class="validate" v-model="userPassword">
-              <label for="password">Password</label>
-            </div>
-          </div>
-          <div class="row">
             <div class="input-field col s12">
               <textarea id="textarea1" class="materialize-textarea" v-model="companyDescription"></textarea>
               <label for="textarea1">Tell us something about your company</label>
@@ -54,7 +48,7 @@
 
 <script>
 import ImageUpload from "../../Components/ImageUpload.vue"
-import {createCompany} from "../../ApiClient"
+import {createCompany, refreshToken} from "../../ApiClient"
 
 export default {
   data() {
@@ -89,8 +83,25 @@ export default {
         siret: companySiret,
         description: companyDescription,
       })
-      .then(res => res.json())
-      .catch(e => console.error(e))
+      .then(res => {
+        if(res.ok) {
+          res.json().then((data) => {
+            refreshToken(this.$root.store.getUserToken())
+            .then((data) => {
+              this.$root.store.setUserToken(data.token)
+              this.$root.store.setUserAction(null)
+              this.$router.replace({name: "showCompany", params: {companyId: data.id}})
+            })
+          })
+        }
+        else {
+          this.error = "Company creation failed"
+        }
+      })
+      .catch(e => {
+        this.error = "Company creation failed"
+        console.error(e)
+      })
     }
   }
 }
