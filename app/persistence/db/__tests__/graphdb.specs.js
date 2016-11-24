@@ -228,7 +228,7 @@ describe("Graph db", () => {
         return getUsers().then(data => {
           expect(data).to.have.a.lengthOf(3)
           data.forEach(row => {
-            expect(row).to.have.all.keys(["user"])
+            expect(row).to.contain.all.keys(["user"])
             expect(row.user).to.have.all.keys(userKeys)
             if(row.company) {
               expect(row.company).to.have.all.keys(companyKeys)
@@ -237,7 +237,7 @@ describe("Graph db", () => {
           let usersWithCompanies = data.filter(r => r.company)
           let adminUsers = data.filter(r => r.user.is_admin)
           expect(usersWithCompanies).to.have.a.lengthOf(2)
-          expect(adminUsers).to.have.a.lengthOf(2)
+          expect(adminUsers).to.have.a.lengthOf(1)
         })
       })
     })
