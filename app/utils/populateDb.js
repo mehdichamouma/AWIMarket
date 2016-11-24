@@ -24,7 +24,8 @@ let users = [
     phone :"0658469285",
     birthday: new Date(1993,11,16),
     is_admin:true,
-    profilePicture: "4119ea64-31c5-46ec-8743-c9ca9575637d.jpg"
+    profilePicture: "4119ea64-31c5-46ec-8743-c9ca9575637d.jpg",
+    facebookId: "aFakeFbUserIdForMehdi"
   },
   {
     id: "2",
