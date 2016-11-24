@@ -99,7 +99,40 @@ export const getUser = (userId) => {
     }
   })
 }
+export const getUsers = () => {
+    return cypher ( {
+      query : `MATCH (u:User)
+               OPTIONAL MATCH (u)-[h:HAS]->(sc:SellingCompany)
+                return  u, sc`,
 
+      lean: true
+
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('user not found')
+    }
+    else {
+          return res.map(row => {
+            let hasCompany = row.sc != null
+            if (hasCompany){
+                      return {
+                        user: omit(row.u,"password"),
+                        company: row.sc
+
+                      }
+                    }
+            else {
+              return {
+                user: omit(row.u,"password")
+              }
+            }
+
+                  })
+    }
+
+  })
+}
 export const getUserByEmail = (email) => {
   return cypher ( {
     query : `MATCH (u:User)

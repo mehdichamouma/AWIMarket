@@ -7,7 +7,11 @@
         <div class="card-panel white lighten-5">
         <div class="row">
         <form class="col s12">
+
          <div class="row">
+           <!--this input-field will take all the grid with small screen ( s12 : 12 columns )
+           this input-field will take all the grid with medium screen ( m12 : 12 columns )
+           this input-field will take half of the grid with large screen (l6 : 6 columns )-->
            <div class="input-field col s12 m12 l6">
              <i class="material-icons prefix">account_circle</i>
              <input id="icon_prefix" type="text" class="validate" v-model="name">
@@ -26,11 +30,10 @@
            <div class="input-field col s12 m12 l6">
              <i class="material-icons prefix">phone</i>
              <input id="icon_telephone" type="tel" class="validate" v-model="phone">
-             <label for="icon_telephone">Telephone</label>
+             <label for="icon_telephone">Phone</label>
            </div>
-
-
          </div>
+
          <div class="row">
            <file-upload v-on:fileUploaded="handleFile"/>
          </div>
