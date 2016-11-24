@@ -25,6 +25,22 @@ api.use("/medias", medias)
 
 api.use(bodyParser.json());
 
+const allowCrossDomain = (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+    // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+}
+
+api.use(allowCrossDomain)
+
 api.use("/journals", journals)
 api.use("/auth", auth)
 api.use("/users", users)
