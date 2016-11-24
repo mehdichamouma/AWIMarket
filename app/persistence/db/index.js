@@ -33,7 +33,7 @@ export const clearDb = () => cypher({
           DETACH DELETE n`
 })
 
-export const createUser = (id, name, email, password, address, phone, birthday, is_admin, profilePicture) => cypher({
+export const createUser = (id, name, email, password, address, phone, birthday, is_admin, profilePicture, facebookId=null) => cypher({
   query : `CREATE (t:User {
                        id:{id},
                        name:{name},
@@ -43,7 +43,8 @@ export const createUser = (id, name, email, password, address, phone, birthday, 
                        phone:{phone},
                        birthday:{birthday},
                        is_admin: {is_admin},
-                       profilePicture: {profilePicture}
+                       profilePicture: {profilePicture},
+                       facebookId : {facebookId}
                      })
                      return t`,
   params: {
@@ -56,6 +57,7 @@ export const createUser = (id, name, email, password, address, phone, birthday, 
       birthday: birthday,
       is_admin:is_admin,
       profilePicture: profilePicture,
+      facebookId: facebookId
    },
 })
 // return a Promise which approve with the good user
@@ -99,6 +101,36 @@ export const getUser = (userId) => {
     }
   })
 }
+
+export const getUserByFacebookId = (facebookId) => {
+    return cypher ( {
+      query : `MATCH (u:User)
+               WHERE u.facebookId = {facebookId}
+                OPTIONAL MATCH (u)-[h:HAS]->(sc:SellingCompany)
+                return u, sc`,
+      params: {
+          facebookId: facebookId,
+       },
+     }
+  ).then(res => {
+    if (res.length < 1) {
+    return null
+    }
+    else {
+      let hasCompany = res[0].sc != null
+      return {
+        userId: res[0].u.properties.id,
+        name: res[0].u.properties.name,
+        email: res[0].u.properties.email,
+        is_admin: res[0].u.properties.is_admin,
+        hasCompany,
+        company: res[0].sc.properties
+
+      }
+    }
+
+  })
+}
 export const getUsers = () => {
     return cypher ( {
       query : `MATCH (u:User)
@@ -128,6 +160,29 @@ export const getUsers = () => {
               }
             }
 
+                  })
+    }
+
+  })
+}
+export const getAdmins = () => {
+    return cypher ( {
+      query : `MATCH (u:User)
+                WHERE u.is_admin = true
+                return  u`,
+
+      lean: true
+
+     }
+  ).then(res => {
+    if (res.length < 1) {
+      throw new Error('user not found')
+    }
+    else {
+          return res.map(row => {
+              return {
+                user: omit(row.u,"password")
+              }
                   })
     }
 

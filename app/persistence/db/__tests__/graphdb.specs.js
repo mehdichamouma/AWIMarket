@@ -24,7 +24,9 @@ import {
   getOrders,
   getOrder,
   getUserOrders,
-  getUserNotifications
+  getUserNotifications,
+  getAdmins,
+  getUserByFacebookId
 
 } from ".."
 import config from "../../../../config"
@@ -36,7 +38,7 @@ let userKeys = ["id", "name", "birthday", "address", "email", "phone", "is_admin
 let companyKeys = ["id", "nameSc", "siret", "image"]
 let productKeys = ["id", "Name" , "desc" , "price" , "quantity", "image"]
 let orderKeys = ["id","name"]
-let notificationsKeys= ["id","content","type","creationDate","readingDate"]
+let notificationsKeys= ["id","content","type","creationDate"]
 
 let clean = () => populateDb(config.DB_TEST_URL)
 
@@ -138,7 +140,7 @@ describe("Graph db", () => {
           data.forEach(row => {
             expect(row).to.have.all.keys(["company", "owner"])
             expect(row.company).to.have.all.keys(companyKeys)
-            expect(row.owner).to.have.all.keys(userKeys)
+            expect(row.owner).to.contain.all.keys(userKeys)
           })
         })
       })
@@ -148,7 +150,7 @@ describe("Graph db", () => {
       it("should get a SC", () => {
         return getSellingCompany("1").then(data => {
           expect(data).to.have.all.keys(['company', 'products', 'owner'])
-          expect(data.owner).to.have.all.keys(userKeys)
+          expect(data.owner).to.contain.all.keys(userKeys)
           expect(data.owner.id).to.eql("1")
           expect(data.company).to.have.all.keys(companyKeys)
           expect(data.company.id).to.eql("1")
@@ -229,7 +231,7 @@ describe("Graph db", () => {
           expect(data).to.have.a.lengthOf(3)
           data.forEach(row => {
             expect(row).to.contain.all.keys(["user"])
-            expect(row.user).to.have.all.keys(userKeys)
+            expect(row.user).to.contain.all.keys(userKeys)
             if(row.company) {
               expect(row.company).to.have.all.keys(companyKeys)
             }
@@ -263,7 +265,7 @@ describe("Graph db", () => {
       it("should return the user if facebook id exists", () => {
         let validFacebookId = "aFakeFbUserIdForMehdi"
         return getUserByFacebookId(validFacebookId)
-        .then(user => {
+        .then(data => {
           expect(data).to.have.all.keys(['hasCompany', 'is_admin', 'name', 'userId', 'email', 'company'])
           expect(data.userId).to.eql("1")
           expect(data.hasCompany).to.be.true
@@ -300,9 +302,9 @@ describe("Graph db", () => {
     describe("getProductsByKeywords", () => {
       it("should return the filtered products by keyword", () => {
         return getProductsByKeywords('A').then(data => {
-          expect(data).to.have.a.lengthOf(3)
+          expect(data).to.have.a.lengthOf(2)
           let productNames = data.map(x => x.product.Name)
-          expect(productNames).to.have.members(['product A1', 'product A2', 'product A3'])
+          expect(productNames).to.have.members(['chaise', 'Marteau'])
         })
       })
     })

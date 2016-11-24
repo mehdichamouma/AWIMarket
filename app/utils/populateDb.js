@@ -24,7 +24,7 @@ let users = [
     phone :"0658469285",
     birthday: new Date(1993,11,16),
     is_admin:true,
-    profilePicture: "4119ea64-31c5-46ec-8743-c9ca9575637d.jpg",
+    profilePicture: "2deb71fd-ef15-4b52-a0e2-8988e19331f8.jpg",
     facebookId: "aFakeFbUserIdForMehdi"
   },
   {
@@ -47,7 +47,7 @@ let users = [
      phone :"0658469285",
      birthday: new Date(1994,11,16),
     is_admin:false,
-    profilePicture: "4119ea64-31c5-46ec-8743-c9ca9575637d.jpg"
+    profilePicture: "e58a83ba-ab37-4a0e-9aee-9ff89b557a60.jpg"
   },
 ]
 
@@ -71,8 +71,8 @@ let products = [
   {
     idSc: "1",
     id: "1",
-    Name: "product A1",
-    desc: "this is the product A1",
+    Name: "tournevis",
+    desc: "tournevis cruciforme",
     price: 40,
     quantity: 20,
     image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg",
@@ -80,38 +80,38 @@ let products = [
   {
     idSc: "1",
     id: "2",
-    Name: "product A2",
-    desc: "this is the product A2",
+    Name: "Marteau",
+    desc: "Marteau de haute qualité",
     price: 30,
     quantity: 10,
-    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg"
+    image: "eac7e993-b95a-40de-b8df-034605f4e450.jpg"
   },
   {
     idSc: "1",
     id: "3",
-    Name: "product A3",
-    desc: "this is the product A3",
+    Name: "Visseuse",
+    desc: "visseuse automatique",
     price: 70,
     quantity: 0,
-    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg"
+    image: "dd01b223-f2bc-46c9-a851-1530a26d4cf2.jpg"
   },
   {
     idSc: "2",
     id: "4",
-    Name: "product B1",
-    desc: "this is the product B1",
+    Name: "Visse",
+    desc: " kit de plusieurs visses ",
     price: 10,
     quantity: 5,
-    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg",
+    image: "b43fed26-02f8-4f39-9f51-592a92711a7d.jpg",
   },
   {
     idSc: "2",
     id: "5",
-    Name: "product B2",
-    desc: "this is the product B2",
+    Name: "chaise",
+    desc: "chaise en bois confortable",
     price: 20,
     quantity: 50,
-    image: "080a3a58-c3a9-46f3-9481-dc61704027dd.jpg",
+    image: "43c5b87f-b4b2-45ca-92ac-1644ca6732b7.jpg",
   },
 ]
 
@@ -225,7 +225,7 @@ let notifications = [
     content: 'commande validee',
     type: 'for user',
     creationDate: new Date(2016,11,16),
-    readingDate: '',
+    readingDate: null,
   },
   {
     userId: "1",
@@ -233,7 +233,7 @@ let notifications = [
     content: 'commande validee',
     type: 'for user',
     creationDate: new Date(2016,12,16),
-    readingDate:'',
+    readingDate:null,
   },
   {
     userId: "2",
@@ -241,7 +241,7 @@ let notifications = [
     content: 'payement effectue',
     type: 'for user',
     creationDate: new Date(2016,11,16),
-    readingDate: '',
+    readingDate: null,
   }
 ]
 
@@ -253,7 +253,7 @@ export default (dbUrl, verbose = false) => {
   initDb(dbUrl)
   return clearDb().then(() => {
     log(verbose, "database cleared");
-    return Promise.all(users.map(u => createUser(u.id, u.name, u.email, u.password, u.address, u.phone, u.birthday, u.is_admin, u.profilePicture)))
+    return Promise.all(users.map(u => createUser(u.id, u.name, u.email, u.password, u.address, u.phone, u.birthday, u.is_admin, u.profilePicture, u.facebookId)))
   })
   .then(() => {
     log(verbose, "users created");
