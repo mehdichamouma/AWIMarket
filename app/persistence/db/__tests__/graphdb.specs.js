@@ -251,6 +251,26 @@ describe("Graph db", () => {
       })
     })
 
+    describe("getUserByFacebookId", () => {
+      it("should return null if the user does not exist", () => {
+        let invalidFacebookId = "anInvalidFbId"
+        return getUserByFacebookId(invalidFacebookId)
+        .then(user => {
+          expect(user).to.be.null
+        })
+      })
+
+      it("should return the user if facebook id exists", () => {
+        let validFacebookId = "aFakeFbUserIdForMehdi"
+        return getUserByFacebookId(validFacebookId)
+        .then(user => {
+          expect(data).to.have.all.keys(['hasCompany', 'is_admin', 'name', 'userId', 'email', 'company'])
+          expect(data.userId).to.eql("1")
+          expect(data.hasCompany).to.be.true
+          expect(data.is_admin).to.be.true
+        })
+      })
+    })
     //PRODUCTS
 
     describe("getProduct", () => {
