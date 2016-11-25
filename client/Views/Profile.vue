@@ -40,13 +40,13 @@
           <form class="card-content">
                 <div class="row">
                   <div class="input-field col s12">
-                    <input id="first_name" type="text" class="validate">
-                    <label for="first_name">Journal name</label>
+                    <input v-model="newJournalTitle" id="journal_title" type="text" class="validate">
+                    <label for="journal_title">Journal name</label>
                   </div>
                 </div>
           </form>
           <div class="card-action">
-            <a href="">Create a journal</a>
+            <a v-on:click="handleJournalCreate">Create a journal</a>
           </div>
         </div>
       </div>
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import {fetchUser} from "../ApiClient"
+import {fetchUser, createJournal} from "../ApiClient"
 import {capitalize} from "lodash"
 
 export default {
@@ -73,6 +73,7 @@ export default {
     return {
         company: null,
         journals: {},
+        newJournalTitle : null,
         user: {}
     }
   },
@@ -90,6 +91,14 @@ export default {
   computed: {
     userName() {
       return this.user.name && this.user.name.split(" ").map(capitalize).join(" ")
+    }
+  },
+  methods:{
+    handleJournalCreate(){
+      createJournal({title : this.newJournalTitle}).then((res)=>{
+          this.newJournalTitle = res.id
+          console.log("ok", res);
+      })
     }
   }
 

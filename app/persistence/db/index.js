@@ -33,7 +33,7 @@ export const clearDb = () => cypher({
           DETACH DELETE n`
 })
 
-export const createUser = (id, name, email, password, address, phone, birthday, is_admin, profilePicture, facebookId=null) => cypher({
+export const createUser = (id, name, email=null, password=null, address, phone, birthday, is_admin, profilePicture, facebookId=null) => cypher({
   query : `CREATE (t:User {
                        id:{id},
                        name:{name},
@@ -191,7 +191,7 @@ export const getAdmins = () => {
 export const getUserByEmail = (email) => {
   return cypher ( {
     query : `MATCH (u:User)
-              WHERE u.email = {email}
+              WHERE u.email = {email} and u.email IS NOT null
               OPTIONAL MATCH (u)-[:HAS]-(sc:SellingCompany)
             return u, sc`,
      params: {
@@ -204,7 +204,7 @@ export const getUserByEmail = (email) => {
 export const getUserByCredentials = (email, password) => {
     return cypher ( {
       query : `MATCH (u:User)
-                WHERE u.email = {email}
+                WHERE u.email = {email} and u.email IS NOT null
                 OPTIONAL MATCH (u)-[:HAS]-(sc:SellingCompany)
               return u, sc`,
       params: {
@@ -396,10 +396,21 @@ export const createProduct = (idSc, id, name, desc, price, quantity, image) => c
    },
 })
 
-export const updateProduct = (idSc, id, name, desc, price, quantity) => {
-// TODO
- return Promise.reject({code:501, description:"Not Implemented"})
-}
+export const updateProduct = (id, name, desc, price, quantity, image) => cypher({
+      query : `MATCH (p:Product)
+                WHERE p.id = {id}
+                set p.Name = {name}, p.desc = {desc}, p.price = {price}, p.quantity = {quantity}, p.image ={image}
+                RETURN p`,
+  params: {
+
+      id: id,
+      name: name,
+      desc: desc,
+      price: price,
+      quantity: quantity,
+      image:image,
+   },
+})
 
 export const deleteProduct = (id) => {
 // TODO
@@ -600,7 +611,7 @@ export const getUserNotifications= (userId) => {
 // create a new journal
 // if the create works then it approve with the created journal
 // else it will reject with an error in parameter
-export const createJournal = (userId, id, title, creationDate) => cypher(
+export const createJournal = (userId, id, title, creationDate=null) => cypher(
   {
   query: `MATCH(u:User)
           WHERE u.id = {userId}
@@ -616,7 +627,7 @@ export const createJournal = (userId, id, title, creationDate) => cypher(
         userId: userId,
         id: generateId(id),
         title: title,
-        creationDate: creationDate,
+        creationDate: creationDate || new Date()
       }
     }
   ).then(res => {
@@ -624,7 +635,9 @@ export const createJournal = (userId, id, title, creationDate) => cypher(
             throw new Error('Bad request')
     }
     else {
-      return res;
+      return {
+        id : res[0].j.properties.id
+      }
     }
   })
 

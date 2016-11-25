@@ -26,7 +26,8 @@ import {
   getUserOrders,
   getUserNotifications,
   getAdmins,
-  getUserByFacebookId
+  getUserByFacebookId,
+  updateProduct
 
 } from ".."
 import config from "../../../../config"
@@ -95,6 +96,17 @@ describe("Graph db", () => {
     describe("createProduct", () => {
       it("should create a Product", () => {
         return createProduct('1','1','bois','bois rouge',80, 100,'080a3a58-c3a9-46f3-9481-dc61704027dd.jpg').then(data => {
+        })
+      })
+    })
+    describe("updateProduct", () => {
+      it("should update a Product", () => {
+        return updateProduct("2", "pc", "desc", 80, 80, "eac7e993-b95a-40de-b8df-034605f4e450.jpg")
+        .then( updatedProduct =>{
+          return getProduct("2").then(data => {
+            expect(data.product.Name).to.eql("pc")
+
+          })
         })
       })
     })
@@ -299,7 +311,7 @@ describe("Graph db", () => {
       })
     })
 
-    describe("getProductsByKeywords", () => {
+  describe("getProductsByKeywords", () => {
       it("should return the filtered products by keyword", () => {
         return getProductsByKeywords('A').then(data => {
           expect(data).to.have.a.lengthOf(2)
