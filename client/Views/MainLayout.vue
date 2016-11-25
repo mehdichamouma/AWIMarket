@@ -210,14 +210,15 @@ main {
 
 .crop {
   height: 64px;
-  width: 40px;
-  overflow: hidden;
-  padding: 11px 2px;
+  width: 58px;
+  overflow: "hidden";
+  padding-top: 7px;
 }
 
 .crop img {
-  width: 40px;
+  height: 50px;
+  width: 50px;
   margin: auto;
-  border: 2px rgba(255, 255, 255, 1);
+  display: block;
 }
 </style>
