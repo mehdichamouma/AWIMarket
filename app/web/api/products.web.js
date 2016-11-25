@@ -69,4 +69,21 @@ router.delete("/:productId", (req, res) => {
   })
 })
 
+router.get("/:productId/related", (req, res) => {
+  let {productId} = req.params
+  return productsService.getRelatedProducts(productId)
+  .then((result) => {
+    let json = Object.assign({}, result)
+    json.relatedProducts = json.relatedProducts.map(rp => ({
+      ...rp,
+      image: mediasService.getUrl(rp.image)
+    }))
+    res.json(json)
+  })
+  .catch(e => {
+    console.error(e);
+    res.status(500).json({e: "can't get related products"})
+  })
+})
+
 export default router

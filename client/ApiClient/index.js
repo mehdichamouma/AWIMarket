@@ -198,6 +198,11 @@ export const getCart = (data) => {
   return request(`cart`)
   .then(res => res.json())
 }
+
+export const fetchRelatedProducts = (productId) => {
+  return request(`products/${productId}/related`)
+  .then(res => res.json())
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {

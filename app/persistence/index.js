@@ -70,5 +70,7 @@ let methods = [
   'updateProduct',
   'deleteProduct',
 
-  'createCommand'
+  'createCommand',
+
+  'getRelatedProducts'
 ]

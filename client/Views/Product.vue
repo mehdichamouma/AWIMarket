@@ -79,17 +79,36 @@
         </div>
       </div>
     </div>
+    <div class="row red lighten-4">
+        <div class="col s12">
+          <h3 class="white-text">Related Products</h3>
+        </div>
+        <div v-for="product in relatedProducts" class="col s12 m6 l4">
+          <product
+            v-bind:id="product.id"
+            v-bind:title="product.Name"
+            v-bind:price="product.price"
+            v-bind:description="product.desc"
+            v-bind:quantityLeft="product.quantity"
+            v-bind:productImage="product.image"
+            v-bind:company="{id: null}"
+            type="Awimarket"
+          />
+        </div>
+    </div>
   </div>
 </template>
 
 <script>
-import {fetchProduct} from "../ApiClient"
+import {fetchProduct, fetchRelatedProducts} from "../ApiClient"
 import ImageUpload from "../Components/ImageUpload.vue"
 import EditProduct from "../Components/forms/EditProduct.vue"
+import Product from "../Components/Product.vue"
 
 export default {
   components: {
-    "edit-product-form": EditProduct
+    "edit-product-form": EditProduct,
+    "product": Product
   },
   data() {
     return {
@@ -107,7 +126,8 @@ export default {
         id: null,
         name: null,
         image: null,
-      }
+      },
+      relatedProducts: []
     }
   },
   beforeCreate() {
@@ -126,6 +146,11 @@ export default {
         name: data.seller.nameSc,
         image: data.seller.image
       }
+    })
+
+    fetchRelatedProducts(productId)
+    .then(data => {
+      this.relatedProducts = data.relatedProducts
     })
   },
   computed: {

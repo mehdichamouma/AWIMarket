@@ -112,4 +112,8 @@ productsService.deleteProduct = (req, productId) => {
   return Promise.reject({code:401, description:"Unauthorized"})
 }
 
+// Access: Everybody
+productsService.getRelatedProducts = (productId) => {
+  return getDB().getRelatedProducts(productId)
+}
 export default productsService

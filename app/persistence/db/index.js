@@ -794,3 +794,15 @@ export const createNotification = (userId, id, content, type, creationDate, read
           }
         })
       }
+
+export const getRelatedProducts = (productId) => {
+  return cypher({
+    query: `MATCH (p:Product {id:{productId}})-[*1..3]-(p2:Product)
+            RETURN collect(DISTINCT p2) as relatedProducts`,
+    params: {
+      productId: productId
+    },
+    lean: true
+  })
+  .then(res => res[0])
+}
