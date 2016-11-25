@@ -63,6 +63,13 @@ export default {
 
 <style>
   .product .card-image {
-    height: 150px;
+    height: 170px;
+  }
+  .product .card-image img {
+    width: auto;
+    max-width: 170px;
+    margin-left: auto;
+    margin-right: auto;
+    top: 20px;
   }
 </style>

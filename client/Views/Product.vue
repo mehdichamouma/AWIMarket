@@ -176,6 +176,6 @@ export default {
 <style lang="css">
 
 .productImage {
-  width: 100%
+  width: 70%
 }
 </style>
