@@ -51,7 +51,7 @@ export const createUser = (id, name, email, password, address, phone, birthday, 
       id: generateId(id),
       name: name,
       email: email,
-      password: passwordHash.generate(password),
+      password: password ? passwordHash.generate(password) : null,
       address: address,
       phone: phone,
       birthday: birthday,
@@ -124,7 +124,7 @@ export const getUserByFacebookId = (facebookId) => {
         email: res[0].u.properties.email,
         is_admin: res[0].u.properties.is_admin,
         hasCompany,
-        company: res[0].sc.properties
+        company: res[0].sc && res[0].sc.properties
 
       }
     }

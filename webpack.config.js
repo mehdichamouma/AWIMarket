@@ -6,7 +6,8 @@ console.log(path.resolve(__dirname, './public/static'));
 
 
 let envs = {
-  "process.env.AWIMARKET_API_BASE_URL": JSON.stringify(process.env.AWIMARKET_API_BASE_URL)
+  "process.env.AWIMARKET_API_BASE_URL": JSON.stringify(process.env.AWIMARKET_API_BASE_URL),
+  "process.env.FB_ID": JSON.stringify(process.env.AWIMARKET_FACEBOOK_ID)
 }
 
 console.log(envs);

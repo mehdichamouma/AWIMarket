@@ -145,6 +145,16 @@ export const refreshToken = (token) => {
   })
   .then(res => res.json())
 }
+
+export const loginWithFacebook = (fbToken) => {
+  return request(`auth/facebook`, {
+    method: "POST",
+    body: {
+      fbToken: fbToken
+    }
+  })
+  .then(res => res.json())
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {

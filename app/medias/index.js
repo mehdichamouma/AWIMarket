@@ -3,6 +3,9 @@ import S3FS from "s3fs"
 import path from "path"
 import url from "url"
 import uuid from "uuid"
+import request from "request"
+import stream from "stream"
+import fetch from "node-fetch"
 
 import config from "../../config"
 
@@ -28,13 +31,19 @@ mediasService.getUrl = (fileName) => {
 mediasService.uploadFromStream = (fileName, stream) => {
   console.log(mediasService.getPath(fileName))
   let extension = path.extname(fileName)
-  let name = uuid.v4() + extension
+
+  let name = generateFileName(extension)
+  console.log(name);
+  console.log(stream);
   return s3fsImpl.writeFile(mediasService.getPath(name), stream)
   .then(() => ({
     fileName: name,
     url: mediasService.getUrl(name)
   }))
+  //.catch(e=>console.error(e))
 }
+
+const generateFileName = (extension) => uuid.v4() + extension
 
 mediasService.uploadFromLocalFile = (file) => {
   const stream = fs.createReadStream(file.path)
@@ -44,6 +53,12 @@ mediasService.uploadFromLocalFile = (file) => {
       return res
     })
   })
+}
+
+mediasService.uploadJpgFromUrl = (url) => {
+  return fetch(url)
+  .then(res => res.buffer())
+  .then(buffer => mediasService.uploadFromStream("facebook.jpg", buffer))
 }
 
 export default mediasService

@@ -16,7 +16,8 @@ usersService.createUser = (data) => {
     address = null,
     phone = null,
     birthday = null,
-    profilePicture
+    profilePicture,
+    facebookId = null
   } = data
   return getDB().getUserByEmail(email)
   .then((results) => {
@@ -24,7 +25,7 @@ usersService.createUser = (data) => {
     if(results.length != 0) {
       return Promise.reject({code: 400, description: "email is taken"})
     }
-    return getDB().createUser(undefined, name, email, password, address, phone, birthday, false, profilePicture)
+    return getDB().createUser(undefined, name, email, password, address, phone, birthday, false, profilePicture, facebookId)
   })
   .catch(error => {
     if(error.code) {
