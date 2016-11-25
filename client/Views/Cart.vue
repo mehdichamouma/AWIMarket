@@ -80,7 +80,7 @@
 
         <div class="row">
           <div class="right-align">
-            <a class="waves-effect waves-light btn">Continue</a>
+            <a v-on:click="validateCart" class="waves-effect waves-light btn">Continue</a>
           </div>
         </div>
       </div>
@@ -90,10 +90,25 @@
 </template>
 
 <script>
+import {createOrder} from "../ApiClient"
+
 export default {
   methods: {
     removeItem(index) {
       this.$root.store.cartRemoveProduct(index)
+    },
+    validateCart() {
+      let order = {
+        products: this.$root.store.state.cart.content.map(row => ({
+          id: row.product.id,
+          quantity: row.quantity
+        }))
+      }
+      console.log(order);
+      createOrder(order)
+      .then(() => {
+        this.$root.store.cartEmptyCart()
+      })
     }
   },
   computed: {

@@ -179,6 +179,13 @@ export const updateOrderProductStatus = (orderId, productId) => {
     method: 'PUT'
   })
 }
+
+export const createOrder = (data) => {
+  return request(`orders/`, {
+    method: 'POST',
+    body: data
+  })
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {

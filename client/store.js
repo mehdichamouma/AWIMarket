@@ -25,6 +25,9 @@ export default {
   cartRemoveProduct(index) {
     this.state.cart.content.splice(index, 1)
   },
+  cartEmptyCart() {
+    this.state.cart.content = []
+  },
   setUserToken(token) {
     localStorage.userToken = token
     setToken(token)
