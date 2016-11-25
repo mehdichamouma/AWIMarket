@@ -173,6 +173,12 @@ export const fetchCompanySales = (companyId) => {
   return request(`companies/${companyId}/sales`)
   .then(res => res.json())
 }
+
+export const updateOrderProductStatus = (orderId, productId) => {
+  return request(`orders/${orderId}/products/${productId}`, {
+    method: 'PUT'
+  })
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {

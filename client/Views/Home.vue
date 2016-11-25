@@ -123,9 +123,9 @@ export default {
       })
     })
 
-    // fetchPartnersProductsReda().then(products => {
-    //   console.log(products);
-    // })
+    fetchPartnersProductsReda().then(products => {
+      console.log(products);
+    })
   },
   methods: {
     handleCartClick(index) {

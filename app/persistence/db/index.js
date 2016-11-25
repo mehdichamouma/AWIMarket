@@ -306,7 +306,7 @@ export const getCompanySales = (companyId) => {
                 MATCH (sc)-[s:SELL]-(p:Product)
                 MATCH (c:Command)-[r:HAS]-(p)
 			          MATCH (u:User)-[l:DO]-(c)
-              return r, p, u`,
+              return r, p, u, c`,
       params: {
           companyId: companyId,
        },
@@ -321,7 +321,8 @@ export const getCompanySales = (companyId) => {
                   buyer: omit(row.u.properties,'password'),
                   product: row.p.properties,
                   price: row.r.properties.price,
-                  quantity: row.r.properties.quantity
+                  quantity: row.r.properties.quantity,
+                  order: row.c.properties
                 }
               })
     }

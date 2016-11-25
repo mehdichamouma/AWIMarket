@@ -31,11 +31,7 @@ export default {
   beforeCreate() {
     fetchCompany(this.$route.params.companyId)
     .then(data => {
-      this.name = data.company.nameSc
-      this.imageSource = data.company.image
-      this.siret = data.company.siret
       this.products = data.products
-      this.owner = data.owner
     })
   },
 }

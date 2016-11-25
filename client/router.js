@@ -50,7 +50,7 @@ const router = new VueRouter({
           name: "showCompany",
           component: Company,
           children: [
-            {path: '/', name: "showCompanyProducts", component: CompanyProducts},
+            {path: '/products', name: "showCompanyProducts", component: CompanyProducts},
             {path: 'sales', name: 'showCompanySales', component: CompanySales}
           ]
         },

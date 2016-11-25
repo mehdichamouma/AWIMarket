@@ -49,7 +49,7 @@
             <ul class="collection">
               <router-link :to="notification.to" class="collection-item avatar" v-for="notification in notifications">
                 <img class="circle" :src="notification.imageSource" width="50"/>
-                <span class="title">Notification</span>
+                <span class="title">{{notification.title}}</span>
                 <p>{{notification.text}}</p>
                 <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
               </li>
@@ -160,6 +160,12 @@ export default {
             o.text = `${n.content.user.name} has ordered ${n.content.quantity} ${n.content.product.name}`
             o.to = {name: 'showProduct', params: {productId: n.content.product.id}}
             o.imageSource = n.content.user.profilePicture
+            break;
+          case 'PRODUCT_SENT':
+            o.title = "Product sent !"
+            o.text = `${n.content.quantity} ${n.content.product.name} has been shipped`
+            o.to = {name: 'showProduct', params: {productId: n.content.product.id}}
+            o.imageSource = n.content.product.image
             break;
           default:
             return null
