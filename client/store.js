@@ -21,9 +21,15 @@ export default {
   },
   cartAddProduct(product, quantity) {
     this.state.cart.content.push({product, quantity})
+    this.saveCart()
   },
   cartRemoveProduct(index) {
     this.state.cart.content.splice(index, 1)
+    this.saveCart()
+  },
+  cartEmptyCart() {
+    this.state.cart.content = []
+    this.saveCart()
   },
   setUserToken(token) {
     localStorage.userToken = token
@@ -46,6 +52,14 @@ export default {
   addNotification(data) {
     if(this.state.user && this.state.user.notifications) {
       this.state.user.notifications.unshift(data)
+    }
+  },
+  saveCart() {
+    localStorage.setItem('cart', JSON.stringify(this.state.cart))
+  },
+  restoreCart() {
+    if(localStorage.cart) {
+      this.state.cart = JSON.parse(localStorage.cart)
     }
   }
 }

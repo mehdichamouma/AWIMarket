@@ -36,7 +36,13 @@ router.post("/", (req, res) => {
 router.get("/:companyId", (req, res) => {
   companiesService.getCompany(req.params.companyId)
   .then((result) => {
-    res.status(200).json(result)
+    let json = Object.assign({}, result)
+    json.products = json.products.map(p => ({
+      ...p,
+      image: mediasService.getUrl(p.image)
+    }))
+    json.company.image = mediasService.getUrl(json.company.image)
+    res.status(200).json(json)
   })
   .catch((result) => {
     res.status(result.code)
@@ -55,8 +61,8 @@ router.put("/:companyId", (req, res) => {
   })
 })
 
-router.get("/:companyId/orders", (req, res) => {
-  companiesService.getOrders(req.params.companyId)
+router.get("/:companyId/sales", (req, res) => {
+  companiesService.getCompanySales(req.params.companyId)
   .then((result) => {
     res.status(200).json(result)
   })

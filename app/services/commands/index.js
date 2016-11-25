@@ -31,19 +31,29 @@ commandsService.createCommand = (user, products) => {
     .then((commandId) => {
       return getDB().getUser(user.id)
       .then((data) => {
-        let notification = {
-          type: 'NEW_COMMAND',
-          payload: {
-            commandId: commandId,
-            user: {
-              name: data.user.name,
-              id: user.id,
-              profilePicture: mediasService.getUrl(data.user.profilePicture)
+        let notifyAllCompanies = Promise.all(products.map(p => {
+          return productsService.getProduct(p.id)
+          .then(productDb => {
+            let notification = {
+              type: 'NEW_SELL',
+              payload: {
+                commandId: commandId,
+                user: {
+                  name: data.user.name,
+                  id: user.id,
+                  profilePicture: mediasService.getUrl(data.user.profilePicture)
+                },
+                product: {
+                  id: p.id,
+                  name: productDb.product.Name
+                },
+                quantity: p.quantity
+              }
             }
-          }
-        }
-        console.log(notification);
-        let notifyAllCompanies = Promise.all(products.map(p => commandsService.notifyProductOwner(p.id, notification)))
+            console.log(notification);
+            return commandsService.notifyProductOwner(p.id, notification)
+          })
+        }))
         return notifyAllCompanies.then(() => commandId)
       })
     })
@@ -84,22 +94,35 @@ commandsService.updateCommand = (commandId, data) => {
   return Promise.reject({code:400, description:"Bad Request"})
 }
 
-commandsService.updateProduct = (commandId, productId, body) => {
-  if(data.status != undefined && commandId instanceof String
-  && productId instanceof String) {
-    if(productAllowStatus.includes(data.status)) {
-      return getDB().updateCommandProduct(commandId, productId, data.status)
-      .catch((error) => {
-        return Promise.reject({code:500, description:"Server error (persistence/db/updateCommandProduct)"})
-      })
+commandsService.updateProduct = (orderId, productId, data) => {
+  return getDB().getOrder(orderId)
+  .then(order => {
+    console.log(order);
+    console.log(productId);
+    let product = order.products.find(p => p.product.id == productId)
+    if(product) {
+      console.log(product);
+      let notification = {
+        type: 'PRODUCT_SENT',
+        payload: {
+          orderId: orderId,
+          product: {
+            id: product.product.id,
+            name: product.product.Name,
+            image: mediasService.getUrl(product.product.image)
+          },
+          quantity: product.rowInfo.quantity
+        }
+      }
+      console.log(notification);
+      return notificationsService.addNotification(order.owner.id, notification.type, notification.payload)
     }
-    return Promise.reject({code:400, description:"Status now allow"})
-  }
-  return Promise.reject({code:400, description:"Bad Request"})
+    return Promise.reject({code: 404, description: "Product not found in the order"})
+  })
 }
 
-commandsService.pay = (commandId) => {
-  return commandsService.updateCommand(commandId, {status:"payed"})
+commandsService.pay = (orderId) => {
+  return commandsService.updateCommand(orderId, {status:"payed"})
 }
 
 export default commandsService

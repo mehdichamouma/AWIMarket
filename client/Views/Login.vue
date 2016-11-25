@@ -7,7 +7,7 @@
           <span class="red-text">{{error}}</span>
         </div>
         <div class="col s12">
-            <a class=" waves-effect waves-light btn blue darken-4">
+            <a v-on:click="fbLogin" class=" waves-effect waves-light btn blue darken-4">
               <i class="fa fa-facebook left"></i>facebook
             </a>
         </div>
@@ -48,7 +48,7 @@
 
 <script>
 
-import {authenticate, setToken, me} from "../ApiClient"
+import {authenticate, setToken, me, loginWithFacebook} from "../ApiClient"
 //import router from "../router"
 import store from "../store"
 
@@ -73,8 +73,53 @@ export default {
         console.error(e);
         this.error = "wrong email and password"
       })
+    },
+    fbLogin() {
+      console.log(123456);
+      let self = this
+      window.fbAsyncInit = function() {
+        console.log("ok");
+          FB.init({
+            appId      : process.env.FB_ID,
+            cookie     : true,  // enable cookies to allow the server to access
+                                // the session
+            xfbml      : true,  // parse social plugins on this page
+            version    : 'v2.8' // use graph api version 2.8
+          });
+          console.log(FB);
+          // Now that we've initialized the JavaScript SDK, we call
+          // FB.getLoginStatus().  This function gets the state of the
+          // person visiting this page and can return one of three states to
+          // the callback you provide.  They can be:
+          //
+          // 1. Logged into your app ('connected')
+          // 2. Logged into Facebook, but not your app ('not_authorized')
+          // 3. Not logged into Facebook and can't tell if they are logged into
+          //    your app or not.
+          //
+          // These three cases are handled in the callback function.
+
+          FB.login((data) => {
+            loginWithFacebook(data.authResponse.accessToken)
+            .then(res => {
+              console.log(res);
+              self.$root.store.setUserToken(res.token)
+              self.$router.replace({path: '/'})
+            })
+          })
+
+
+
+      };
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
     }
-  }
+  },
 }
 
 </script>

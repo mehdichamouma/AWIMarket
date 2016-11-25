@@ -51,7 +51,7 @@ export const createUser = (id, name, email=null, password=null, address, phone, 
       id: generateId(id),
       name: name,
       email: email,
-      password: passwordHash.generate(password),
+      password: password ? passwordHash.generate(password) : null,
       address: address,
       phone: phone,
       birthday: birthday,
@@ -124,7 +124,7 @@ export const getUserByFacebookId = (facebookId) => {
         email: res[0].u.properties.email,
         is_admin: res[0].u.properties.is_admin,
         hasCompany,
-        company: res[0].sc.properties
+        company: res[0].sc && res[0].sc.properties
 
       }
     }
@@ -306,7 +306,7 @@ export const getCompanySales = (companyId) => {
                 MATCH (sc)-[s:SELL]-(p:Product)
                 MATCH (c:Command)-[r:HAS]-(p)
 			          MATCH (u:User)-[l:DO]-(c)
-              return r, p, u`,
+              return r, p, u, c`,
       params: {
           companyId: companyId,
        },
@@ -321,7 +321,8 @@ export const getCompanySales = (companyId) => {
                   buyer: omit(row.u.properties,'password'),
                   product: row.p.properties,
                   price: row.r.properties.price,
-                  quantity: row.r.properties.quantity
+                  quantity: row.r.properties.quantity,
+                  order: row.c.properties
                 }
               })
     }

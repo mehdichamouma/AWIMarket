@@ -65,6 +65,7 @@ let methods = [
   'getProductsAtPage',
   'getProductsFromSeller',
   'getProductsFromSellerAtPage',
+  'getUserByFacebookId',
   'createProduct',
   'updateProduct',
   'deleteProduct',

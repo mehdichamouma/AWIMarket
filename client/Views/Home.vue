@@ -36,12 +36,36 @@
                 v-bind:description="p.product.desc"
                 v-bind:quantityLeft="p.product.quantity"
                 v-bind:productImage="p.product.image"
-                v-on:cartClick="handleCartClick(index)"
                 v-bind:company="p.seller"
+                type="Awimarket"
               />
             </div>
           </div>
         </div>
+    </div>
+    <div class="row">
+      <div class="card-panel z-depth-0 red lighten-3">
+        <div class="row">
+          <h3 class="white-text">Partners' products</h3>
+        </div>
+        <div class="row">
+          <div v-for="(pro, index) in partnersProducts" class="col s12 m6 l4" :key="pro.product.id">
+            <product
+              v-bind:id="pro.product.id"
+              v-bind:title="pro.product.Name"
+              v-bind:price="pro.product.price"
+              v-bind:description="pro.product.desc"
+              v-bind:quantityLeft="pro.product.quantity"
+              v-bind:productImage="pro.product.image"
+              v-on:cartClick="handleCartClick(index)"
+              v-bind:company="pro.seller"
+              type="partner"
+              v-bind:partnerName="pro.partnerName"
+              v-bind:partnerLink="pro.partnerLink"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   <div>
 </template>
@@ -50,7 +74,9 @@
 
 import Product from "../Components/Product.vue"
 import {fetchProducts} from "../ApiClient"
-import {debounce} from "lodash"
+import {fetchPartnersProducts, fetchPartnersProductsReda} from "../utils/partners"
+
+import {debounce, floor} from "lodash"
 
 let debouncedFetchProducts = debounce(fetchProducts, 150)
 
@@ -60,7 +86,8 @@ export default {
   },
   data() {
     return {
-      products: []
+      products: [],
+      partnersProducts: []
     }
   },
   beforeCreate() {
@@ -70,6 +97,34 @@ export default {
     fetchProducts().then(products => {
       console.log(products);
       this.products = products
+    })
+    let self = this
+    fetchPartnersProducts().then(products => {
+      self.partnersProducts = products.map(p => {
+        var arrayBuffer = p.image.content;
+        var bytes = new Uint8Array(arrayBuffer);
+        var blob = new Blob( [ bytes ], { type: p.image.mime } );
+        var urlCreator = window.URL || window.webkitURL;
+        var imageUrl = urlCreator.createObjectURL( blob );
+        console.log(p);
+        return {
+          product: {
+            id: `partner-${p.id}`,
+            Name: p.name,
+            price: floor(p.price, 2),
+            quantity: p.quantity,
+            desc: p.description,
+            image: imageUrl,
+            company: {},
+          },
+          partnerLink: "https://igdiscount.eu-gb.mybluemix.net",
+          partnerName: "IGDiscount",
+        }
+      })
+    })
+
+    fetchPartnersProductsReda().then(products => {
+      console.log(products);
     })
   },
   methods: {
@@ -83,8 +138,9 @@ export default {
     search(e) {
       console.log(e);
       let {value} = e.target
-      debouncedFetchProducts(value)
+      fetchProducts(value)
       .then(products => {
+        console.log(products);
         this.products = products
       })
     }

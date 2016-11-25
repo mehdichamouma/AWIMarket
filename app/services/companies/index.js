@@ -72,10 +72,10 @@ companiesService.updateCompany = (companyId, req) => {
   })
 }
 
-companiesService.getOrders = (companyId) => {
-  if(companyId != undefined && companyId instanceof String)
+companiesService.getCompanySales = (companyId) => {
+  if(companyId != undefined && typeof companyId == "string")
   {
-    return getDB().getOrdersByCompanyId(companyId)
+    return getDB().getCompanySales(companyId)
   }
   return Promise.reject({code:400, description:"Bad Request"})
 }

@@ -1,6 +1,6 @@
 import express from "express"
 let router = express.Router()
-import {authenticate, refresh} from "../../services/authentification"
+import {authenticate, refresh, authenticateWithFacebook} from "../../services/authentification"
 import auth from "basic-auth"
 
 import usersService from "../../services/users"
@@ -64,4 +64,16 @@ router.post("/refresh", (req, res)=> {
     })
   })
 })
+
+router.post("/facebook", (req, res) => {
+  let fbToken = req.body.fbToken
+  authenticateWithFacebook(fbToken)
+  .then((token, created) => {
+    res.json({
+      token: token
+    })
+  })
+})
+
+
 export default router

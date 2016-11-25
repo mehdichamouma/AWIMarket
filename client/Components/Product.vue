@@ -23,10 +23,12 @@
       </div>
       <div class="row">
         <div class="col s6">
-          <router-link class="waves-effect waves-light btn amber accent-2" :to="{ name: 'showProduct', params: {productId: id}}">
+          <router-link class="waves-effect waves-light btn amber accent-2" :to="{ name: 'showProduct', params: {productId: id}}" v-if="type == 'Awimarket'">
             show
             <i class="material-icons right">arrow_forward</i>
-          </router-link><br>
+          </router-link>
+          <a v-else :href="partnerLink" target="_blank">{{partnerName}}</a>
+          <br>
         </div>
         <div class="col s6 right-align">
             <div class="chip" v-if="isOwner">
@@ -46,7 +48,7 @@
 <script>
 
 export default {
-  props: ['id', 'title', 'price', 'description', 'quantityLeft', 'productImage', 'company'],
+  props: ['id', 'title', 'price', 'description', 'quantityLeft', 'productImage', 'company', 'type', 'partnerLink', 'partnerName'],
   methods: {
     cartClick() {
       this.$emit('cartClick')
@@ -55,7 +57,7 @@ export default {
   computed: {
     isOwner() {
       let user = this.$root.store.state.user
-      return user.company && this.company.id == user.company.id
+      return user.company && this.company && this.company.id == user.company.id
     }
   }
 }

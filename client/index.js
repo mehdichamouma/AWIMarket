@@ -9,6 +9,7 @@ Vue.use(VueRouter)
 import router from "./router"
 import App from "./Views/App.vue"
 import store from "./store"
+//import "./utils/facebook"
 
 // const app = new Vue(Vue.util.extend({
 //   router,

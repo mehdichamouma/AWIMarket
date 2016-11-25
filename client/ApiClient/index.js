@@ -153,6 +153,39 @@ export const refreshToken = (token) => {
   })
   .then(res => res.json())
 }
+
+export const loginWithFacebook = (fbToken) => {
+  return request(`auth/facebook`, {
+    method: "POST",
+    body: {
+      fbToken: fbToken
+    }
+  })
+  .then(res => res.json())
+}
+
+export const fetchCompany = (companyId) => {
+  return request(`companies/${companyId}`)
+  .then(res => res.json())
+}
+
+export const fetchCompanySales = (companyId) => {
+  return request(`companies/${companyId}/sales`)
+  .then(res => res.json())
+}
+
+export const updateOrderProductStatus = (orderId, productId) => {
+  return request(`orders/${orderId}/products/${productId}`, {
+    method: 'PUT'
+  })
+}
+
+export const createOrder = (data) => {
+  return request(`orders/`, {
+    method: 'POST',
+    body: data
+  })
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {

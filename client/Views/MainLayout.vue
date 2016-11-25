@@ -49,7 +49,7 @@
             <ul class="collection">
               <router-link :to="notification.to" class="collection-item avatar" v-for="notification in notifications">
                 <img class="circle" :src="notification.imageSource" width="50"/>
-                <span class="title">Notification</span>
+                <span class="title">{{notification.title}}</span>
                 <p>{{notification.text}}</p>
                 <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
               </li>
@@ -114,6 +114,7 @@ export default {
       setToken(null)
       this.$root.store.setUserAction(null)
       this.$root.store.setUserToken(null)
+      this.socket.close()
       localStorage.removeItem("userToken")
       this.$router.push("/login")
     }
@@ -132,6 +133,8 @@ export default {
         $('#notifications').modal('open');
       });
     })
+
+    this.$root.store.restoreCart()
   },
   computed: {
     profilePicture() {
@@ -155,10 +158,17 @@ export default {
         let o = {}
         console.log(n);
         switch (n.type) {
-          case 'NEW_COMMAND':
-            o.text = `A new payment from ${n.content.user.name} has to be validated`
-            o.to = {name: 'showOrder', params: {orderId: n.commandId}}
+          case 'NEW_SELL':
+            o.title = "You have a new sell !"
+            o.text = `${n.content.user.name} has ordered ${n.content.quantity} ${n.content.product.name}`
+            o.to = {name: 'showProduct', params: {productId: n.content.product.id}}
             o.imageSource = n.content.user.profilePicture
+            break;
+          case 'PRODUCT_SENT':
+            o.title = "Product sent !"
+            o.text = `${n.content.quantity} ${n.content.product.name} has been shipped`
+            o.to = {name: 'showProduct', params: {productId: n.content.product.id}}
+            o.imageSource = n.content.product.image
             break;
           default:
             return null
@@ -210,14 +220,15 @@ main {
 
 .crop {
   height: 64px;
-  width: 40px;
-  overflow: hidden;
-  padding: 11px 2px;
+  width: 58px;
+  overflow: "hidden";
+  padding-top: 7px;
 }
 
 .crop img {
-  width: 40px;
+  height: 50px;
+  width: 50px;
   margin: auto;
-  border: 2px rgba(255, 255, 255, 1);
+  display: block;
 }
 </style>
