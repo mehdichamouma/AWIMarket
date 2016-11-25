@@ -116,7 +116,15 @@ export const createCompany = (data) => {
     }
   })
 }
-
+export const createJournal = (data) => {
+  console.log(data);
+  return request("journals", {
+    method: 'POST',
+    body: {
+      title : data.title
+    }
+  }).then(res => res.json())
+}
 export const fetchProduct = (productId) => {
   return request(`products/${productId}`)
 }

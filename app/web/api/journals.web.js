@@ -18,15 +18,17 @@ router.get("/", (req, res) => {
 })
 
 router.post("/", (req, res) => {
-  let {userId, journal} = req.query
-  journalsService.addJournal(userId, journal)
+  journalsService.addJournal(req.user.id, req.body.title, req.body.creationDate)
   .then((result) => {
     res.status(200)
-    .send("Ok");
+    .json({
+      id: result.id
+    });
   })
   .catch((result) => {
-    res.status(result.code)
-    .send(result.description);
+    console.error(result);
+    res.status(500)
+    .send(result);
   })
 })
 

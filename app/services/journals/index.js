@@ -7,15 +7,8 @@ journalsService.getJournalsByUser = (userId) => {
   return getDB().getJournalsByUser(userId)
 }
 
-journalsService.addJournal = (userId, journal) => {
-  if( (typeof journal === "object") && (journal !== null) && (journal !== undefined))
-  {
-    let journalOject = JSON.parse(journal)
-    return getDB().addJournal(userId, journalOject)
-  }
-  else {
-    return Promise.reject({code:400, description:"Bad request"})
-  }
+journalsService.addJournal = (userId, title, creationDate) => {
+ return getDB().createJournal(userId, null, title, creationDate)
 }
 
 journalsService.getJournal = (journalId) => new Promise((approve, reject) => {
