@@ -36,7 +36,6 @@
                 v-bind:description="p.product.desc"
                 v-bind:quantityLeft="p.product.quantity"
                 v-bind:productImage="p.product.image"
-                v-on:cartClick="handleCartClick(index)"
                 v-bind:company="p.seller"
                 type="Awimarket"
               />
@@ -50,19 +49,19 @@
           <h3 class="white-text">Partners' products</h3>
         </div>
         <div class="row">
-          <div v-for="(p, index) in partnersProducts" class="col s12 m6 l4" :key="p.product.id">
+          <div v-for="(pro, index) in partnersProducts" class="col s12 m6 l4" :key="pro.product.id">
             <product
-              v-bind:id="p.product.id"
-              v-bind:title="p.product.Name"
-              v-bind:price="p.product.price"
-              v-bind:description="p.product.desc"
-              v-bind:quantityLeft="p.product.quantity"
-              v-bind:productImage="p.product.image"
+              v-bind:id="pro.product.id"
+              v-bind:title="pro.product.Name"
+              v-bind:price="pro.product.price"
+              v-bind:description="pro.product.desc"
+              v-bind:quantityLeft="pro.product.quantity"
+              v-bind:productImage="pro.product.image"
               v-on:cartClick="handleCartClick(index)"
-              v-bind:company="p.seller"
+              v-bind:company="pro.seller"
               type="partner"
-              v-bind:partnerName="p.partnerName"
-              v-bind:partnerLink="p.partnerLink"
+              v-bind:partnerName="pro.partnerName"
+              v-bind:partnerLink="pro.partnerLink"
             />
           </div>
         </div>
@@ -99,17 +98,18 @@ export default {
       console.log(products);
       this.products = products
     })
+    let self = this
     fetchPartnersProducts().then(products => {
-      console.log(products);
-      this.partnersProducts = products.map(p => {
+      self.partnersProducts = products.map(p => {
         var arrayBuffer = p.image.content;
         var bytes = new Uint8Array(arrayBuffer);
         var blob = new Blob( [ bytes ], { type: p.image.mime } );
         var urlCreator = window.URL || window.webkitURL;
         var imageUrl = urlCreator.createObjectURL( blob );
+        console.log(p);
         return {
           product: {
-            id: null,
+            id: `partner-${p.id}`,
             Name: p.name,
             price: floor(p.price, 2),
             quantity: p.quantity,

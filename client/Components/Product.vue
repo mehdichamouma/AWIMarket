@@ -57,7 +57,7 @@ export default {
   computed: {
     isOwner() {
       let user = this.$root.store.state.user
-      return user.company && this.company.id == user.company.id
+      return user.company && this.company && this.company.id == user.company.id
     }
   }
 }

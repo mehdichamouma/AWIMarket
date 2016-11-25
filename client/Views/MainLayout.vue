@@ -155,9 +155,10 @@ export default {
         let o = {}
         console.log(n);
         switch (n.type) {
-          case 'NEW_COMMAND':
-            o.text = `A new payment from ${n.content.user.name} has to be validated`
-            o.to = {name: 'showOrder', params: {orderId: n.commandId}}
+          case 'NEW_SELL':
+            o.title = "You have a new sell !"
+            o.text = `${n.content.user.name} has ordered ${n.content.quantity} ${n.content.product.name}`
+            o.to = {name: 'showProduct', params: {productId: n.content.product.id}}
             o.imageSource = n.content.user.profilePicture
             break;
           default:

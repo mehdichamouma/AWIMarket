@@ -11,7 +11,7 @@ import {
   createObjective,
   createNotification
 } from "../persistence/db"
-
+import mediasService from "../medias"
 
 
 let users = [
@@ -222,24 +222,60 @@ let notifications = [
   {
     userId: "1",
     id: "1",
-    content: 'commande validee',
-    type: 'for user',
+    content: {
+      commandId: "1",
+      user: {
+        name: "Arnaud ZARAGOZA",
+        id: "3",
+        profilePicture: mediasService.getUrl("e58a83ba-ab37-4a0e-9aee-9ff89b557a60.jpg")
+      },
+      product: {
+        id: "4",
+        name: "Visse"
+      },
+      quantity: 1
+    },
+    type: 'NEW_SELL',
     creationDate: new Date(2016,11,16),
     readingDate: null,
   },
   {
     userId: "1",
     id: "2",
-    content: 'commande validee',
-    type: 'for user',
+    content: {
+      commandId: "1",
+      user: {
+        name: "Arnaud ZARAGOZA",
+        id: "3",
+        profilePicture: mediasService.getUrl("e58a83ba-ab37-4a0e-9aee-9ff89b557a60.jpg")
+      },
+      product: {
+        id: "1",
+        name: "tournevis"
+      },
+      quantity: 5
+    },
+    type: 'NEW_SELL',
     creationDate: new Date(2016,12,16),
     readingDate:null,
   },
   {
-    userId: "2",
+    userId: "3",
     id: "3",
-    content: 'payement effectue',
-    type: 'for user',
+    content: {
+      commandId: "2",
+      user: {
+        name: "Arnaud ZARAGOZA",
+        id: "3",
+        profilePicture: mediasService.getUrl("e58a83ba-ab37-4a0e-9aee-9ff89b557a60.jpg")
+      },
+      product: {
+        id: "4",
+        name: "Visse"
+      },
+      quantity: 2
+    },
+    type: 'NEW_SELL',
     creationDate: new Date(2016,11,16),
     readingDate: null,
   }
