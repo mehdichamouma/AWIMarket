@@ -163,6 +163,16 @@ export const loginWithFacebook = (fbToken) => {
   })
   .then(res => res.json())
 }
+
+export const fetchCompany = (companyId) => {
+  return request(`companies/${companyId}`)
+  .then(res => res.json())
+}
+
+export const fetchCompanySales = (companyId) => {
+  return request(`companies/${companyId}/sales`)
+  .then(res => res.json())
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {
