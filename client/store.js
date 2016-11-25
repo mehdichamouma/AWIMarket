@@ -1,4 +1,4 @@
-import {setToken} from "./ApiClient"
+import {setToken, getCart, saveCart} from "./ApiClient"
 
 export default {
   state: {
@@ -55,11 +55,24 @@ export default {
     }
   },
   saveCart() {
-    localStorage.setItem('cart', JSON.stringify(this.state.cart))
+    localStorage.setItem('cart', JSON.stringify(this.state.cart.content))
+    saveCart(this.state.cart.content)
+    .then(res => console.log("cart saved"))
   },
   restoreCart() {
-    if(localStorage.cart) {
-      this.state.cart = JSON.parse(localStorage.cart)
-    }
-  }
+    let self = this
+    getCart().then(data => {
+      console.log(data);
+      console.log(data.length);
+      if(data.length > 0 && localStorage.cart) {
+          console.log(localStorage.cart);
+           self.state.cart.content = JSON.parse(localStorage.cart)
+      }
+      else {
+        console.log(data);
+        self.state.cart.content = data
+      }
+    })
+
+  },
 }
