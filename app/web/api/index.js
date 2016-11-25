@@ -9,6 +9,7 @@ import commands from "./commands.web"
 import notifications from "./notifications.web"
 import companies from "./companies.web"
 import medias from "./medias.web"
+import cart from "./cart.web"
 
 import usersService from "../../services/users"
 import mediasService from "../../medias"
@@ -48,6 +49,7 @@ api.use("/products", products)
 api.use("/orders", commands)
 api.use("/notifications", notifications)
 api.use("/companies", companies)
+api.use("/cart", cart)
 
 api.get("/me", (req, res) => {
   if(req.user != null) {

@@ -186,6 +186,18 @@ export const createOrder = (data) => {
     body: data
   })
 }
+
+export const saveCart = (data) => {
+  return request(`cart`, {
+    method: 'POST',
+    body: data
+  })
+}
+
+export const getCart = (data) => {
+  return request(`cart`)
+  .then(res => res.json())
+}
 // new async await
 //
 // export const fetchUserJournals = async (userId) => {
