@@ -114,6 +114,7 @@ export default {
       setToken(null)
       this.$root.store.setUserAction(null)
       this.$root.store.setUserToken(null)
+      this.socket.close()
       localStorage.removeItem("userToken")
       this.$router.push("/login")
     }
@@ -132,6 +133,8 @@ export default {
         $('#notifications').modal('open');
       });
     })
+
+    this.$root.store.restoreCart()
   },
   computed: {
     profilePicture() {
